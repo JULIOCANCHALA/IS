@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--<link rel="stylesheet" href="index.css">-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body class="body">
+
+
+    <div class="main">
+        <header class="header">
+            <img class="header__img img--facebook" src="imgs/facebook.png" alt="">
+            <img class="header__img img--instagram" src="imgs/instagram.png" alt="">
+            <img class="header__img img--twitter" src="imgs/twitter.png" alt=""> 
+            <img class="header__img img--user" src="imgs/user.png" alt=""> 
+        </header>
+
+        <div class="name">            
+            <h2 class="name__text">JON</h2>
+        </div>  
+
+        <div class="navpages">
+            <div class="navpages__item navpages__item--selected"></div>
+            <div class="navpages__item"></div>
+            <div class="navpages__item"></div>
+            <hr class="navpages__hr">
+        </div>
+
+        <hr class="header__line header__line-left">
+        <hr class="header__line header__line-right">
+        <nav class="navinfo">
+                <div class="navinfo__item">
+                        <!--<img class="navinfo__img" src="img/navinfo5.jpg" alt="">-->
+                        <img class="navinfo__img" src="{{ url_for('static', filename='img/navinfo5.jpg') }}" alt="">
+                        <div class="navinfo__mask"></div>
+                        <h3 class="navinfo__text">Smooth way to find a Job</h3>                         
+                </div>
+                
+                <div class="navinfo__item">
+                    <!--<img class="navinfo__img" src="imgs/navinfo2.jpeg" alt="">-->
+                    <img class="navinfo__img" src="{{ url_for('static', filename='img/navinfo2.jpeg') }}" alt="">
+                    <div class="navinfo__mask"></div>
+                    <h3 class="navinfo__text">Smooth way to find a Job</h3>                         
+                </div>
+
+                <div class="navinfo__item">
+                    <!--<img class="navinfo__img" src="imgs/navinfo3.jpeg" alt="">-->
+                    <img class="navinfo__img" src="{{ url_for('static', filename='img/navinfo3.jpeg') }}" alt="">
+                    <div class="navinfo__mask"></div>
+                    <h3 class="navinfo__text">Smooth way to find a Job</h3>                         
+                </div>
+                
+                
+        </nav>
+
+    </div>    
+
+    <!--
+    <div class="main2">
+        <!--
+        <header class="header">
+            <img class="header__img img--facebook" src="img/facebook.png" alt="">
+            <img class="header__img img--instagram" src="img/instagram.png" alt="">
+            <img class="header__img img--twitter" src="img/twitter.png" alt="">
+            <img class="header__img img--user" src="img/user.png" alt="">
+        </header>
+
+
+        <div class="name">            
+            <h2 class="name__text">JON</h2>
+        </div>  
+
+        <div class="screen">
+            <div class="screen__sub screen__sub-img">
+                <img class="screen__img" src="img/job5.png" alt="">
+            </div>
+            <div class="screen__sub screen__sub-info">
+                <h2 class="screen__text" >The best way to predict the future is to invent it</h2>
+                <div class="screen__arrow">
+                    <img class="screen__arrow-img" src="img/next.png" alt="">
+                    <img class="screen__arrow-img" src="img/next.png" alt="">
+                    <img class="screen__arrow-img" src="img/next.png" alt="">
+                </div>                
+            </div>
+        </div>
+
+        <div class="navpages">
+            <div class="navpages__item"></div>
+            <div class="navpages__item navpages__item--selected"></div>
+            <div class="navpages__item"></div>
+            <hr class="navpages__hr">
+        </div>
+
+        <hr class="header__line header__line-left">
+        <hr class="header__line header__line-right">
+
+
+    </div>    -->
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
