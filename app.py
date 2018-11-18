@@ -1,11 +1,17 @@
-from flask import Flask
+from flask import Flask, request, render_template,url_for
 
 app = Flask(__name__)
 
 
 @app.route('/')
-def hello_world():
-    return 'Hello World!'
+def index():
+    return render_template('index.html')
+
+
+@app.errorhandler(404)#Error pages
+def page_not_found(e):
+    return render_template('404.html'),404
+
 
 
 if __name__ == '__main__':
