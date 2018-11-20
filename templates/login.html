@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="main">
+
+        <div class="screen-img screen-img--login"></div>
+
+        <div class="login__screen">
+            <div class="name">
+                <h2 class="name__text">JON</h2>
+            </div>
+
+            <h2 class="login__screen-title">Log in</h2>
+            <h2 class="login__screen-title login__screen-title--sub">Sign in with your JON Account to find your information</h2>
+
+            <form class="login__form">
+                <h2 class="login__input-name">Enter your email</h2>
+                <input class="login__input" type="email" name="email" placeholder="Enter your email">
+                <hr class="input__line">
+
+                <h2 class="login__input-name">Enter your password</h2>
+                <input class="login__input" type="password" name="password" placeholder="Enter your password">
+                <hr class="input__line">
+
+                <div class="login__access">
+                    <h2 class="login__access-account">Create an account</h2>
+                    <button class="login__access-button">Login</button>
+                </div>
+            </form>
+
+
+
+        </div>
+
+
+    </div>
+
+{%  endblock %}
