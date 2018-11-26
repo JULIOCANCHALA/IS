@@ -7,7 +7,11 @@
     <!--<link rel="stylesheet" href="index.css">-->
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Poiret+One|Ubuntu|Montserrat|Raleway" rel="stylesheet">
-    <title>Document</title>
+    {% if title %}
+        <title>{{ title }}</title>
+    {% else %}
+        <title>JON</title>
+    {% endif %}
 </head>
 <body class="body">
 

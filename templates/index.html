@@ -7,25 +7,30 @@
         </div>
 
         <header class="header">
+            <a class="header__link" href="https://www.facebook.com/politecnicotorino/" target="_blank">
             <img class="header__img img--facebook" src="{{ url_for('static', filename='img/facebook.png') }}" alt="">
+            </a>
+            <a class="header__link" href="https://www.instagram.com/politecnicoditorino" target="_blank">
             <img class="header__img img--instagram" src="{{ url_for('static', filename='img/instagram.png') }}" alt="">
+            </a>
+            <a class="header__link" href="https://twitter.com/politonews" target="_blank">
             <img class="header__img img--twitter" src="{{ url_for('static', filename='img/twitter.png') }}" alt="">
-            <img class="header__img img--user" src="{{ url_for('static', filename='img/user.png') }}" alt="">
+            </a>
+            <a class="header__link img--user" href="/login">
+                <img  class="header__img" src="{{ url_for('static', filename='img/user.png') }}" alt="">
+            </a>
         </header>
 
-        <div class="name">
-            <h2 class="name__text">JON</h2>
-        </div>
+        <a class="name-link link-nodecoration" href="/">
+            <div class="name">
+                <h2 class="name__text">JON</h2>
+            </div>
+        </a>
 
-        <div class="navpages">
-            <div class="navpages__item navpages__item--selected"></div>
-            <div class="navpages__item"></div>
-            <div class="navpages__item"></div>
-            <hr class="navpages__hr">
-        </div>
 
-        <hr class="header__line header__line-left">
-        <hr class="header__line header__line-right">
+
+        <!--<hr class="header__line header__line-left">
+        <hr class="header__line header__line-right">-->
         <nav class="navinfo">
                 <div class="navinfo__item navinfo__item-one">
                         <!--<img class="navinfo__img" src="img/navinfo5.jpg" alt="">-->

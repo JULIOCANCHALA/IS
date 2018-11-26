@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="main">
+
+        <div class="screen-img screen-img--signup"></div>
+
+        <div class="form__screen form__screen--signuptype">
+            <a class="name-link link-nodecoration" href="/">
+                <div class="name">
+                    <h2 class="name__text">JON</h2>
+                </div>
+            </a>
+
+            <div class="signuptype-menu ">
+                <a href="/signupPerson"  class="signuptype__option signuptype__option--person link-nodecoration">
+                    <!--<img class="option-img" src="{{ url_for('static', filename='img/people.png') }}" >-->
+                    <h2 class="option-text">Person</h2>
+                </a>
+
+                <a href="/signupCompany" class="signuptype__option signuptype__option--company link-nodecoration">
+                    <!--<img class="option-img" src="{{ url_for('static', filename='img/company.png') }}" >-->
+                    <h2 class="option-text">Company</h2>
+                </a>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+{%  endblock %}
