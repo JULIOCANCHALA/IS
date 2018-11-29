@@ -6,12 +6,55 @@
 
         <div class="screen-img screen-img--signup"></div>
 
-        <div class="form__screen">
-            <a class="name-link link-nodecoration" href="/">
-                <div class="name">
-                    <h2 class="name__text">JON</h2>
+        <div class="form__screen form__screen--signupPerson">
+
+            <div class="form__header">
+                <div class="form__header-item">
+                     <a class="name link-nodecoration" href="/">
+                        <h2 class="name__text">JON</h2>
+                    </a>
                 </div>
-            </a>
+                <div class="form__header-item form__header-item--right">
+                    <h2 class="form__screen-title form__screen-title--signup">Sign in</h2>
+                    <h2 class="form__screen-title form__screen-title--sub">Register and work with us</h2>
+                    <h2 class="screen-info-target screen-info-target--signup">For people</h2>
+                </div>
+            </div>
+
+            <div class="form__content">
+                <div class="form__inputs">
+                    <form class="form form--signin" action="/userpage">
+                        <h2 class="form__input-title">Name</h2>
+                        <input spellcheck="false" class="form__input form__input--signin" type="text" name="name" placeholder="Enter your name">
+                        <hr class="input__line">
+
+                        <h2 class="form__input-title">Surname</h2>
+                        <input spellcheck="false" class="form__input form__input--signin" type="text" name="surname" placeholder="Enter your surname">
+                        <hr class="input__line">
+
+                        <h2 class="form__input-title">Phone</h2>
+                        <input class="form__input form__input--signin" type="text" name="phone" placeholder="Enter your phone (+39)">
+                        <hr class="input__line">
+
+                        <h2 class="form__input-title">Enter your email</h2>
+                        <input spellcheck="false" class="form__input form__input--signin" type="email" name="email" placeholder="Enter your email">
+                        <hr class="input__line">
+
+                        <h2 class="form__input-title">Enter your password</h2>
+                        <input spellcheck="false" class="form__input form__input--signin" type="password" name="password" placeholder="Enter your password">
+                        <hr class="input__line">
+
+                        <button class="form__access-button form__access-button--signin">Sign In</button>
+
+                    </form>
+
+                </div>
+                <div class="form__img-content">
+                    <img class="form__img" src="{{ url_for('static', filename='img/register.png') }}">
+                </div>
+            </div>
+
+
 
 
 
@@ -20,5 +63,6 @@
 
 
     </div>
+
 
 {%  endblock %}

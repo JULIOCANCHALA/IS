@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="main">
+        <div class="screen-img screen-img--company"></div>
+        <!--<a class="name--user link-nodecoration" href="/user">
+            <h2 class="name__text">JON</h2>
+        </a>-->
+
+        <div class="button_menu">
+            <div class="button_menu-item button_menu-item1"></div>
+            <div class="button_menu-item button_menu-item2"></div>
+            <div class="button_menu-item button_menu-item3"></div>
+        </div>
+
+        <div class="userdata">
+            <a class="userdata__link">
+                <img  class="userdata__img" src="{{ url_for('static', filename='img/companyimg.jpg') }}" alt="">
+            </a>
+            <h2 class="userdata__name">Company</h2>
+
+        </div>
+
+        <div class="useractions">
+            <div class="new_shift">
+
+            </div>
+
+            <img class="calendar-img--userpage" src="{{ url_for('static', filename='img/calendar.jpg') }}"> <!-- This image is only an a preview of the real element-->
+        </div>
+
+
+
+
+    </div>
+
+{% endblock %}

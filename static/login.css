@@ -3,12 +3,12 @@
 }
 
 .form__screen{
-    width: 450px;
+    width: 500px;
     height: 540px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgba(255,255,255,0.5);
+    background-color: rgba(255,255,255,0.8);
     position: relative;
     align-self: center;
     box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.4);
@@ -19,13 +19,12 @@
     color: black;
     text-align: center;
     font-family: 'Raleway', sans-serif;
-
-    margin-top: 150px;
+    margin-top: 20px;
 }
 
 .form__screen-title--sub{
     font-family: "Palatino", sans-serif;
-    font-size: 15px;
+    font-size: 17px;
     margin-top: 10px;
     font-weight: lighter;
 }
@@ -41,12 +40,13 @@
 
 .form__input{
     box-sizing: border-box;
-    width: 80%;
+    width: 90%;
     align-self: center;
     line-height: 200%;
     background: rgba(0,0,0,0);
     font-size: 14px;
     font-family: "Palatino", sans-serif;
+    color: black;
 }
 
 .form__input-title{
@@ -54,14 +54,14 @@
     font-size: 18px;
     margin-top: 10px;
     font-weight: bold;
-    color: rgb(68, 68, 68);
+    color: black;
     line-height: 200%;
     margin-left: 30px;
 }
 
 .input__line{
     height: 1px;
-    width: 80%;
+    width: 90%;
     z-index: 2;
     background-color: #656565;
     align-self: center;

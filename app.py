@@ -27,6 +27,18 @@ def signupperson():
 def signupcompany():
     return render_template('signupPerson.html', title='SignIn')
 
+@app.route('/userpage')
+def userpage():
+    return render_template('userpage.html', title='userPage')
+
+@app.route('/userprofile')
+def userprofile():
+    return render_template('userprofile.html', title='userProfile')
+
+@app.route('/companypage')
+def companypage():
+    return render_template('companyPage.html', title='companyPage')
+
 @app.errorhandler(404)#Error pages
 def page_not_found(e):
     return render_template('404.html', title='404'),404

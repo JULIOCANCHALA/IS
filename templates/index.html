@@ -3,7 +3,7 @@
 {% block content %}
     <div class="main">
 
-        <div class="screen-img screen-img--home">
+        <div class="screen-img screen-img--index screen-img--mask2">
         </div>
 
         <header class="header">
@@ -21,11 +21,11 @@
             </a>
         </header>
 
-        <a class="name-link link-nodecoration" href="/">
-            <div class="name">
-                <h2 class="name__text">JON</h2>
-            </div>
+
+        <a class="name link-nodecoration" href="/">
+            <h2 class="name__text">JON</h2>
         </a>
+
 
 
 
@@ -59,13 +59,20 @@
 
         </nav>
 
+            <div class="navpages">
+            <div class="navpages__item navpages__item--selected"></div>
+            <div class="navpages__item"></div>
+            <div class="navpages__item"></div>
+            <hr class="navpages__hr">
+        </div>
+
     </div>
 
 
     <div class="main2">
 
 
-        <div class="screen-img"></div>
+        <div class="screen-img screen-img--mask"></div>
 
         <div class="name">
             <h2 class="name__text">JON</h2>
@@ -76,12 +83,12 @@
         </div>
 
 
-        <div class="screen-info">
+        <a class="screen-info link-nodecoration" href="/signupPerson">
             <h2 class="screen-info-target">For people</h2>
             <h2 class="screen-info-text">Motivation is what gets you started. Habit is what keeps you going.</h2>
             <img class="screen-info-arrow" src="{{ url_for('static', filename='img/next.png') }}">
             <img class="screen-info-arrow screen-info-arrow--static" src="{{ url_for('static', filename='img/next.png') }}">
-        </div>
+        </a>
 
         <div class="navpages">
             <div class="navpages__item"></div>
@@ -95,7 +102,7 @@
     <div class="main2">
 
 
-        <div class="screen-img screen-img--companies"></div>
+        <div class="screen-img screen-img--companies screen-img--mask"></div>
 
         <div class="name">
             <h2 class="name__text">JON</h2>
@@ -106,12 +113,12 @@
         </div>
 
 
-        <div class="screen-info">
+        <a class="screen-info link-nodecoration" href="/signupCompany">
             <h2 class="screen-info-target">For companies</h2>
             <h2 class="screen-info-text">The best preparation for tomorrow is to do today’s work superbly well.</h2>
             <img class="screen-info-arrow" src="{{ url_for('static', filename='img/next.png') }}">
             <img class="screen-info-arrow screen-info-arrow--static" src="{{ url_for('static', filename='img/next.png') }}">
-        </div>
+        </a>
 
         <div class="navpages">
             <div class="navpages__item"></div>
@@ -121,5 +128,9 @@
         </div>
 
     </div>
+
+    <footer class="footer">
+        <h2 class="footer__text">Politecnico di Torino - Information Systems</h2>
+    </footer>
 
 {% endblock %}
