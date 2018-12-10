@@ -8,6 +8,24 @@ app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///sqlweb.db'
 db = SQLAlchemy(app)
 bcrypt=Bcrypt(app)
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///jondatabase.db'
+db = SQLAlchemy(app)
+
+class Job(db.Model):
+    table = "Job"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30), nullable=True)
+    description = db.Column(db.Text(100), nullable=True)
+    date = db.Column(db.String(26), nullable=True)
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=True)
+
+
+class JobWorker(db.Model):
+    table = "JobWorker"
+    id = db.Column(db.Integer, primary_key=True)
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=True)
+    worker_id = db.Column(db.Integer, db.ForeignKey('worker.id'), nullable=True)
+
 
 class Person(db.Model):
     id=db.Column(db.Integer,primary_key=True)
@@ -114,7 +132,11 @@ def signupPerson():
 
 @app.route('/userpage')
 def userpage():
-    return render_template('personPage.html', email=session.get('email', False), title='Userpage')
+
+    jobs = Job.query.all()
+
+    return render_template('userpage.html', email=session.get('email', False), title='userPage', jobs=jobs)
+
 
 @app.route('/userprofile')
 def userprofile():
