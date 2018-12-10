@@ -21,7 +21,7 @@ class JobWorker(db.Model):
     table = "JobWorker"
     id = db.Column(db.Integer, primary_key=True)
     job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=True)
-    worker_id = db.Column(db.Integer, db.ForeignKey('worker.id'), nullable=True)
+    worker_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=True)
 
 
 class Person(db.Model):
