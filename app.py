@@ -1,14 +1,11 @@
 from flask import Flask, request, render_template,url_for,redirect,session
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
+from forms import signIn_form_People, signIn_form_Company,login_form
+
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'hakunamatata123456789'
-app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///sqlweb.db'
-db = SQLAlchemy(app)
-bcrypt=Bcrypt(app)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///jondatabase.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlweb.db'
 db = SQLAlchemy(app)
 
 class Job(db.Model):
@@ -63,7 +60,7 @@ class Role(db.Model):
     def __repr__(self):
         return "<Role %r>" % self.name
 
-from forms import signIn_form_People, signIn_form_Company,login_form
+
 
 @app.before_first_request
 def setup_db():

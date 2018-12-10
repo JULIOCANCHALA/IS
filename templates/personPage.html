@@ -14,8 +14,20 @@
             <img  class="home__user-img" src="{{ url_for('static', filename='img/userimg.jpg') }}" alt="">
         </a>
 
-    <img class="calendar-img" src="{{ url_for('static', filename='img/calendar.jpg') }}"> <!-- This image is only an a preview of the real element-->
+        <div style="z-index: 4; width: border-box; margin-top: 60px">
+            {% for day in ['Monday', 'Tuesday', 'Wednsday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+                <div style="float: left; width: 18%;">
+                    <div>{{ day }} </div>
+                    {% for job in jobs %}
+                        {% if job.date == day %}
+                            <p>{{ job.name }}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
 
+            {% endfor %}
+
+        </div>
 
     </div>
 
