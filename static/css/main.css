@@ -1,0 +1,398 @@
+html{
+    overflow-y: hidden;
+}
+
+.body{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+}
+
+.screen-img{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-image: url("../img/welcome3.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(4px);
+    transform: scale(1.1);
+    background-attachment: fixed;
+}
+
+.screen-img--index{
+    background-image: url("../img/welcome2.jpg");
+}
+
+
+.screen-img--companies{
+    background-image: url("../img/welcome5.jpg");
+}
+
+.main{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 0;
+    justify-content: center;
+    overflow: hidden;
+    /*position: absolute;
+    visibility: hidden;*/
+    transition-property: height;
+    transition-duration: 0.6s;
+    transition-timing-function: ease-in-out;
+}
+
+.main--home{
+    display: flex;
+    width: 100%;
+    height: 625px;
+    position: relative;
+    z-index: 0;
+    justify-content: center;
+    overflow: hidden;
+    /*position: absolute;
+    visibility: hidden;*/
+    transition-property: height,opacity;
+    transition-duration: 0.1s,300ms;
+    transition-timing-function: ease-in-out,ease-in;
+    opacity: 0.7;
+}
+
+
+.main--visible{
+    opacity: 1;
+}
+
+
+.header{
+    width: 100%;
+    height: 70px;
+    position: absolute;
+    background-color: rgba(0,0,0,0);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.img--user{
+    margin-left: auto;
+    margin-right: 30px;
+}
+
+.img--facebook{
+    margin-left:30px;
+}
+.img--instagram{
+    margin-left:15px;
+}
+.img--twitter{
+    margin-left:15px;
+}
+
+.header__link{
+    height: 40px;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.header__img{
+    height: 40px;
+    transition-property: height;
+    transition-duration: 0.12s;
+    transition-timing-function: ease-in-out;
+}
+
+.header__img:hover{
+    height: 45px;
+}
+.name{
+    height: 100px;
+    width: 100px;
+    background-color: rgba(0,0,0,0.9);
+    z-index: 3;
+    margin-top: 20px;
+    border: solid rgba(0,0,0,0.9) 2px;
+    color: white;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    transition-property: background-color,color,border-color;
+    transition-duration: 0.1s,0.1s;
+    transition-timing-function: ease-in-out;
+    box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.5);
+    cursor: pointer;
+}
+
+.name:hover{
+    background-color: rgba(255,255,255,0.6);
+    color: black;
+    border-color: rgba(255,255,255,0);
+}
+
+.name__text{
+    font-size: 38px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.header__line{
+    width: 100%;
+    height: 0px;
+    z-index: 1;
+    margin-top: 70px;
+    border-bottom: 1px black dotted;
+}
+
+.header__line-left{
+    margin-right: 50px;
+}
+
+.header__line-right{
+    margin-left: 50px;
+}
+
+.navpages{
+    height: 556px;
+    width: 100px;
+    position: absolute;
+    right: 0;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: rgba(0,0,0,0);
+    z-index: 2;
+}
+
+.navpages__item{
+    height: 17px;
+    width: 17px;
+    background-color: rgba(70, 70, 70,0);
+    border-radius: 17px;
+    border: solid 2px rgba(255, 255, 255, 1);
+    cursor: pointer;
+    z-index: 3;
+    transition-property:background-color, border-color;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
+}
+
+.navpages__item:hover{
+    background-color: rgba(237,0,140,1);
+    border-color:   rgba(255,255,0,0.7)
+}
+
+.navpages__item--selected{
+    background-color: rgba(255,255,0,1);
+    box-shadow: 0px 0px 10px 2px rgb(237, 0, 140);
+}
+
+.navpages__hr{
+    height: 426px;
+    position: absolute;
+    z-index: 2;
+    border-left: dotted 2px black;
+    box-shadow: 0px 0px 20px 1px rgb(237, 0, 140);
+}
+
+.navinfo{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    z-index: 2;
+}
+.navinfo__item{
+    height: 280px;;
+    width: 280px;;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    z-index: 3;
+    align-items: center;
+    margin-top: 100px;
+}
+.navinfo__img{
+    height: 280px;
+    width: 280px;
+    object-fit: cover;
+    z-index: 2;
+    border: solid 5px rgba(255,255,255,0.9);
+    border-bottom-width: 50px;
+    box-shadow: 4px 4px 9px 0px rgba(0,0,0,0.75);
+    transition-property: height,width,border-color;
+    transition-duration: 0.2s,0.2s,0.2s;
+    transition-timing-function: ease-in-out;
+}
+
+.navinfo__mask{
+    position: absolute;
+    z-index: 2;
+    height: 280px;
+    width: 260px;
+    background-color: rgba(0,0,0,0);
+    margin-top: -22px;
+    color: rgba(255,255,255,0);
+    transition-property: background-color,height,width;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.navinfo__item:hover .navinfo__mask{
+    background-color: rgba(0,0,0,0.5);
+    height: 300px;
+    width: 280px;
+}
+
+.navinfo__item:hover .navinfo__img{
+    height: 300px;
+    width: 300px;
+    border-color: rgba(237,0,140,0.4);
+}
+.navinfo__item:hover .navinfo__text{
+    color: rgba(255,255,255,1);
+}
+
+.navinfo__item:hover .navinfo__text-down{
+    opacity: 0;
+    transform: translateY(20px);
+
+}
+
+.navinfo__text{
+    position: absolute;
+    z-index: 2;
+    color: rgba(0,0,0,0);
+    font-size: 40px;
+    text-align: center;
+    font-family: 'Ubuntu', sans-serif;
+    transition-property: color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0.05s;
+}
+
+.navinfo__text-down{
+    position: absolute;
+    z-index: 2;
+    color: rgba(0,0,0,1);
+    font-size: 22px;
+    text-align: center;
+    font-family: "Palatino", sans-serif;
+    align-self: flex-end;
+    margin-top: 15px;
+    opacity: 1;
+    transition-property: transform,opacity;
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+    font-weight: lighter;
+}
+
+.screen-info{
+    height: 300px;
+    width: 750px;
+    z-index: 1;
+    background-color: rgba(0,0,0,0.7);
+    position: absolute;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    align-self: center;
+    border: solid 3px rgba(255,255,255,1);
+    margin-top: 30px;
+
+    cursor: pointer;
+}
+
+.screen-info-target{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 26px;
+    color: white;
+    height: 20%;
+    margin-top: 30px;
+    font-family: 'Raleway', sans-serif;
+    color: rgb(237,1,140);
+    z-index: 3;
+    transform: translateZ(0);
+}
+
+.screen-info-text{
+    font-size: 40px;
+    color: white;
+    text-align: center;
+    padding: 35px 20px 0 20px;
+    height: 80%;
+    font-family: 'Ubuntu', sans-serif;
+    transform: translateZ(0);
+}
+
+.screen-info-arrow{
+    height: 70px;
+    width: 70px;
+    position: absolute;
+    padding-left: 20px;
+    padding-bottom: 8px;
+    opacity: 0;
+}
+
+.screen-info-arrow--static{
+    opacity: 1;
+    transform: translateX(315px);
+}
+
+.screen-info:hover .screen-info-arrow{
+    transition-property: transform,opacity;
+    transition-duration: 0.5s,0.4s;
+    transition-timing-function: ease;
+    transition-delay: 0s,0.1s;
+
+    transform: translateX(315px);
+    opacity: 1;
+}
+
+.screen-info:hover .screen-info-arrow--static{
+    transition-property: opacity;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+    opacity: 0;
+}
+
+.screen-name{
+    height: 200px;
+    width: 100%;
+    background-color: rgba(0,0,0,0);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    padding-left: 100px;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+
+}
+
+.footer{
+    height: 20px;
+    width: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.footer__text{
+    font-size: 10px;
+    line-height: 20px;
+    font-family: 'Ubuntu', sans-serif;
+    color: white;
+    font-weight: lighter;
+    width: 100%;
+    text-align: center;
+}

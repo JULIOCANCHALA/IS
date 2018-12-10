@@ -1,0 +1,129 @@
+.form__screen--signupPerson{
+    width: 650px !important;
+    height: 570px !important;
+}
+
+.form__header{
+    height: 18%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.form__header-item{
+    height: 100%;
+    width: 65%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form__header-item--right{
+    align-items: flex-end;
+    width: 35%;
+    padding-right: 40px;
+}
+
+.name--signup{
+    margin-top: 0px !important;
+}
+
+.form__screen-title--signup{
+ margin-top: 0px !important;
+}
+
+.form__content{
+    height: 88%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.form__inputs{
+    height: 100%;
+    width: 65%;
+    display: flex;
+    align-items: center;
+}
+
+.form__input{
+    box-sizing: border-box;
+    width: 90%;
+    align-self: center;
+    line-height: 180%;
+    background: rgba(0,0,0,0);
+    font-size: 14px;
+    font-family: "Palatino", sans-serif;
+    color: black;
+    margin-top: 1px;
+}
+
+.form__input-title{
+    font-family: "Palatino", sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    line-height: 100%;
+    margin-left: 30px;
+    margin-top: 2px;
+}
+
+.input__line{
+    height: 1px;
+    width: 90%;
+    z-index: 2;
+    background-color: #656565;
+    align-self: center;
+}
+
+.form__img-content{
+    height: 100%;
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.form__img{
+    height: 180px;
+    width: 180px;
+}
+
+.form--signin{
+    height: 100% !important;
+    justify-content: flex-start !important;
+}
+
+.form__access-button--signin{
+    align-self: center;
+    margin-top: 10px;
+}
+
+.screen-info-target--signup{
+    margin-top: 10px !important;
+}
+
+.input__line-error{
+    background-color: rgba(255,78,63,0.9) !important;
+    height: 2px;
+}
+
+.form__error-content{
+    width: 90%;
+    height: 20px;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form__error-text{
+    line-height: 100%;
+    color: rgba(255,78,63,0.9);
+    font-size: 14px;
+    font-family: "Palatino", sans-serif;
+    font-weight: bold;
+}
+

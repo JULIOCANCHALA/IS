@@ -10,18 +10,117 @@
 
             <div class="form__header">
                 <div class="form__header-item">
-                    <a class="name link-nodecoration" href="/">
-                        <h2 class="name__text">JON</h2>
-                    </a>
-                </div>
-                <div class="form__header-item form__header-item--right">
                     <h2 class="form__screen-title form__screen-title--signup">Sign in</h2>
                     <h2 class="form__screen-title form__screen-title--sub">Register and work with us</h2>
+                </div>
+                <div class="form__header-item form__header-item--right">
                     <h2 class="screen-info-target screen-info-target--signup">For Companies</h2>
                 </div>
             </div>
 
             <div class="form__content">
+                <div class="form__inputs">
+                    <form method="POST" class="form form--signin" action="">
+                        {{  formpage.hidden_tag()}}
+                        {{ formpage.name.label(class="form__input-title") }}
+
+                        {% if formpage.name.errors %}
+                            {{ formpage.name(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="{{ eroor }}") }}
+                            <hr class="input__line input__line-error">
+                            <div class="form__error-content">
+                            {% for eroor in formpage.name.errors %}
+                                <span class="form__error-text">{{ eroor }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ formpage.name(spellcheck="false", class="form__input form__input--signin", placeholder="Enter your name") }}
+                            <hr class="input__line">
+                            <div class="form__error-content"></div>
+                        {% endif %}
+
+
+
+                        {{ formpage.telephone.label(class="form__input-title") }}
+                        {% if formpage.telephone.errors %}
+                            {{ formpage.telephone(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="Enter your telephone") }}
+                            <hr class="input__line input__line-error">
+                            <div class="form__error-content">
+                            {% for eroor in formpage.telephone.errors %}
+                                <span class="form__error-text">{{ eroor }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                        {{ formpage.telephone(spellcheck="false", class="form__input form__input--signin", placeholder="Enter your telephone") }}
+                         <hr class="input__line">
+                         <div class="form__error-content"></div>
+                        {% endif %}
+
+                        {{ formpage.phone.label(class="form__input-title") }}
+                        {% if formpage.phone.errors %}
+                            {{ formpage.phone(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="Enter your phone") }}
+                            <hr class="input__line input__line-error">
+                            <div class="form__error-content">
+                            {% for eroor in formpage.phone.errors %}
+                                <span class="form__error-text">{{ eroor }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                        {{ formpage.phone(spellcheck="false", class="form__input form__input--signin", placeholder="Enter your phone (+39)") }}
+                         <hr class="input__line">
+                         <div class="form__error-content"></div>
+                        {% endif %}
+
+
+                        {{ formpage.email.label(class="form__input-title") }}
+                        {% if formpage.email.errors %}
+                            {{ formpage.email(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="Enter your email") }}
+                            <hr class="input__line input__line-error">
+                            <div class="form__error-content">
+                            {% for eroor in formpage.email.errors %}
+                                <span class="form__error-text">{{ eroor }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                        {{ formpage.email(spellcheck="false", class="form__input form__input--signin", placeholder="Enter your email") }}
+                         <hr class="input__line">
+                         <div class="form__error-content"></div>
+                        {% endif %}
+
+                        {{ formpage.password.label(class="form__input-title") }}
+                        {% if formpage.password.errors %}
+                            {{ formpage.password(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="Enter your password") }}
+                            <hr class="input__line input__line-error">
+                            <div class="form__error-content">
+                            {% for eroor in formpage.password.errors %}
+                                <span class="form__error-text">{{ eroor }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                        {{ formpage.password(spellcheck="false", class="form__input form__input--signin", placeholder="Enter your password") }}
+                         <hr class="input__line">
+                         <div class="form__error-content"></div>
+                        {% endif %}
+
+                        {{ formpage.password_con.label(class="form__input-title") }}
+                        {% if formpage.password_con.errors %}
+                            {{ formpage.password_con(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="Enter your password confirmation") }}
+                            <hr class="input__line input__line-error">
+                            <div class="form__error-content">
+                            {% for eroor in formpage.password_con.errors %}
+                                <span class="form__error-text">{{ eroor }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                        {{ formpage.password_con(spellcheck="false", class="form__input form__input--signin", placeholder="Enter your password confirmation") }}
+                         <hr class="input__line">
+                         <div class="form__error-content"></div>
+                        {% endif %}
+
+                        {{ formpage.submit(class="form__access-button form__access-button--signin") }}
+
+                    </form>
+
+            <!--<div class="form__content">
                 <div class="form__inputs">
                     <form class="form form--signin" action="/companypage">
                         <h2 class="form__input-title">Name</h2>
@@ -46,7 +145,7 @@
 
                         <button class="form__access-button form__access-button--signin">Sign In</button>
 
-                    </form>
+                    </form>-->
 
                 </div>
                 <div class="form__img-content">

@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <div class="main">
+    <div class="main--home main-one">
 
         <div class="screen-img screen-img--index screen-img--mask2">
         </div>
@@ -22,7 +22,7 @@
         </header>
 
 
-        <a class="name link-nodecoration" href="/">
+        <a onclick="myFunction()" class="name link-nodecoration" href="/">
             <h2 class="name__text">JON</h2>
         </a>
 
@@ -32,7 +32,7 @@
         <!--<hr class="header__line header__line-left">
         <hr class="header__line header__line-right">-->
         <nav class="navinfo">
-                <div class="navinfo__item navinfo__item-one">
+                <div class="navinfo__item">
                         <!--<img class="navinfo__img" src="img/navinfo5.jpg" alt="">-->
                         <img class="navinfo__img" src="{{ url_for('static', filename='img/navinfo5.jpg') }}" alt="">
                         <div class="navinfo__mask"></div>
@@ -59,17 +59,16 @@
 
         </nav>
 
-            <div class="navpages">
-            <div class="navpages__item navpages__item--selected"></div>
-            <div class="navpages__item"></div>
-            <div class="navpages__item"></div>
+        <div class="navpages">
+            <div class="navpages__item  navpages__item--selected main__selector-one"></div>
+            <div class="navpages__item main__selector-two" ></div>
+            <div class="navpages__item main__selector-three" ></div>
             <hr class="navpages__hr">
         </div>
 
     </div>
 
-
-    <div class="main2">
+    <div class="main--home main-two" >
 
 
         <div class="screen-img screen-img--mask"></div>
@@ -91,15 +90,15 @@
         </a>
 
         <div class="navpages">
-            <div class="navpages__item"></div>
-            <div class="navpages__item navpages__item--selected"></div>
-            <div class="navpages__item"></div>
+            <div class="navpages__item main__selector-one"></div>
+            <div class="navpages__item navpages__item--selected main__selector-two" ></div>
+            <div class="navpages__item main__selector-three" ></div>
             <hr class="navpages__hr">
         </div>
 
     </div>
 
-    <div class="main2">
+     <div class="main--home main-three">
 
 
         <div class="screen-img screen-img--companies screen-img--mask"></div>
@@ -121,16 +120,16 @@
         </a>
 
         <div class="navpages">
-            <div class="navpages__item"></div>
-            <div class="navpages__item"></div>
-            <div class="navpages__item navpages__item--selected"></div>
+            <div class="navpages__item main__selector-one"></div>
+            <div class="navpages__item main__selector-two" ></div>
+            <div class="navpages__item navpages__item--selected main__selector-three" ></div>
             <hr class="navpages__hr">
         </div>
 
     </div>
 
-    <footer class="footer">
+    <!--<footer class="footer">
         <h2 class="footer__text">Politecnico di Torino - Information Systems</h2>
-    </footer>
+    </footer>-->
 
 {% endblock %}

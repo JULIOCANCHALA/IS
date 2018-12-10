@@ -14,27 +14,51 @@
             <h2 class="form__screen-title">Log in</h2>
             <h2 class="form__screen-title form__screen-title--sub">Login in with your JON Account to find your information</h2>
 
-            <form class="form" action="/userpage">
-                <h2 class="form__input-title">Enter your email</h2>
-                <input class="form__input" type="email" name="email" placeholder="Enter your email">
-                <hr class="input__line">
+            {% if email %}
+                <p>You have been logged in with {{ email }}</p>
+            {% endif %}
 
-                <h2 class="form__input-title">Enter your password</h2>
-                <input class="form__input" type="password" name="password" placeholder="Enter your password">
-                <hr class="input__line">
+            <form class="form" method="POST" action="">
+               {{  formpage.hidden_tag()}}
+               {{ formpage.email.label(class="form__input-title") }}
+                {% if formpage.email.errors %}
+                    {{ formpage.email(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="Enter your email") }}
+                    <hr class="input__line input__line-error">
+                    <div class="form__error-content">
+                    {% for error in formpage.email.errors %}
+                        <span class="form__error-text">{{ error }}</span>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                {{ formpage.email(spellcheck="false", class="form__input form__input--signin", placeholder="Enter your email") }}
+                 <hr class="input__line">
+                 <div class="form__error-content"></div>
+                {% endif %}
+
+                {{ formpage.password.label(class="form__input-title") }}
+                {% if formpage.password.errors %}
+                    {{ formpage.password(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="Enter your password") }}
+                    <hr class="input__line input__line-error">
+                    <div class="form__error-content">
+                    {% for error in formpage.password.errors %}
+                        <span class="form__error-text">{{ error }}</span>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                {{ formpage.password(spellcheck="false", class="form__input form__input--signin", placeholder="Enter your password") }}
+                 <hr class="input__line">
+                 <div class="form__error-content"></div>
+                {% endif %}
 
                 <div class="login__access">
                     <a class="link-nodecoration" href="/signuptype">
                         <h2 class="login__access-account">Create an account</h2>
                     </a>
-                    <button class="form__access-button">Login</button>
+                    {{ formpage.submit(class="form__access-button") }}
                 </div>
             </form>
 
-
-
         </div>
-
 
     </div>
 
