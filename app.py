@@ -7,6 +7,7 @@ from forms import signIn_form_People, signIn_form_Company,login_form
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlweb.db'
 db = SQLAlchemy(app)
+bcrypt=Bcrypt(app)
 
 class Job(db.Model):
     table = "Job"
@@ -132,7 +133,7 @@ def userpage():
 
     jobs = Job.query.all()
 
-    return render_template('userpage.html', email=session.get('email', False), title='userPage', jobs=jobs)
+    return render_template('personPage.html', title='userPage', jobs=jobs)
 
 
 @app.route('/userprofile')
