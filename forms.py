@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, PasswordField, StringField
+from wtforms import SubmitField, PasswordField, StringField, DateField, TextAreaField
 from wtforms.validators import Email,DataRequired,Length,EqualTo
 
 class signIn_form_People(FlaskForm):
@@ -25,3 +25,11 @@ class login_form(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
     submit = SubmitField('LogIn')
+
+
+class insert_job(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    description = TextAreaField('Description',validators=[DataRequired()])
+    datework = DateField('Date', validators=[DataRequired()])
+    # dayOfWeek = StringField('Day',validators=[DataRequired(), Length(min=5)])
+    submit = SubmitField('Add')

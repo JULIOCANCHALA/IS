@@ -14,13 +14,15 @@
             <img  class="home__user-img" src="{{ url_for('static', filename='img/userimg.jpg') }}" alt="">
         </a>
 
-        <div style="z-index: 4; width: border-box; margin-top: 60px">
-            {% for day in ['Monday', 'Tuesday', 'Wednsday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
-                <div style="float: left; width: 18%;">
-                    <div>{{ day }} </div>
+        <div class="jobs-table">
+            {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+                <div class="jobs-table-column">
+                    <h2>{{ day }} </h2>
                     {% for job in jobs %}
-                        {% if job.date == day %}
-                            <p>{{ job.name }}</p>
+                        {% if job.dayOfWeek == day %}
+                            <div class="jobs-table-cell">
+                                <p>{{ job.name }}</p>
+                            </div>
                         {% endif %}
                     {% endfor %}
                 </div>

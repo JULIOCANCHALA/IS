@@ -73,5 +73,28 @@ background-image: url("../img/welcome2.jpg") !important;
 
 }
 
+.jobs-table{
+    z-index: 5;
+    width: 80%;
+    margin-top: 60px;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    align-self: center;
+    height: 300px;
+}
+
+.jobs-table-column{
+    float: left;
+    width: 18%;
+    border: 2px white solid;
+}
+
+.jobs-table-cell{
+    padding: 2px;
+    border: 1px white solid;
+}
+
+
 /*----------------*/
 

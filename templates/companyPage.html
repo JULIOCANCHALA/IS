@@ -27,7 +27,23 @@
 
             </div>
 
-            <img class="calendar-img--userpage" src="{{ url_for('static', filename='img/calendar.jpg') }}"> <!-- This image is only an a preview of the real element-->
+            <div class="jobs-table">
+                {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+                    <div class="jobs-table-column">
+                        <h2>{{ day }} </h2>
+                        {% for job in jobs %}
+                            {% if job.dayOfWeek == day %}
+                                <div class="jobs-table-cell">
+                                    <p>{{ job.name }}</p>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
         </div>
 
 

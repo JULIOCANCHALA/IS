@@ -1,10 +1,12 @@
 from flask import Flask, request, render_template,url_for,redirect,session
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
-from forms import signIn_form_People, signIn_form_Company,login_form
+from forms import signIn_form_People, signIn_form_Company,login_form, insert_job
+from datetime import date, datetime
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'cvbnmjhgfdcvbnmnbv'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlweb.db'
 db = SQLAlchemy(app)
 bcrypt=Bcrypt(app)
@@ -14,15 +16,16 @@ class Job(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=True)
     description = db.Column(db.Text(100), nullable=True)
-    date = db.Column(db.String(26), nullable=True)
+    datework = db.Column(db.String(26), nullable=True)
+    dayOfWeek = db.Column(db.String(10), nullable=True)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=True)
 
 
-class JobWorker(db.Model):
+class JobPerson(db.Model):
     table = "JobWorker"
     id = db.Column(db.Integer, primary_key=True)
     job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=True)
-    worker_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=True)
+    person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=True)
 
 
 class Person(db.Model):
@@ -33,8 +36,6 @@ class Person(db.Model):
     phone = db.Column(db.Integer, nullable=True)
     email=db.Column(db.String(20),unique=True,nullable=True)
     password=db.Column(db.String(30),nullable=True)
-    role_id=db.Column(db.Integer,db.ForeignKey('role.id'),nullable=True)
-
 
     def __repr__(self):
         return "<Person %r>" % self.name
@@ -47,20 +48,9 @@ class Company(db.Model):
     phone = db.Column(db.Integer, nullable=True)
     email=db.Column(db.String(20),unique=True,nullable=True)
     password=db.Column(db.String(30),nullable=True)
-    role_id=db.Column(db.Integer,db.ForeignKey('role.id'),nullable=True)
 
     def __repr__(self):
         return "<Company %r>" % self.name
-
-class Role(db.Model):
-    id=db.Column(db.Integer, primary_key=True)
-    name=db.Column(db.String(10),nullable=True)
-    persons=db.relationship('Person',backref='role',lazy=True)
-    companies = db.relationship('Company', backref='role', lazy=True)
-
-    def __repr__(self):
-        return "<Role %r>" % self.name
-
 
 
 @app.before_first_request
@@ -131,10 +121,18 @@ def signupPerson():
 @app.route('/userpage')
 def userpage():
 
+    myDate = date.today()
+    myDate = myDate.replace(day=myDate.day - myDate.weekday())
+    print(myDate)
+    # jobs = Job.query.filter(parse_date(Job.datework) > myDate).all()
     jobs = Job.query.all()
 
-    return render_template('personPage.html', title='userPage', jobs=jobs)
+    for job in jobs:
+        print(parse_date(job.datework))
+        if parse_date(job.datework).date() < myDate:
+            jobs.remove(job)
 
+    return render_template('personPage.html', title='userPage', jobs=jobs)
 
 @app.route('/userprofile')
 def userprofile():
@@ -142,12 +140,38 @@ def userprofile():
 
 @app.route('/companypage')
 def companypage():
-    return render_template('companyPage.html', title='companyPage')
+    jobs = Job.query.all()
+
+    return render_template('companyPage.html', title='companyPage', jobs=jobs)
+
+
+@app.route('/newjob', methods=['GET', 'POST'])
+def newjob():
+    new_job = insert_job()
+    if new_job.validate_on_submit():
+        day = new_job.date.data.isoweek()
+        print(new_job.date.data.isoweek())
+        # TODO get company ID by session
+        job=Job(
+                        name=new_job.name.data,
+                        description=new_job.description.data,
+                        datework=new_job.datework.data,
+                        dayOfWeek= day,
+                        company_id=1
+        )
+        db.session.add(job)
+        db.session.commit()
+        return redirect(url_for('companypage'))
+
 
 @app.errorhandler(404)#Error pages
 def page_not_found(e):
     return render_template('404.html', title='404'),404
 
+
+# function to parse String like '2018-12-25' in Date type
+def parse_date(dateToConvert):
+    return datetime.strptime(dateToConvert, '%Y-%m-%d')
 
 if __name__ == '__main__':
     app.run(debug=True)
