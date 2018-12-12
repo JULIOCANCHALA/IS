@@ -121,16 +121,19 @@ def signupPerson():
 @app.route('/userpage')
 def userpage():
 
-    myDate = date.today()
-    myDate = myDate.replace(day=myDate.day - myDate.weekday())
-    print(myDate)
-    # jobs = Job.query.filter(parse_date(Job.datework) > myDate).all()
+    startDate = date.today()
+    startDate = startDate.replace(day=startDate.day - startDate.weekday())
+    endDate = startDate.replace(day=startDate.day + 6)
+    print('Start date: ' + str(startDate))
+    print('End date: ' + str(endDate))
+    # jobs = Job.query.filter(parse_date(Job.datework) > startDate).all()
     jobs = Job.query.all()
 
+    tmp = []
     for job in jobs:
-        print(parse_date(job.datework))
-        if parse_date(job.datework).date() < myDate:
-            jobs.remove(job)
+        if parse_date(job.datework).date() < startDate or parse_date(job.datework).date() > endDate:
+            tmp.append(job)
+    jobs = [x for x in jobs if x not in tmp]
 
     return render_template('personPage.html', title='userPage', jobs=jobs)
 
