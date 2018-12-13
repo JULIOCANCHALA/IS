@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template,url_for,redirect,session
+from flask import Flask, request, render_template,url_for,redirect,session, jsonify
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from forms import signIn_form_People, signIn_form_Company,login_form, insert_job
@@ -22,7 +22,7 @@ class Job(db.Model):
 
 
 class JobPerson(db.Model):
-    table = "JobWorker"
+    table = "JobPerson"
     id = db.Column(db.Integer, primary_key=True)
     job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=True)
     person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=True)
@@ -151,21 +151,43 @@ def companypage():
 @app.route('/newjob', methods=['GET', 'POST'])
 def newjob():
     new_job = insert_job()
-    if new_job.validate_on_submit():
-        day = new_job.date.data.isoweek()
-        print(new_job.date.data.isoweek())
+    #f new_job.validate_on_submit():
+    if request.method == 'POST':
+        day = get_day(new_job.datework.data.weekday())
+        print(get_day(new_job.datework.data.weekday()))
         # TODO get company ID by session
         job=Job(
-                        name=new_job.name.data,
-                        description=new_job.description.data,
-                        datework=new_job.datework.data,
-                        dayOfWeek= day,
-                        company_id=1
+            name=new_job.name.data,
+            description=new_job.description.data,
+            datework=new_job.datework.data,
+            dayOfWeek= day,
+            company_id=1
         )
         db.session.add(job)
         db.session.commit()
-        return redirect(url_for('companypage'))
+        return jsonify(isError= False,
+                    message= "Success",
+                    statusCode= 201), 201
+    else:
+        return redirect(url_for('userpage'))
 
+@app.route('/bookjob/<job_id>', methods=['GET','POST','DELETE'])
+def bookjob(job_id):
+    if request.method=='GET':
+        print(job_id)
+        # person = Person.query.filter_by(email=session['email']).first()
+        person = Person(
+            id = 1
+        )
+        book = JobPerson(
+            person_id = person.id,
+            job_id = job_id
+        )
+        db.session.add(book)
+        db.session.commit()
+        print('Job booked successfully!')
+        return redirect(url_for('userpage'))
+    return render_template('index.html', title='JON')
 
 @app.errorhandler(404)#Error pages
 def page_not_found(e):
@@ -175,6 +197,23 @@ def page_not_found(e):
 # function to parse String like '2018-12-25' in Date type
 def parse_date(dateToConvert):
     return datetime.strptime(dateToConvert, '%Y-%m-%d')
+
+def get_day(isoday):
+    if isoday==0:
+        return 'Monday'
+    if isoday==1:
+        return 'Tuesday'
+    if isoday==2:
+        return 'Wednesday'
+    if isoday==3:
+        return 'Thursday'
+    if isoday==4:
+        return 'Friday'
+    if isoday==5:
+        return 'Saturday'
+    if isoday==6:
+        return 'Sunday'
+
 
 if __name__ == '__main__':
     app.run(debug=True)
