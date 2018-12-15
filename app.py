@@ -19,6 +19,7 @@ class Job(db.Model):
     datework = db.Column(db.String(26), nullable=True)
     dayOfWeek = db.Column(db.String(10), nullable=True)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=True)
+    places = db.Column(db.Integer, nullable=True)
 
 
 class JobPerson(db.Model):
@@ -91,8 +92,7 @@ def signupCompany():
                         telephone=form_company.telephone.data,
                         phone=form_company.phone.data,
                         email=form_company.email.data,
-                        password=password,
-                        role_id=2
+                        password=password
         )
         db.session.add(register)
         db.session.commit()
@@ -110,9 +110,9 @@ def signupPerson():
                         surname=form_person.surname.data,
                         phone=form_person.phone.data,
                         email=form_person.email.data,
-                        password=password,
-                        role_id=1
+                        password=password
         )
+        session['email'] = register.email
         db.session.add(register)
         db.session.commit()
         return redirect(url_for('userpage'))
@@ -139,7 +139,11 @@ def userpage():
 
 @app.route('/userprofile')
 def userprofile():
-    return render_template('personProfile.html', title='userProfile')
+    person = Person.query.filter_by(email=session['email']).first()
+    # jobsperson = JobPerson.query.filter_by(person_id=person.id).all()
+    jobs = Job.query.join(JobPerson).filter(JobPerson.person_id==person.id).all()
+
+    return render_template('personProfile.html', title='userProfile', jobs=jobs)
 
 @app.route('/companypage')
 def companypage():
@@ -151,7 +155,7 @@ def companypage():
 @app.route('/newjob', methods=['GET', 'POST'])
 def newjob():
     new_job = insert_job()
-    #f new_job.validate_on_submit():
+    #if new_job.validate_on_submit():
     if request.method == 'POST':
         day = get_day(new_job.datework.data.weekday())
         print(get_day(new_job.datework.data.weekday()))
@@ -161,6 +165,7 @@ def newjob():
             description=new_job.description.data,
             datework=new_job.datework.data,
             dayOfWeek= day,
+            places=new_job.places.data,
             company_id=1
         )
         db.session.add(job)
@@ -171,22 +176,39 @@ def newjob():
     else:
         return redirect(url_for('userpage'))
 
+
 @app.route('/bookjob/<job_id>', methods=['GET','POST','DELETE'])
 def bookjob(job_id):
-    if request.method=='GET':
+    if request.method=='POST':
         print(job_id)
         # person = Person.query.filter_by(email=session['email']).first()
         person = Person(
             id = 1
         )
-        book = JobPerson(
-            person_id = person.id,
-            job_id = job_id
-        )
-        db.session.add(book)
-        db.session.commit()
-        print('Job booked successfully!')
-        return redirect(url_for('userpage'))
+
+        places_booked = JobPerson.query.filter_by(job_id=job_id).count()
+        job = Job.query.filter_by(id=job_id).first()
+        print('person in this job: '+str(places_booked))
+        if places_booked != job.places:
+            book = JobPerson(
+                person_id = person.id,
+                job_id = job_id
+            )
+            db.session.add(book)
+            db.session.commit()
+            print('Job booked successfully!')
+            return redirect(url_for('userpage'))
+        else:
+            return jsonify(isError=True,
+                           message="Job full booked",
+                           statusCode=200), 200
+    if request.method=='GET':
+        selected_job = Job.query.filter_by(id=job_id).first()
+        return jsonify(isError=False,
+                       message="Success",
+                       statusCode=200,
+                       data=str(selected_job)), 200
+
     return render_template('index.html', title='JON')
 
 @app.errorhandler(404)#Error pages
