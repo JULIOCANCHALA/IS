@@ -67,7 +67,8 @@ def loginpage():
     form_login=login_form()
     if form_login.validate_on_submit():
         st = Person.query.filter_by(email=form_login.email.data).first()
-        pass_check = bcrypt.generate_password_hash(form_login.password.data).decode('utf-8')
+        if not st:
+            st = Company.query.filter_by(email=form_login.email.data).first()
         if st and bcrypt.check_password_hash(st.password, form_login.password.data):
             session['email'] = form_login.email.data
             return redirect(url_for('userpage'))
@@ -94,6 +95,7 @@ def signupCompany():
                         email=form_company.email.data,
                         password=password
         )
+        session['email'] = register.email
         db.session.add(register)
         db.session.commit()
         return redirect(url_for('companypage'))
@@ -140,14 +142,14 @@ def userpage():
 @app.route('/userprofile')
 def userprofile():
     person = Person.query.filter_by(email=session['email']).first()
-    # jobsperson = JobPerson.query.filter_by(person_id=person.id).all()
     jobs = Job.query.join(JobPerson).filter(JobPerson.person_id==person.id).all()
 
     return render_template('personProfile.html', title='userProfile', jobs=jobs)
 
 @app.route('/companypage')
 def companypage():
-    jobs = Job.query.all()
+    company = Company.query.filter_by(email=session['email']).first()
+    jobs = Job.query.join(Company).filter(Company.id == company.id).all()
 
     return render_template('companyPage.html', title='companyPage', jobs=jobs)
 
