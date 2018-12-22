@@ -1,13 +1,21 @@
-from flask import Flask, request, render_template,url_for,redirect,session, jsonify
+from flask import Flask, request, render_template,url_for,redirect,session, jsonify, flash
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from forms import signIn_form_People, signIn_form_Company,login_form, insert_job
 from datetime import date, datetime
+from werkzeug.utils import secure_filename
+import os
 
+UPLOAD_FOLDER = 'company/contracts'
+ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
+MAX_CONTENT_PATH = '5120'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'cvbnmjhgfdcvbnmnbv'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlweb.db'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
 db = SQLAlchemy(app)
 bcrypt=Bcrypt(app)
 
@@ -212,6 +220,30 @@ def bookjob(job_id):
                        data=str(selected_job)), 200
 
     return render_template('index.html', title='JON')
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'GET':
+        return render_template('uploadContract.html', title='Contract Upload')
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('index'))
 
 @app.errorhandler(404)#Error pages
 def page_not_found(e):
