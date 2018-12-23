@@ -18,7 +18,7 @@
             <a class="userdata__link">
                 <img  class="userdata__img" src="{{ url_for('static', filename='img/userimg.jpg') }}" alt="">
             </a>
-            <h2 class="userdata__name">User</h2>
+            <h2 class="userdata__name">{{ email }}</h2>
 
         </div>
 
@@ -32,23 +32,30 @@
                 <hr class="hr-notification">
                 <h2 class="title-notification">Notification 4</h2>
             </div>
-        </div>
-        <div class="jobs-table">
+
+            <div class="jobs-table jobs-table--profiel">
             {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
                 <div class="jobs-table-column">
-                    <h2>{{ day }} </h2>
+                    <h2 class="jobs-table__titleday">{{ day }} </h2>
+                    <hr class="jobs-table__titleline">
                     {% for job in jobs %}
                         {% if job.dayOfWeek == day %}
                             <div class="jobs-table-cell">
-                                <p>{{ job.name }}</p>
+                                <p class="jobs-table__titlejob">{{ job.name }}</p>
                             </div>
                         {% endif %}
                     {% endfor %}
+                    {% if day != 'Sunday' %}
+                       <hr class="jobs-table__columnline">
+                    {% endif %}
                 </div>
 
             {% endfor %}
 
         </div>
+
+        </div>
+
 
 
 
