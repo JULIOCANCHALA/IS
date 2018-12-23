@@ -245,6 +245,16 @@ def upload_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('index'))
 
+@app.route('/loadsign', methods=['GET', 'POST'])
+def load_sign():
+    if request.method=='GET':
+        return render_template('cropphoto.html', title="Sign")
+    if request.method == 'POST':
+        file = request.files['cropped_image']['tmp_name'][0]
+        print(file.filename)
+        flash('Post complete')
+
+
 @app.errorhandler(404)#Error pages
 def page_not_found(e):
     return render_template('404.html', title='404'),404
