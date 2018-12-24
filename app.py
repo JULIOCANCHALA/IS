@@ -3,6 +3,7 @@ from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from forms import signIn_form_People, signIn_form_Company,login_form, insert_job
 from datetime import date, datetime
+from flask_login import login_user, current_user, logout_user, login_required, UserMixin, LoginManager
 
 
 app = Flask(__name__)
@@ -10,6 +11,14 @@ app.config['SECRET_KEY'] = 'cvbnmjhgfdcvbnmnbv'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlweb.db'
 db = SQLAlchemy(app)
 bcrypt=Bcrypt(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message_category = 'info'
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Person.query.get(int(user_id))
 
 class Job(db.Model):
     table = "Job"
@@ -29,7 +38,7 @@ class JobPerson(db.Model):
     person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=True)
 
 
-class Person(db.Model):
+class Person(db.Model, UserMixin):
     id=db.Column(db.Integer,primary_key=True)
     person_no=db.Column(db.String(20),unique=True,nullable=True)
     name = db.Column(db.String(10), nullable=True)
@@ -41,7 +50,7 @@ class Person(db.Model):
     def __repr__(self):
         return "<Person %r>" % self.name
 
-class Company(db.Model):
+class Company(db.Model, UserMixin):
     id=db.Column(db.Integer,primary_key=True)
     company_no=db.Column(db.String(20),unique=True,nullable=True)
     name = db.Column(db.String(10), nullable=True)
@@ -54,6 +63,7 @@ class Company(db.Model):
         return "<Company %r>" % self.name
 
 
+
 @app.before_first_request
 def setup_db():
     db.create_all()
@@ -63,7 +73,10 @@ def index():
     return render_template('index.html', title='JON')
 
 @app.route('/login',methods=['POST','GET'])
-def loginpage():
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
     form_login=login_form()
     if form_login.validate_on_submit():
         st = Person.query.filter_by(email=form_login.email.data).first()
@@ -71,8 +84,15 @@ def loginpage():
             st = Company.query.filter_by(email=form_login.email.data).first()
         if st and bcrypt.check_password_hash(st.password, form_login.password.data):
             session['email'] = form_login.email.data
-            return redirect(url_for('userpage'))
+            login_user(st,False)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('index'))
     return render_template('login.html',formpage = form_login, title='SignIn')
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 @app.route('/signup')
 def signup():
@@ -84,6 +104,7 @@ def signuptype():
 
 
 @app.route('/signupCompany',methods=['POST','GET'])
+@login_required
 def signupCompany():
     form_company=signIn_form_Company()
     if form_company.validate_on_submit():
@@ -121,6 +142,7 @@ def signupPerson():
     return render_template('signupPerson.html',formpage = form_person, title='SignIn')
 
 @app.route('/userpage')
+@login_required
 def userpage():
 
     startDate = date.today()
@@ -140,6 +162,7 @@ def userpage():
     return render_template('personPage.html', title='userPage', jobs=jobs)
 
 @app.route('/userprofile')
+@login_required
 def userprofile():
     person = Person.query.filter_by(email=session['email']).first()
     jobs = Job.query.join(JobPerson).filter(JobPerson.person_id==person.id).all()
@@ -147,6 +170,7 @@ def userprofile():
     return render_template('personProfile.html', title='userProfile', jobs=jobs)
 
 @app.route('/companypage')
+@login_required
 def companypage():
     company = Company.query.filter_by(email=session['email']).first()
     jobs = Job.query.join(Company).filter(Company.id == company.id).all()
@@ -155,6 +179,7 @@ def companypage():
 
 
 @app.route('/newjob', methods=['GET', 'POST'])
+@login_required
 def newjob():
     new_job = insert_job()
     #if new_job.validate_on_submit():
