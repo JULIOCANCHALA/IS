@@ -137,14 +137,14 @@ def userpage():
             tmp.append(job)
     jobs = [x for x in jobs if x not in tmp]
 
-    return render_template('personPage.html', title='userPage', jobs=jobs)
+    return render_template('userpage.html',  email=session.get('email',False) , title='userPage', jobs=jobs)
 
 @app.route('/userprofile')
 def userprofile():
     person = Person.query.filter_by(email=session['email']).first()
     jobs = Job.query.join(JobPerson).filter(JobPerson.person_id==person.id).all()
 
-    return render_template('personProfile.html', title='userProfile', jobs=jobs)
+    return render_template('userprofile.html', email=session.get('email',False) , title='userProfile', jobs=jobs)
 
 @app.route('/companypage')
 def companypage():
