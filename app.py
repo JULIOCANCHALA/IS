@@ -4,11 +4,15 @@ from flask_sqlalchemy import SQLAlchemy
 from forms import signIn_form_People, signIn_form_Company,login_form, insert_job
 from datetime import date, datetime
 from flask_login import login_user, current_user, logout_user, login_required, UserMixin, LoginManager
+import os
+from dotenv import load_dotenv
+import dialogflow
 
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'cvbnmjhgfdcvbnmnbv'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlweb.db'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 db = SQLAlchemy(app)
 bcrypt=Bcrypt(app)
 login_manager = LoginManager(app)
@@ -237,6 +241,35 @@ def bookjob(job_id):
                        data=str(selected_job)), 200
 
     return render_template('index.html', title='JON')
+
+
+@app.route('/chat')
+def chat():
+    return render_template('chat.html')
+
+
+def detect_intent_texts(project_id, session_id, text, language_code):
+    session_client = dialogflow.SessionsClient()
+    session = session_client.session_path(project_id, session_id)
+
+    if text:
+        text_input = dialogflow.types.TextInput(
+            text=text, language_code=language_code)
+        query_input = dialogflow.types.QueryInput(text=text_input)
+        response = session_client.detect_intent(
+            session=session, query_input=query_input)
+
+        return response.query_result.fulfillment_text
+
+
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    message = request.form['message']
+    project_id = os.getenv('DIALOGFLOW_PROJECT_ID')
+    fulfillment_text = detect_intent_texts(project_id, "unique", message, 'en')
+    response_text = { "message":  fulfillment_text }
+
+    return jsonify(response_text)
 
 @app.errorhandler(404)#Error pages
 def page_not_found(e):
