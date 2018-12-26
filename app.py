@@ -242,7 +242,7 @@ def bookjob(job_id):
 
     return render_template('index.html', title='JON')
 
-
+# TODO interface for bot assistance (dedicated page or chat facebook-like)
 @app.route('/chat')
 def chat():
     return render_template('chat.html')
