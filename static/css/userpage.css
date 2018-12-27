@@ -152,6 +152,26 @@ background-image: url("../img/welcome2.jpg") !important;
 
 }
 
+.accept-job-button{
+    height: 30px;
+    width: 80%;
+    border-radius: 3px;
+    background: rgba(237,1,140,0.9);
+    font-family: "Palatino", sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+.job-description{
+    font-family: "Palatino", sans-serif;
+    font-size: 14px;
+    line-height: 25px;
+    font-weight: lighter;
+    color: white;
+}
+
 
 
 /*----------------*/

@@ -23,7 +23,12 @@
                     {% for job in jobs %}
                         {% if job.dayOfWeek == day %}
                             <div class="jobs-table-cell">
-                                <p class="jobs-table__titlejob">{{ job.name }}</p>
+                                <div class="jobs-table__titlejob tooltip">{{ job.name }}
+                                    <span class="tooltiptext">
+                                        <p class="job-description">{{ job.description }}</p>
+                                        <button class="accept-job-button" onclick="bookJob({{ job.id }})">Accept!</button>
+                                    </span>
+                                </div>
                             </div>
 
                         {% endif %}
@@ -40,5 +45,14 @@
         </div>
 
     </div>
+
+    <script>
+        function bookJob(jobid) {
+
+            $.post( '/bookjob/'+jobid, function( data ) {
+                alert('Job booked!');
+            });
+        }
+    </script>
 
 {% endblock %}
