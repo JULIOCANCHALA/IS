@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template,url_for,redirect,session, jsonify
+from flask import Flask, request, render_template,url_for,redirect,session, jsonify, flash
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from forms import signIn_form_People, signIn_form_Company,login_form, insert_job
@@ -79,18 +79,29 @@ def index():
 @app.route('/login',methods=['POST','GET'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
-
+        if session['company']:
+            return redirect(url_for('companypage'))
+        else:
+            return redirect(url_for('userpage'))
     form_login=login_form()
     if form_login.validate_on_submit():
         st = Person.query.filter_by(email=form_login.email.data).first()
+        session['company'] = False
         if not st:
             st = Company.query.filter_by(email=form_login.email.data).first()
+            session['company'] = True
         if st and bcrypt.check_password_hash(st.password, form_login.password.data):
             session['email'] = form_login.email.data
             login_user(st,False)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('index'))
+            if next_page:
+                return redirect(next_page)
+            elif session['company']:
+                return redirect(url_for('companypage'))
+            else:
+                return redirect(url_for('userpage'))
+        else:
+            flash('Login Error')
     return render_template('login.html',formpage = form_login, title='SignIn')
 
 @app.route("/logout")
@@ -108,7 +119,6 @@ def signuptype():
 
 
 @app.route('/signupCompany',methods=['POST','GET'])
-@login_required
 def signupCompany():
     form_company=signIn_form_Company()
     if form_company.validate_on_submit():
