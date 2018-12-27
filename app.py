@@ -214,7 +214,7 @@ def bookjob(job_id):
         print(job_id)
         # person = Person.query.filter_by(email=session['email']).first()
         person = Person(
-            id = 1
+            id = 3
         )
 
         places_booked = JobPerson.query.filter_by(job_id=job_id).count()
