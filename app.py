@@ -158,19 +158,25 @@ def signupPerson():
 @app.route('/userpage')
 @login_required
 def userpage():
-
+    person = Person.query.filter_by(email=session['email']).first()
+    # Get current week
     startDate = date.today()
     startDate = startDate.replace(day=startDate.day - startDate.weekday())
     endDate = startDate.replace(day=startDate.day + 6)
     print('Start date: ' + str(startDate))
     print('End date: ' + str(endDate))
-    # jobs = Job.query.filter(parse_date(Job.datework) > startDate).all()
+    # Get all jobs from db
     jobs = Job.query.all()
-
+    # Get jobs already booked by logged account
+    jobs_booked = Job.query.join(JobPerson).filter_by(person_id=person.id).all()
+    # Remove booked jobs from job list
+    jobs = [item for item in jobs if item not in jobs_booked]
+    # Check start and end date
     tmp = []
     for job in jobs:
         if parse_date(job.datework).date() < startDate or parse_date(job.datework).date() > endDate:
             tmp.append(job)
+    # Remove jobs not in current week
     jobs = [x for x in jobs if x not in tmp]
 
     return render_template('userpage.html',  email=session.get('email',False) , title='userPage', jobs=jobs)
@@ -178,8 +184,16 @@ def userpage():
 @app.route('/userprofile')
 @login_required
 def userprofile():
+    startDate = date.today()
+    startDate = startDate.replace(day=startDate.day - startDate.weekday())
+    endDate = startDate.replace(day=startDate.day + 6)
     person = Person.query.filter_by(email=session['email']).first()
     jobs = Job.query.join(JobPerson).filter(JobPerson.person_id==person.id).all()
+    tmp = []
+    for job in jobs:
+        if parse_date(job.datework).date() < startDate or parse_date(job.datework).date() > endDate:
+            tmp.append(job)
+    jobs = [x for x in jobs if x not in tmp]
 
     return render_template('userprofile.html', email=session.get('email',False) , title='userProfile', jobs=jobs)
 
