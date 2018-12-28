@@ -33,6 +33,7 @@ class Job(db.Model):
     dayOfWeek = db.Column(db.String(10), nullable=True)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=True)
     places = db.Column(db.Integer, nullable=True)
+    location = db.Column(db.String(20), nullable=True)
 
 
 class JobPerson(db.Model):
@@ -92,6 +93,7 @@ def login():
             session['company'] = True
         if st and bcrypt.check_password_hash(st.password, form_login.password.data):
             session['email'] = form_login.email.data
+            session['id'] = st.id
             login_user(st,False)
             next_page = request.args.get('next')
             if next_page:
@@ -123,6 +125,7 @@ def signupCompany():
     form_company=signIn_form_Company()
     if form_company.validate_on_submit():
         password=bcrypt.generate_password_hash(form_company.password.data)
+        # noinspection PyArgumentList
         register=Company(
                         name=form_company.name.data,
                         telephone=form_company.telephone.data,
@@ -130,10 +133,9 @@ def signupCompany():
                         email=form_company.email.data,
                         password=password
         )
-        session['email'] = register.email
         db.session.add(register)
         db.session.commit()
-        return redirect(url_for('companypage'))
+        return redirect(url_for('login'))
     return render_template('signupCompany.html',formpage = form_company, title='SignIn')
 
 
@@ -142,6 +144,7 @@ def signupPerson():
     form_person=signIn_form_People()
     if form_person.validate_on_submit():
         password=bcrypt.generate_password_hash(form_person.password.data)
+        # noinspection PyArgumentList
         register=Person(
                         name=form_person.name.data,
                         surname=form_person.surname.data,
@@ -149,26 +152,53 @@ def signupPerson():
                         email=form_person.email.data,
                         password=password
         )
-        session['email'] = register.email
         db.session.add(register)
         db.session.commit()
-        return redirect(url_for('userpage'))
+        return redirect(url_for('login'))
     return render_template('signupPerson.html',formpage = form_person, title='SignIn')
 
 @app.route('/userpage')
 @login_required
 def userpage():
     person = Person.query.filter_by(email=session['email']).first()
-    # Get current week
+
+    jobs = getjobs()
+
+    return render_template('userpage.html',  email=session.get('email',False) , title='userPage', jobs=jobs)
+
+@app.route('/userprofile')
+@login_required
+def userprofile():
+
+    startDate = date.today()
+    startDate = startDate.replace(day=startDate.day - startDate.weekday())
+    endDate = startDate.replace(day=startDate.day + 6)
+    # person = Person.query.filter_by(email=session['email']).first()
+    jobs = Job.query.join(JobPerson).filter(JobPerson.person_id==session['id']).all()
+    tmp = []
+    for job in jobs:
+        if parse_date(job.datework).date() < startDate or parse_date(job.datework).date() > endDate:
+            tmp.append(job)
+    jobs = [x for x in jobs if x not in tmp]
+
+    return render_template('userprofile.html', email=session.get('email',False) , title='userProfile', jobs=jobs)
+
+@app.route('/jobs/<location>')
+@login_required
+def getjobs(location=''):
+    # person = Person.query.filter_by(email=session['email']).first()
     startDate = date.today()
     startDate = startDate.replace(day=startDate.day - startDate.weekday())
     endDate = startDate.replace(day=startDate.day + 6)
     print('Start date: ' + str(startDate))
     print('End date: ' + str(endDate))
     # Get all jobs from db
-    jobs = Job.query.all()
+    if location=='':
+        jobs = Job.query.all()
+    else:
+        jobs = Job.query.filter_by(location=location.upper()).all()
     # Get jobs already booked by logged account
-    jobs_booked = Job.query.join(JobPerson).filter_by(person_id=person.id).all()
+    jobs_booked = Job.query.join(JobPerson).filter_by(person_id=session['id']).all()
     # Remove booked jobs from job list
     jobs = [item for item in jobs if item not in jobs_booked]
     # Check start and end date
@@ -178,50 +208,33 @@ def userpage():
             tmp.append(job)
     # Remove jobs not in current week
     jobs = [x for x in jobs if x not in tmp]
-
-    return render_template('userpage.html',  email=session.get('email',False) , title='userPage', jobs=jobs)
-
-@app.route('/userprofile')
-@login_required
-def userprofile():
-    startDate = date.today()
-    startDate = startDate.replace(day=startDate.day - startDate.weekday())
-    endDate = startDate.replace(day=startDate.day + 6)
-    person = Person.query.filter_by(email=session['email']).first()
-    jobs = Job.query.join(JobPerson).filter(JobPerson.person_id==person.id).all()
-    tmp = []
-    for job in jobs:
-        if parse_date(job.datework).date() < startDate or parse_date(job.datework).date() > endDate:
-            tmp.append(job)
-    jobs = [x for x in jobs if x not in tmp]
-
-    return render_template('userprofile.html', email=session.get('email',False) , title='userProfile', jobs=jobs)
+    return jobs
 
 @app.route('/companypage')
 @login_required
 def companypage():
-    company = Company.query.filter_by(email=session['email']).first()
-    jobs = Job.query.join(Company).filter(Company.id == company.id).all()
+    # company = Company.query.filter_by(email=session['email']).first()
+    jobs = Job.query.join(Company).filter(Company.id == session['id']).all()
 
     return render_template('companyPage.html', title='companyPage', jobs=jobs)
 
 
 @app.route('/newjob', methods=['GET', 'POST'])
-@login_required
+
 def newjob():
     new_job = insert_job()
     #if new_job.validate_on_submit():
     if request.method == 'POST':
         day = get_day(new_job.datework.data.weekday())
         print(get_day(new_job.datework.data.weekday()))
-        # TODO get company ID by session
         job=Job(
             name=new_job.name.data,
             description=new_job.description.data,
             datework=new_job.datework.data,
             dayOfWeek= day,
             places=new_job.places.data,
-            company_id=1
+            company_id=session['id'],
+            location=new_job.location.data.upper()
         )
         db.session.add(job)
         db.session.commit()
@@ -233,8 +246,13 @@ def newjob():
 
 
 @app.route('/bookjob/<job_id>', methods=['GET','POST','DELETE'])
-def bookjob(job_id):
-    person = Person.query.filter_by(email=session['email']).first()
+@login_required
+def bookjob(job_id=0):
+    # person = Person.query.filter_by(email=session['email']).first()
+    if job_id==0:
+        return jsonify(isError=True,
+                    message="Missing job id",
+                    statusCode=200), 200
     if request.method=='POST':
         print(job_id)
         places_booked = JobPerson.query.filter_by(job_id=job_id).count()
@@ -242,13 +260,15 @@ def bookjob(job_id):
         print('person in this job: '+str(places_booked))
         if places_booked != job.places:
             book = JobPerson(
-                person_id = person.id,
+                person_id = session['id'],
                 job_id = job_id
             )
             db.session.add(book)
             db.session.commit()
             print('Job booked successfully!')
-            return redirect(url_for('userpage'))
+            return jsonify(isError=False,
+                    message="Job booked",
+                    statusCode=200), 200
         else:
             return jsonify(isError=True,
                            message="Job full booked",
@@ -261,7 +281,7 @@ def bookjob(job_id):
                        data=str(selected_job)), 200
 
     if request.method=='DELETE':
-        selected_job = JobPerson.query.filter_by(job_id=job_id, person_id=person.id).first()
+        selected_job = JobPerson.query.filter_by(job_id=job_id, person_id=session['id']).first()
         db.session.delete(selected_job)
         db.session.commit()
         return jsonify(isError=False,
