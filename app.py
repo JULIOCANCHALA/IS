@@ -246,6 +246,14 @@ def bookjob(job_id):
                        statusCode=200,
                        data=str(selected_job)), 200
 
+    if request.method=='DELETE':
+        selected_job = Job.query.filter_by(id=job_id).first()
+        db.session.delete(selected_job)
+        db.session.commit()
+        return jsonify(isError=False,
+                       message="Job unbooked",
+                       statusCode=201), 201
+
     return render_template('index.html', title='JON')
 
 # TODO interface for bot assistance (dedicated page or chat facebook-like)
