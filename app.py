@@ -234,9 +234,9 @@ def newjob():
 
 @app.route('/bookjob/<job_id>', methods=['GET','POST','DELETE'])
 def bookjob(job_id):
+    person = Person.query.filter_by(email=session['email']).first()
     if request.method=='POST':
         print(job_id)
-        person = Person.query.filter_by(email=session['email']).first()
         places_booked = JobPerson.query.filter_by(job_id=job_id).count()
         job = Job.query.filter_by(id=job_id).first()
         print('person in this job: '+str(places_booked))
@@ -261,7 +261,7 @@ def bookjob(job_id):
                        data=str(selected_job)), 200
 
     if request.method=='DELETE':
-        selected_job = Job.query.filter_by(id=job_id).first()
+        selected_job = JobPerson.query.filter_by(job_id=job_id, person_id=person.id).first()
         db.session.delete(selected_job)
         db.session.commit()
         return jsonify(isError=False,
