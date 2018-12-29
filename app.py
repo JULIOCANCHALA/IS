@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template,url_for,redirect,session, jsonify, flash
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
-from forms import signIn_form_People, signIn_form_Company,login_form, insert_job
+from forms import signIn_form_People, signIn_form_Company,login_form, insert_job, location_job
 from datetime import date, datetime
 from flask_login import login_user, current_user, logout_user, login_required, UserMixin, LoginManager
 import os
@@ -34,6 +34,7 @@ class Job(db.Model):
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=True)
     places = db.Column(db.Integer, nullable=True)
     location = db.Column(db.String(20), nullable=True)
+    time_slot = db.Column(db.Integer, nullable=True)
 
 
 class JobPerson(db.Model):
@@ -157,14 +158,48 @@ def signupPerson():
         return redirect(url_for('login'))
     return render_template('signupPerson.html',formpage = form_person, title='SignIn')
 
-@app.route('/userpage')
+@app.route('/userpage', methods=['GET', 'POST'])
 @login_required
 def userpage():
+    location = ''
+    search_form = location_job()
+    if request.method=='POST' and search_form.validate_on_submit():
+        location = search_form.location.data
     person = Person.query.filter_by(email=session['email']).first()
 
-    jobs = getjobs()
+    # person = Person.query.filter_by(email=session['email']).first()
+    startDate = date.today()
+    startDate = startDate.replace(day=startDate.day - startDate.weekday())
+    endDate = startDate.replace(day=startDate.day + 6)
+    print('Start date: ' + str(startDate))
+    print('End date: ' + str(endDate))
+    # Get all jobs from db
+    if location == '':
+        jobs = Job.query.all()
+    else:
+        jobs = Job.query.filter_by(location=location.upper()).all()
+    # Get jobs already booked by logged account
+    jobs_booked = Job.query.join(JobPerson).filter_by(person_id=session['id']).all()
+    # Remove booked jobs from job list
+    jobs = [item for item in jobs if item not in jobs_booked]
+    # Check start and end date
+    tmp = []
+    for job in jobs:
+        if parse_date(job.datework).date() < startDate or parse_date(job.datework).date() > endDate:
+            tmp.append(job)
+    # Remove jobs not in current week
+    jobs = [x for x in jobs if x not in tmp]
 
-    return render_template('userpage.html',  email=session.get('email',False) , title='userPage', jobs=jobs)
+    joblist = []
+    for i in range(0, 24):
+        tmp = []
+        for job in jobs:
+            if job.time_slot == i:
+                tmp.append(job)
+        joblist.append(tmp)
+
+    return render_template('userpage.html',  email=session.get('email',False) , title='userPage', jobs=joblist, form=search_form)
+
 
 @app.route('/userprofile')
 @login_required
@@ -183,32 +218,6 @@ def userprofile():
 
     return render_template('userprofile.html', email=session.get('email',False) , title='userProfile', jobs=jobs)
 
-@app.route('/jobs/<location>')
-@login_required
-def getjobs(location=''):
-    # person = Person.query.filter_by(email=session['email']).first()
-    startDate = date.today()
-    startDate = startDate.replace(day=startDate.day - startDate.weekday())
-    endDate = startDate.replace(day=startDate.day + 6)
-    print('Start date: ' + str(startDate))
-    print('End date: ' + str(endDate))
-    # Get all jobs from db
-    if location=='':
-        jobs = Job.query.all()
-    else:
-        jobs = Job.query.filter_by(location=location.upper()).all()
-    # Get jobs already booked by logged account
-    jobs_booked = Job.query.join(JobPerson).filter_by(person_id=session['id']).all()
-    # Remove booked jobs from job list
-    jobs = [item for item in jobs if item not in jobs_booked]
-    # Check start and end date
-    tmp = []
-    for job in jobs:
-        if parse_date(job.datework).date() < startDate or parse_date(job.datework).date() > endDate:
-            tmp.append(job)
-    # Remove jobs not in current week
-    jobs = [x for x in jobs if x not in tmp]
-    return jobs
 
 @app.route('/companypage')
 @login_required
