@@ -13,7 +13,7 @@
         <a class="home__user-link" href="/userprofile">
             <img  class="home__user-img" src="{{ url_for('static', filename='img/userimg.jpg') }}" alt="">
         </a>
-        <div style="z-index: 4">
+        <div style="z-index: 4; height: 30px">
             <form class="form" method="POST" action="">
                {{ form.hidden_tag()}}
                 {% for error in form.location.errors %}
@@ -47,20 +47,23 @@
                         <hr class="jobs-table__columnline">
                     </div>
                     <hr class="jobs-table__columnline">
-                    {% for job in jobs[a] %}
-                        {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
-                            <div class="jobs-table-cell">
+
+                    {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+                        <div class="jobs-table-day">
+                            {% for job in jobs[a] %}
                                 {% if job.dayOfWeek == day %}
-                                    <div class="jobs-table__titlejob tooltip" id="{{ job.id }}">{{ job.name }}
-                                        <span class="tooltiptext">
-                                            <p class="job-description">{{ job.description }}</p>
-                                            <button class="accept-job-button" onclick="bookJob({{ job.id }})">Accept!</button>
-                                        </span>
+                                    <div class="jobs-table-cell">
+                                        <div class="jobs-table__titlejob tooltip" id="{{ job.id }}">{{ job.name }}
+                                            <span class="tooltiptext">
+                                                <p class="job-description">{{ job.description }}</p>
+                                                <button class="accept-job-button" onclick="bookJob({{ job.id }})">Accept!</button>
+                                            </span>
+                                        </div>
+                                        <hr class="jobs-table__columnline">
                                     </div>
                                 {% endif %}
-                            <hr class="jobs-table__columnline">
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     {% endfor %}
                 </div>
             {% endfor %}

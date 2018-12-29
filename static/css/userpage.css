@@ -98,14 +98,16 @@ background-image: url("../img/welcome2.jpg") !important;
     position: relative;
     padding: 4px;
 }
-
+.jobs-table-day{
+    width: calc(100%/8)
+}
 .jobs-table-cell{
     height: fit-content;
-    width: calc(100%/8);
+    width: 90%;
     background-color: rgba(197, 255, 68,1);
     margin-top: 5px;
     border-radius: 2px;
-    display: table;
+    display: block;
     justify-content: center;
     align-items: center;
     cursor: pointer;
