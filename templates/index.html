@@ -1,136 +1,128 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <div class="main--home main-one">
 
-        <div class="screen-img screen-img--index screen-img--mask2">
+    <div class="header-index">
+        <div class="header__network"></div>
+        <div class="header__facts">
+
+            <div class="logo logo--index link-nodecoration slide-in-bck-center">
+                <h2 class="logo__text">JON</h2>
+            </div>
+
+            <h2 class="namecompany tracking-in-expand"><span class="spanname">J</span>ob <span class="spanname">O</span>pportunity <span class="spanname">N</span>etwork</h2>
+            <a class="header__login link-nodecoration" href="/login">
+                <h2 class="login__text ">Login</h2>
+            </a>
+        </div>
+    </div>
+
+    <div class="nav-index">
+
+        <div class="nav--people navitem"> <!--+++++++++++-->
+            <div class="screen-img screen-img--people screen-img--mask2 kenburns-top"></div>
+
+            <div class="arrow arrowright bounceright arrowright--people">
+              <img class="arrow_img arrow-shadow--right" width="40" height="40" alt=""src="{{ url_for('static', filename='img/play-arrow.png') }}" />
+            </div>
+
+
+            <div class="screen-name">
+                <h2 class="screen-name__text">+---+ People.</h2>
+            </div>
+
+
+            <a class="screen-info link-nodecoration" href="/signupPerson">
+                <h2 class="screen-info-target">For people</h2>
+                <h2 class="screen-info-text">Either you are a freelance or an employee, JON connects you with flexible, secure and remunerated jobs</h2>
+                <img class="screen-info-arrow" src="{{ url_for('static', filename='img/next.png') }}">
+                <img class="screen-info-arrow screen-info-arrow--static" src="{{ url_for('static', filename='img/next.png') }}">
+            </a>
+
+
+
         </div>
 
-        <header class="header">
-            <a class="header__link" href="https://www.facebook.com/politecnicotorino/" target="_blank">
-            <img class="header__img img--facebook" src="{{ url_for('static', filename='img/facebook.png') }}" alt="">
-            </a>
-            <a class="header__link" href="https://www.instagram.com/politecnicoditorino" target="_blank">
-            <img class="header__img img--instagram" src="{{ url_for('static', filename='img/instagram.png') }}" alt="">
-            </a>
-            <a class="header__link" href="https://twitter.com/politonews" target="_blank">
-            <img class="header__img img--twitter" src="{{ url_for('static', filename='img/twitter.png') }}" alt="">
-            </a>
-            <a class="header__link img--user" href="/login">
-                <img  class="header__img" src="{{ url_for('static', filename='img/user.png') }}" alt="">
-            </a>
-        </header>
+        <div class="nav--home navitem"> <!--+++++++++++-->
 
 
-        <a onclick="myFunction()" class="name link-nodecoration" href="/">
-            <h2 class="name__text">JON</h2>
-        </a>
+            <div class="screen-img screen-img--indexhome screen-img--mask2 kenburns-top"></div>
+
+            <div class="arrow arrowleft bounceleft arrowleft--index ">
+              <img class="arrow_img arrow_img--left arrow-shadow--left" width="40" height="40" alt=""src="{{ url_for('static', filename='img/play-arrow.png') }}" />
+              <!--<h2 class="arror__text--left ">People</h2>-->
+            </div>
 
 
+            <div class="arrow arrowright bounceright arrowright--index">
+              <img class="arrow_img arrow-shadow--right" width="40" height="40" alt=""src="{{ url_for('static', filename='img/play-arrow.png') }}" />
+              <!--<h2 class="arror__text--right">Companies</h2>-->
+            </div>
 
-
-        <!--<hr class="header__line header__line-left">
-        <hr class="header__line header__line-right">-->
-        <nav class="navinfo">
-                <div class="navinfo__item">
-                        <!--<img class="navinfo__img" src="img/navinfo5.jpg" alt="">-->
-                        <img class="navinfo__img" src="{{ url_for('static', filename='img/navinfo5.jpg') }}" alt="">
-                        <div class="navinfo__mask"></div>
-                        <h3 class="navinfo__text">Adapt your schedule, organize your working life</h3>
-                        <h3 class="navinfo__text-down">Temporary</h3>
+            <div class="viewinfo">
+                <div class="item-info item-info-one">
+                    <h2 class="item-info__title item-info__title-one wobble-hor-bottom">Temporary</h2>
+                    <img class="item-info__img item-info__img-one" src="{{ url_for('static', filename='img/time.png') }}">
+                    <h2 class="item-info__text item-info__text-one">Adapt your schedule, organize your working life</h2>
                 </div>
 
-                <div class="navinfo__item">
-                    <!--<img class="navinfo__img" src="imgs/navinfo2.jpeg" alt="">-->
-                    <img class="navinfo__img" src="{{ url_for('static', filename='img/navinfo2.jpeg') }}" alt="">
-                    <div class="navinfo__mask"></div>
-                    <h3 class="navinfo__text">Smartwork your free time, be your own boss</h3>
-                    <h3 class="navinfo__text-down">Freelance</h3>
+                <div class="item-info item-info-two">
+                    <h2 class="item-info__title item-info__title-two wobble-hor-bottom">Working Teams</h2>
+                    <img class="item-info__img item-info__img-two" src="{{ url_for('static', filename='img/team.png') }}">
+                    <h2 class="item-info__text item-info__text-two">Business-focus yourself, forget recruiting efforts</h2>
                 </div>
 
-                <div class="navinfo__item">
-                    <!--<img class="navinfo__img" src="imgs/navinfo3.jpeg" alt="">-->
-                    <img class="navinfo__img" src="{{ url_for('static', filename='img/navinfo3.jpeg') }}" alt="">
-                    <div class="navinfo__mask"></div>
-                    <h3 class="navinfo__text">Business-focus yourself, forget recruiting efforts</h3>
-                    <h3 class="navinfo__text-down">Working Teams</h3>
+                <div class="item-info item-info-three">
+                    <h2 class="item-info__title item-info__title-three wobble-hor-bottom">Freelance</h2>
+                    <img class="item-info__img item-info__img-three" src="{{ url_for('static', filename='img/plane.png') }}">
+                    <h2 class="item-info__text item-info__text-three">Smartwork your free time, be your own boss</h2>
                 </div>
 
+            </div>
 
-        </nav>
 
-        <div class="navpages">
-            <div class="navpages__item  navpages__item--selected main__selector-one"></div>
-            <div class="navpages__item main__selector-two" ></div>
-            <div class="navpages__item main__selector-three" ></div>
-            <hr class="navpages__hr">
+
+        </div>
+
+        <div class="nav--companies navitem"> <!--+++++++++++-->
+            <div class="screen-img screen-img--companies screen-img--mask kenburns-top"></div>
+
+            <div class="arrow arrowleft bounceleft arrowleft--companies">
+              <img class="arrow_img arrow_img--left arrow-shadow--left" width="40" height="40" alt=""src="{{ url_for('static', filename='img/play-arrow.png') }}" />
+            </div>
+
+            <div class="screen-name">
+                <h2 class="screen-name__text">+---+ Companies.</h2>
+            </div>
+
+
+            <a class="screen-info link-nodecoration" href="/signupCompany">
+                <h2 class="screen-info-target">For companies</h2>
+                <h2 class="screen-info-text">Find the right working team for the right job, but let JON doing it and keep yourself focused on the business</h2>
+                <img class="screen-info-arrow" src="{{ url_for('static', filename='img/next.png') }}">
+                <img class="screen-info-arrow screen-info-arrow--static" src="{{ url_for('static', filename='img/next.png') }}">
+            </a>
+
         </div>
 
     </div>
 
-    <div class="main--home main-two" >
+    <div class="footer-index">
 
-
-        <div class="screen-img screen-img--mask"></div>
-
-        <div class="name">
-            <h2 class="name__text">JON</h2>
+        <div class="share">
+            <img class="share-img scale-in-center" src="{{ url_for('static', filename='img/add.png') }}">
         </div>
-
-        <div class="screen-name">
-            <h2>┼───┘ People.</h2>
-        </div>
-
-
-        <a class="screen-info link-nodecoration" href="/signupPerson">
-            <h2 class="screen-info-target">For people</h2>
-            <h2 class="screen-info-text">Either you are a freelance or an employee, JON connects you with flexible, secure and remunerated jobs</h2>
-            <img class="screen-info-arrow" src="{{ url_for('static', filename='img/next.png') }}">
-            <img class="screen-info-arrow screen-info-arrow--static" src="{{ url_for('static', filename='img/next.png') }}">
+        <a class="one" href="https://www.facebook.com/politecnicotorino/" target="_blank">
+            <img class="share-img" src="{{ url_for('static', filename='img/facebook.png') }}">
+        </a>
+        <a class="two" href="https://twitter.com/politonews" target="_blank">
+            <img class="share-img" src="{{ url_for('static', filename='img/twitter.png') }}">
+        </a>
+        <a class="three" href="https://www.instagram.com/politecnicoditorino" target="_blank">
+            <img class="share-img" src="{{ url_for('static', filename='img/instagram.png') }}">
         </a>
 
-        <div class="navpages">
-            <div class="navpages__item main__selector-one"></div>
-            <div class="navpages__item navpages__item--selected main__selector-two" ></div>
-            <div class="navpages__item main__selector-three" ></div>
-            <hr class="navpages__hr">
-        </div>
-
     </div>
-
-     <div class="main--home main-three">
-
-
-        <div class="screen-img screen-img--companies screen-img--mask"></div>
-
-        <div class="name">
-            <h2 class="name__text">JON</h2>
-        </div>
-
-        <div class="screen-name">
-            <h2>┼───┘ Companies.</h2>
-        </div>
-
-
-        <a class="screen-info link-nodecoration" href="/signupCompany">
-            <h2 class="screen-info-target">For companies</h2>
-            <h2 class="screen-info-text">Find the right working team for the right job, but let JON doing it and keep yourself focused on the business</h2>
-            <img class="screen-info-arrow" src="{{ url_for('static', filename='img/next.png') }}">
-            <img class="screen-info-arrow screen-info-arrow--static" src="{{ url_for('static', filename='img/next.png') }}">
-        </a>
-
-        <div class="navpages">
-            <div class="navpages__item main__selector-one"></div>
-            <div class="navpages__item main__selector-two" ></div>
-            <div class="navpages__item navpages__item--selected main__selector-three" ></div>
-            <hr class="navpages__hr">
-        </div>
-
-    </div>
-
-    <!--<footer class="footer">
-        <h2 class="footer__text">Politecnico di Torino - Information Systems</h2>
-    </footer>-->
 
 
 {% endblock %}

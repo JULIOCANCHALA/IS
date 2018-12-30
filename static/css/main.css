@@ -1,5 +1,6 @@
 html{
-    overflow-y: hidden;
+    /*overflow-y: hidden;*/
+    height: 100%;
 }
 
 .body{
@@ -9,27 +10,9 @@ html{
     flex-direction: column;
 }
 
-.screen-img{
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    background-image: url("../img/welcome3.jpg");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    filter: blur(4px);
-    transform: scale(1.1);
-    background-attachment: fixed;
-}
-
-.screen-img--index{
-    background-image: url("../img/welcome2.jpg");
-}
 
 
-.screen-img--companies{
-    background-image: url("../img/welcome5.jpg");
-}
+
 
 .main{
     display: flex;
@@ -59,7 +42,7 @@ html{
     transition-property: height,opacity;
     transition-duration: 0.1s,300ms;
     transition-timing-function: ease-in-out,ease-in;
-    opacity: 0.7;
+    opacity: 1;
 }
 
 
@@ -77,6 +60,14 @@ html{
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+}
+
+.header__textlogin{
+    font-family: "Palatino", sans-serif;
+    font-size: 20px;
+    border-radius: 8px ;
+    border: solid rgb(56, 75, 255) 1px;
+
 }
 
 .img--user{
@@ -297,89 +288,7 @@ html{
     font-weight: lighter;
 }
 
-.screen-info{
-    height: 300px;
-    width: 750px;
-    z-index: 1;
-    background-color: rgba(0,0,0,0.7);
-    position: absolute;
-    margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    align-self: center;
-    border: solid 3px rgba(255,255,255,1);
-    margin-top: 30px;
 
-    cursor: pointer;
-}
-
-.screen-info-target{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 26px;
-    color: white;
-    height: 20%;
-    margin-top: 30px;
-    font-family: 'Raleway', sans-serif;
-    color: rgb(237,1,140);
-    z-index: 3;
-    transform: translateZ(0);
-}
-
-.screen-info-text{
-    font-size: 40px;
-    color: white;
-    text-align: center;
-    padding: 10px 20px 0 20px;
-    height: 80%;
-    font-family: 'Ubuntu', sans-serif;
-    transform: translateZ(0);
-}
-
-.screen-info-arrow{
-    height: 70px;
-    width: 70px;
-    position: absolute;
-    padding-left: 20px;
-    padding-bottom: 8px;
-    opacity: 0;
-}
-
-.screen-info-arrow--static{
-    opacity: 1;
-    transform: translateX(315px);
-}
-
-.screen-info:hover .screen-info-arrow{
-    transition-property: transform,opacity;
-    transition-duration: 0.5s,0.4s;
-    transition-timing-function: ease;
-    transition-delay: 0s,0.1s;
-
-    transform: translateX(315px);
-    opacity: 1;
-}
-
-.screen-info:hover .screen-info-arrow--static{
-    transition-property: opacity;
-    transition-duration: 0.5s;
-    transition-timing-function: ease-in-out;
-    opacity: 0;
-}
-
-.screen-name{
-    height: 200px;
-    width: 100%;
-    background-color: rgba(0,0,0,0);
-    position: absolute;
-    display: flex;
-    align-items: center;
-    padding-left: 100px;
-    color: white;
-    font-family: 'Raleway', sans-serif;
-
-}
 
 .footer{
     height: 20px;

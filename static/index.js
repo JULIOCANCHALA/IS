@@ -1,102 +1,108 @@
+$(".arrowleft--index").click(function () {
+    $(".nav--people").addClass("movetocenter");
 
-//Change of height on main of home
-$(document).ready(function($){
-	//var ventana_ancho = $(window).width();
-    $('html,body').animate({
-        scrollTop: $(".main-one").offset().top},400);
-	var windows_height = $(window).height();
-	$(".main--home").css("height", windows_height);
-	$(".main-one").addClass("main--visible");
-});
+    $(".nav--home").addClass("movetoright");
+})
 
-//scroll animation in main
-$(".main__selector-one").click(function() {
-    $('html,body').animate({scrollTop: $(".main-one").offset().top},100);
-    $(".main-one").addClass("main--visible");
-    $(".main-two").removeClass("main--visible");
-    $(".main-three").removeClass("main--visible");
-});
+$(".arrowright--index").click(function () {
+    $(".nav--companies").addClass("movetocenter");
 
+    $(".nav--home").addClass("movetoleft");
+})
 
-$(".main__selector-two").click(function() {
-    $('html,body').animate({scrollTop: $(".main-two").offset().top},100);
-    $(".main-one").removeClass("main--visible");
-    $(".main-two").addClass("main--visible");
-    $(".main-three").removeClass("main--visible");
-});
+//People
 
-$(".main__selector-three").click(function() {
-    $('html,body').animate({scrollTop: $(".main-three").offset().top},100);
-    $(".main-one").removeClass("main--visible");
-    $(".main-two").removeClass("main--visible");
-    $(".main-three").addClass("main--visible");
-});
+$(".arrowright--people").click(function () {
+    $(".nav--people").removeClass("movetocenter");
+    $(".nav--home").removeClass("movetoright");
+})
 
 
+//Companies
+
+$(".arrowleft--companies").click(function () {
+    $(".nav--companies").removeClass("movetocenter");
+    $(".nav--home").removeClass("movetoleft");
+})
 
 
-$(window).bind('mousewheel', function(event) {
-    if (event.originalEvent.wheelDelta >= 0) {
-        //console.log('Scroll up');
-        if($(window).scrollTop()>=$(window).height()  && $(window).scrollTop()<($(window).height())*2 ) {
-            $('html,body').animate({scrollTop: $(".main-one").offset().top},100,"linear");
-            $(".main-one").addClass("main--visible");
-            $(".main-two").removeClass("main--visible");
-        }
-        if($(window).scrollTop()>=($(window).height())*2 ) {
-            $('html,body').animate({scrollTop: $(".main-two").offset().top},100,"linear");
-            $(".main-two").addClass("main--visible");
-            $(".main-three").removeClass("main--visible");
-        }
+//animation viewinfo
+
+$(".item-info-one").hover(function () {
+    $(".item-info__img-one").addClass("jello-vertical");
+    $(".item-info__img-two").removeClass("jello-vertical");
+    $(".item-info__img-three").removeClass("jello-vertical");
+
+    $(".item-info__text-one").addClass("item-info__text--scale");
+    $(".item-info__text-two").removeClass("item-info__text--scale");
+    $(".item-info__text-three").removeClass("item-info__text--scale");
+
+    $(".item-info__title-one").addClass("item-info__title-one--paint");
+
+})
+
+$(".item-info-two").hover(function () {
+    $(".item-info__img-two").addClass("jello-vertical");
+    $(".item-info__img-one").removeClass("jello-vertical");
+    $(".item-info__img-three").removeClass("jello-vertical");
+
+    $(".item-info__text-two").addClass("item-info__text--scale");
+    $(".item-info__text-one").removeClass("item-info__text--scale");
+    $(".item-info__text-three").removeClass("item-info__text--scale");
+
+    $(".item-info__title-two").addClass("item-info__title-two--paint");
+})
+
+$(".item-info-three").hover(function () {
+    $(".item-info__img-three").addClass("jello-vertical");
+    $(".item-info__img-two").removeClass("jello-vertical");
+    $(".item-info__img-one").removeClass("jello-vertical");
+
+    $(".item-info__text-three").addClass("item-info__text--scale");
+    $(".item-info__text-two").removeClass("item-info__text--scale");
+    $(".item-info__text-one").removeClass("item-info__text--scale");
+
+    $(".item-info__title-three").addClass("item-info__title-three--paint");
+})
+
+
+
+//Share animation
+
+$(function(){
+  var flag=0;
+
+  $('.share').on('click',function(){
+   if(flag == 0)
+    {
+      $(this).siblings('.one').animate({
+      top:'-80px',
+      left:'50%',
+    },150);
+
+     $(this).siblings('.two').delay(200).animate({
+      top:'-30px',
+      left:'45%'
+    },150);
+
+     $(this).siblings('.three').delay(300).animate({
+      top:'-30px',
+      left:'55%'
+    },150);
+
+    $('.one i,.two i, .three i').delay(500).fadeIn(200);
+      flag = 1;
     }
-    else {
-        //console.log('Scroll down');
-        if($(window).scrollTop()>=0  && $(window).scrollTop()<$(window).height() ) {
-            $('html,body').animate({scrollTop: $(".main-two").offset().top},100,"linear");
-            $(".main-one").removeClass("main--visible");
-            $(".main-two").addClass("main--visible");
-        }
-        if($(window).scrollTop()>=$(window).height()  && $(window).scrollTop()<($(window).height())*2 ) {
-            $('html,body').animate({scrollTop: $(".main-three").offset().top},100,"linear");
-            $(".main-three").addClass("main--visible");
-            $(".main-two").removeClass("main--visible");
-        }
+
+
+  else{
+    $('.one, .two, .three').animate({
+        top:'-5px',
+        left:'50%'
+      },100);
+
+  $('.one i,.two i, .three i').delay(500).fadeOut(200);
+      flag = 0;
     }
-});
-
-
-$(window).keyup(function(e){
-    switch(e.which) {
-        case 38: // up
-            if($(window).scrollTop()>=$(window).height()  && $(window).scrollTop()<($(window).height())*2 ) {
-                $('html,body').animate({scrollTop: $(".main-one").offset().top},100,"linear");
-                $(".main-one").addClass("main--visible");
-                $(".main-two").removeClass("main--visible");
-            }
-            if($(window).scrollTop()>=($(window).height())*2 ) {
-                $('html,body').animate({scrollTop: $(".main-two").offset().top},100,"linear");
-                $(".main-two").addClass("main--visible");
-                $(".main-three").removeClass("main--visible");
-            }
-
-        break;
-
-        case 40: // down
-            if($(window).scrollTop()>=0  && $(window).scrollTop()<$(window).height() ) {
-                $('html,body').animate({scrollTop: $(".main-two").offset().top},100,"linear");
-                $(".main-one").removeClass("main--visible");
-                $(".main-two").addClass("main--visible");
-            }
-            if($(window).scrollTop()>=$(window).height()  && $(window).scrollTop()<($(window).height())*2 ) {
-                $('html,body').animate({scrollTop: $(".main-three").offset().top},100,"linear");
-                $(".main-three").addClass("main--visible");
-                $(".main-two").removeClass("main--visible");
-            }
-
-        break;
-
-        default: return; // exit this handler for other keys
-    }
-    e.preventDefault(); // prevent the default action (scroll / move caret)
-
+  });
 });
