@@ -32,5 +32,9 @@ class insert_job(FlaskForm):
     description = TextAreaField('Description',validators=[DataRequired()])
     datework = DateField('Date', validators=[DataRequired()])
     places = IntegerField('Places available', validators=[DataRequired()])
+    location = StringField('Location', validators=[DataRequired()])
     submit = SubmitField('Add')
 
+class location_job(FlaskForm):
+    location = StringField('Location')
+    submit = SubmitField('Search')

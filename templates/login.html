@@ -19,7 +19,7 @@
             {% endif %}
 
             <form class="form" method="POST" action="">
-               {{  formpage.hidden_tag()}}
+               {{ formpage.hidden_tag()}}
                {{ formpage.email.label(class="form__input-title") }}
                 {% if formpage.email.errors %}
                     {{ formpage.email(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="Enter your email") }}
