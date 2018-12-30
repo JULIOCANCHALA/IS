@@ -6,12 +6,11 @@
 @import url(css/userprofile.css);
 @import url(css/companypage.css);
 @import url(css/main.css);
+@import url(css/jobdescription.css);
 @import url(css/indexpage.css);
 @import url(css/arrows.css);
 @import url(css/animations.css);
 @import url(css/share.css);
-
-
 
 * {
     margin: 0;

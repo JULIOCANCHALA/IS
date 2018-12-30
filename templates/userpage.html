@@ -56,6 +56,7 @@
                                         <div class="jobs-table__titlejob tooltip" id="{{ job.id }}">{{ job.name }}
                                             <span class="tooltiptext">
                                                 <p class="job-description">{{ job.description }}</p>
+                                                <a href="job/{{ job.id }}">Show more...</a>
                                                 <button class="accept-job-button" onclick="bookJob({{ job.id }})">Accept!</button>
                                             </span>
                                         </div>
@@ -73,7 +74,7 @@
         <script>
             function bookJob(jobid) {
 
-                $.post( '/bookjob/'+jobid, function( data ) {
+                $.post( '/job/'+jobid, function( data ) {
                     alert('Job booked!');
                 });
                 document.getElementById(jobid).style.display = 'none';
@@ -82,51 +83,3 @@
     </div>
 
 {% endblock %}
-
-
-
-
-
-    <!--
-        <div class="jobs-table">
-            <div class="jobs-table-column">
-                <h2 class="jobs-table__titleday" style="visibility: hidden">Time_slot </h2>
-                <hr class="jobs-table__titleline">
-                {#% for a in range(0,24) %#}
-                    <div class="jobs-table-cell">
-                        {#  #}{ a }}.00 - {#% set a = a + 1 %#}{#  #}{ a }}.00
-                    </div>
-                    <hr class="jobs-table__columnline">
-
-                {#% endfor %#}
-            </div>
-            {#% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %#}
-                <div class="jobs-table-column">
-                    <h2 class="jobs-table__titleday">{#  #}{ day }} </h2>
-                    <hr class="jobs-table__titleline">
-                    {#% for job in jobs[loop.index0] %#}
-                        {#% for i in range(0, 24) %#}
-                            <div class="jobs-table-cell">
-                            {#% if job.time_slot == i %#}
-                                <div class="jobs-table__titlejob tooltip" id="{{ job.id }}">{{ job.name }}
-                                    <span class="tooltiptext">
-                                        <p class="job-description">{{ job.description }}</p>
-                                        <button class="accept-job-button" onclick="bookJob({{ job.id }})">Accept!</button>
-                                    </span>
-                                </div>
-                            {#% endif %#}
-                            </div>
-                        {#% endfor %#}
-                    {#% endfor %#}
-
-                    {#% if day != 'Sunday' %#}
-                       <hr class="jobs-table__columnline">
-                    {#% endif %#}
-                </div>
-
-
-            {#% endfor %#}
-
-        </div>
-        -->
-

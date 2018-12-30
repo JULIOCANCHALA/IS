@@ -254,9 +254,9 @@ def newjob():
         return redirect(url_for('userpage'))
 
 
-@app.route('/bookjob/<job_id>', methods=['GET','POST','DELETE'])
+@app.route('/job/<job_id>', methods=['GET','POST','DELETE'])
 @login_required
-def bookjob(job_id=0):
+def job(job_id=0):
     # person = Person.query.filter_by(email=session['email']).first()
     if job_id==0:
         return jsonify(isError=True,
@@ -284,10 +284,12 @@ def bookjob(job_id=0):
                            statusCode=200), 200
     if request.method=='GET':
         selected_job = Job.query.filter_by(id=job_id).first()
-        return jsonify(isError=False,
+        """return jsonify(isError=False,
                        message="Success",
                        statusCode=200,
-                       data=str(selected_job)), 200
+                       data=str(selected_job)), 200"""
+        return render_template('jobDescription.html', job=selected_job, title='Description')
+
 
     if request.method=='DELETE':
         selected_job = JobPerson.query.filter_by(job_id=job_id, person_id=session['id']).first()

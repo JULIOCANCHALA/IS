@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="main">
+        <div class="screen-img screen-img--home"></div>
+        <a class="name--home link-nodecoration" href="/userpage">
+            <h2 class="name__text">JON</h2>
+        </a>
+
+        <div class="job-window">
+
+            {{ job.description }}
+
+        </div>
+        <div class="bottom-job-window">
+            <button class="accept-job-button-description" onclick="bookJob({{ job.id }})">Accept!</button>
+        </div>
+
+
+        <script>
+            function bookJob(jobid) {
+
+                $.post( '/job/'+jobid, function( data ) {
+                    alert('Job booked!');
+                });
+                window.open("{{ url_for('userpage') }}","_self")
+            }
+        </script>
+
+    </div>
+{% endblock %}
