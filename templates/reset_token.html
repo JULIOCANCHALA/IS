@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="main">
+
+        <div class="screen-img screen-img--login"></div>
+
+        <div class="form__screen">
+            <a class="name link-nodecoration" href="/">
+                <h2 class="name__text">JON</h2>
+            </a>
+
+            <h2 class="form__screen-title">Log in</h2>
+            <h2 class="form__screen-title form__screen-title--sub">Reset the password of your JON Account</h2>
+
+            {% if email %}
+                <p>You have been logged in with {{ email }}</p>
+            {% endif %}
+
+            <form class="form" method="POST" action="">
+               {{ formpage.hidden_tag()}}
+               {{ formpage.password.label(class="form__input-title") }}
+                {% if formpage.password.errors %}
+                    {{ formpage.password(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="Enter your new password") }}
+                    <hr class="input__line input__line-error">
+                    <div class="form__error-content">
+                    {% for error in formpage.password.errors %}
+                        <span class="form__error-text">{{ error }}</span>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    {{ formpage.password(spellcheck="false", class="form__input form__input--signin", placeholder="Enter your new password") }}
+                     <hr class="input__line">
+                     <div class="form__error-content"></div>
+                {% endif %}
+                {{ formpage.password_con.label(class="form__input-title") }}
+                {% if formpage.password_con.errors %}
+                    {{ formpage.password_con(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="Confirm your new password") }}
+                    <hr class="input__line input__line-error">
+                    <div class="form__error-content">
+                    {% for error in formpage.password_con.errors %}
+                        <span class="form__error-text">{{ error }}</span>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    {{ formpage.password_con(spellcheck="false", class="form__input form__input--signin", placeholder="Confirm your new password") }}
+                     <hr class="input__line">
+                     <div class="form__error-content"></div>
+                {% endif %}
+
+                <div class="login__access">
+                    {{ formpage.submit(class="form__access-button") }}
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+{% endblock %}

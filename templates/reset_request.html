@@ -12,7 +12,7 @@
             </a>
 
             <h2 class="form__screen-title">Log in</h2>
-            <h2 class="form__screen-title form__screen-title--sub">Login in with your JON Account to find your information</h2>
+            <h2 class="form__screen-title form__screen-title--sub">Reset the password of your JON Account</h2>
 
             {% if email %}
                 <p>You have been logged in with {{ email }}</p>
@@ -35,31 +35,8 @@
                  <div class="form__error-content"></div>
                 {% endif %}
 
-                {{ formpage.password.label(class="form__input-title") }}
-                {% if formpage.password.errors %}
-                    {{ formpage.password(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="Enter your password") }}
-                    <hr class="input__line input__line-error">
-                    <div class="form__error-content">
-                    {% for error in formpage.password.errors %}
-                        <span class="form__error-text">{{ error }}</span>
-                    {% endfor %}
-                    </div>
-                {% else %}
-                {{ formpage.password(spellcheck="false", class="form__input form__input--signin", placeholder="Enter your password") }}
-                 <hr class="input__line">
-                 <div class="form__error-content"></div>
-                {% endif %}
-
                 <div class="login__access">
-                    <a class="link-nodecoration" href="/signuptype">
-                        <h2 class="login__access-account">Create an account</h2>
-                    </a>
                     {{ formpage.submit(class="form__access-button") }}
-                </div>
-                <div>
-                    <a href="{{ url_for('reset_request') }}">
-                        Forgot password?
-                    </a>
                 </div>
             </form>
 
@@ -67,4 +44,4 @@
 
     </div>
 
-{%  endblock %}
+{% endblock %}

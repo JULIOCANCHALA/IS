@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, PasswordField, StringField, DateField, TextAreaField, IntegerField
-from wtforms.validators import Email,DataRequired,Length,EqualTo
+from wtforms.validators import Email,DataRequired,Length,EqualTo, ValidationError
 
 class signIn_form_People(FlaskForm):
     name = StringField('Name', validators=[DataRequired(), Length(min=2, max=20)])
@@ -38,3 +38,14 @@ class insert_job(FlaskForm):
 class location_job(FlaskForm):
     location = StringField('Location')
     submit = SubmitField('Search')
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
+    password_con = PasswordField('Confirm password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset Password')

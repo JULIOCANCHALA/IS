@@ -1,18 +1,27 @@
 from flask import Flask, request, render_template,url_for,redirect,session, jsonify, flash
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
-from forms import signIn_form_People, signIn_form_Company,login_form, insert_job, location_job
+from forms import (signIn_form_People, signIn_form_Company,login_form, insert_job,
+                   location_job, RequestResetForm, ResetPasswordForm)
 from datetime import date, datetime
 from flask_login import login_user, current_user, logout_user, login_required, UserMixin, LoginManager
 import os
 from dotenv import load_dotenv
 import dialogflow
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask_mail import Mail, Message
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+mail = Mail(app)
 db = SQLAlchemy(app)
 bcrypt=Bcrypt(app)
 login_manager = LoginManager(app)
@@ -53,6 +62,20 @@ class Person(db.Model, UserMixin):
     email=db.Column(db.String(20),unique=True,nullable=True)
     password=db.Column(db.String(30),nullable=True)
 
+    def get_reset_token(self, expires_sec=1800):
+        s = Serializer(app.config['SECRET_KEY'], expires_sec)
+        return s.dumps({'user_id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return Person.query.get(user_id)
+
+
     def __repr__(self):
         return "<Person %r>" % self.name
 
@@ -64,6 +87,19 @@ class Company(db.Model, UserMixin):
     phone = db.Column(db.Integer, nullable=True)
     email=db.Column(db.String(20),unique=True,nullable=True)
     password=db.Column(db.String(30),nullable=True)
+
+    def get_reset_token(self, expires_sec=1800):
+        s = Serializer(app.config['SECRET_KEY'], expires_sec)
+        return s.dumps({'user_id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return Company.query.get(user_id)
 
     def __repr__(self):
         return "<Company %r>" % self.name
@@ -125,7 +161,7 @@ def signuptype():
 def signupCompany():
     form_company=signIn_form_Company()
     if form_company.validate_on_submit():
-        password=bcrypt.generate_password_hash(form_company.password.data)
+        password=bcrypt.generate_password_hash(form_company.password.data).decode('utf-8')
         # noinspection PyArgumentList
         register=Company(
                         name=form_company.name.data,
@@ -144,7 +180,7 @@ def signupCompany():
 def signupPerson():
     form_person=signIn_form_People()
     if form_person.validate_on_submit():
-        password=bcrypt.generate_password_hash(form_person.password.data)
+        password=bcrypt.generate_password_hash(form_person.password.data).decode('utf-8')
         # noinspection PyArgumentList
         register=Person(
                         name=form_person.name.data,
@@ -329,6 +365,62 @@ def send_message():
     response_text = { "message":  fulfillment_text }
 
     return jsonify(response_text)
+
+def send_reset_email(user):
+    token = user.get_reset_token()
+
+    msg = Message('Password Reset Request',
+                  sender='jonpolito2018@gmail.com',
+                  recipients=[user.email])
+    msg.body = "To reset your password, visit the following link:\n" \
+               "{url}\n\n" \
+               "If you did not make this request simply ignore this email and no change will be made.".format(
+                url={url_for('reset_token', token= token, _external=True)})
+    mail.send(msg)
+
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        if session['company']:
+            return redirect(url_for('companypage'))
+        else:
+            return redirect(url_for('userpage'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = Person.query.filter_by(email=form.email.data).first()
+        if user is None:
+            user = Company.query.filter_by(email=form.email.data).first()
+
+        send_reset_email(user)
+        flash('An email has been sent with instruction to reset your password', 'info')
+        return redirect(url_for('login'))
+    return render_template('reset_request.html', title="Reset Password", formpage=form)
+
+
+@app.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        if session['company']:
+            return redirect(url_for('companypage'))
+        else:
+            return redirect(url_for('userpage'))
+
+    user = Person.verify_reset_token(token)
+    if user is None:
+        user = Company.verify_reset_token(token)
+        if user is None:
+            flash('That is an invalid or expired token', 'warning')
+            return redirect(url_for('reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        password=bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = password
+        db.session.commit()
+        flash('Your password has been updated!', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_token.html', title="Reset Password", formpage=form)
+
 
 @app.errorhandler(404)#Error pages
 def page_not_found(e):
