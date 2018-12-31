@@ -3,7 +3,7 @@ from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from forms import (signIn_form_People, signIn_form_Company,login_form, insert_job,
                    location_job, RequestResetForm, ResetPasswordForm)
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from flask_login import login_user, current_user, logout_user, login_required, UserMixin, LoginManager
 import os
 from dotenv import load_dotenv
@@ -205,8 +205,10 @@ def userpage():
 
     # person = Person.query.filter_by(email=session['email']).first()
     startDate = date.today()
-    startDate = startDate.replace(day=startDate.day - startDate.weekday())
-    endDate = startDate.replace(day=startDate.day + 6)
+    offset = timedelta(days=6)
+    mon = timedelta(days=startDate.isoweekday() - 1)
+    startDate = startDate-mon
+    endDate = startDate + offset
     print('Start date: ' + str(startDate))
     print('End date: ' + str(endDate))
     # Get all jobs from db
@@ -242,8 +244,11 @@ def userpage():
 def userprofile():
 
     startDate = date.today()
+    offset = timedelta(days=6)
+    mon = timedelta(days=startDate.isoweekday() - 1)
+    startDate = startDate - mon
     startDate = startDate.replace(day=startDate.day - startDate.weekday())
-    endDate = startDate.replace(day=startDate.day + 6)
+    endDate = startDate+offset
     # person = Person.query.filter_by(email=session['email']).first()
     jobs = Job.query.join(JobPerson).filter(JobPerson.person_id==session['id']).all()
     tmp = []
