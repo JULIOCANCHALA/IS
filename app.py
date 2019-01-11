@@ -45,6 +45,7 @@ class Job(db.Model):
     location = db.Column(db.String(20), nullable=True)
     time_slot = db.Column(db.Integer, nullable=True)
     wage = db.Column(db.Float, nullable=True)
+    available = db.Column(db.Boolean, nullable=True, default=True)
 
 
 class JobPerson(db.Model):
@@ -115,6 +116,7 @@ def setup_db():
 @app.route('/')
 def index():
     return render_template('index.html', title='JON')
+
 
 @app.route('/login',methods=['POST','GET'])
 def login():
@@ -218,9 +220,9 @@ def userpage():
     print('End date: ' + str(endDate))
     # Get all jobs from db
     if location == '':
-        jobs = Job.query.all()
+        jobs = Job.query.filter_by(available=True).all()
     else:
-        jobs = Job.query.filter_by(location=location.upper()).all()
+        jobs = Job.query.filter(location=location.upper(), available=True).all()
     # Get jobs already booked by logged account
     jobs_booked = Job.query.join(JobPerson).filter_by(person_id=session['id']).all()
     # Remove booked jobs from job list
@@ -265,7 +267,15 @@ def userprofile():
             tmp.append(job)
     jobs = [x for x in jobs if x not in tmp]
 
-    return render_template('userprofile.html', email=session.get('email',False) , title='userProfile', jobs=jobs)
+    joblist = []
+    for i in range(0, 24):
+        tmp = []
+        for job in jobs:
+            if job.time_slot == i:
+                tmp.append(job)
+        joblist.append(tmp)
+
+    return render_template('userprofile.html', email=session.get('email',False) , title='userProfile', jobs=joblist)
 
 
 @app.route('/companypage')
@@ -312,11 +322,14 @@ def job(job_id=0):
                            message="Missing job id",
                            statusCode=400), 400
         selected_job = Job.query.filter_by(id=job_id).first()
+        bookable=True
+        if JobPerson.query.filter_by(job_id=job_id, person_id=session['id']).first():
+            bookable=False
         """return jsonify(isError=False,
                        message="Success",
                        statusCode=200,
                        data=str(selected_job)), 200"""
-        return render_template('jobDescription.html', job=selected_job, title='Description')
+        return render_template('jobDescription.html', job=selected_job, title='Description', bookable=bookable)
 
     if request.method=='PUT':
         if job_id == 0:
@@ -365,6 +378,8 @@ def bookjob(job_id):
                 person_id = session['id'],
                 job_id = job_id
             )
+            if (places_booked+1) == job.places:
+                job.available = False
             db.session.add(book)
             db.session.commit()
             print('Job booked successfully!')

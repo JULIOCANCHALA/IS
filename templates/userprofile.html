@@ -3,7 +3,7 @@
 {% block content %}
 
     <div class="menu">
-        <a class="logo logo--menu link-nodecoration">
+        <a class="logo logo--menu link-nodecoration" href="/">
             <h2 class="logo__text">JON</h2>
         </a>
         <div class="menu__links">
@@ -95,7 +95,8 @@
                                             <h2 class="jobs-table__titlejob tooltip" id="{{ job.id }}">{{ job.name }}
                                                 <span class="tooltiptext">
                                                     <p class="job-description">{{ job.description }}</p>
-                                                    <button class="accept-job-button" onclick="bookJob({{ job.id }})">Accept!</button>
+                                                    <a href="job/{{ job.id }}">Show more...</a>
+                                                    <button class="accept-job-button" onclick="unbookjob({{ job.id }})">Unbook!</button>
                                                 </span>
                                             </h2>
                                         </div>

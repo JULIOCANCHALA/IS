@@ -13,7 +13,11 @@
 
         </div>
         <div class="bottom-job-window">
-            <button class="accept-job-button-description" onclick="bookJob({{ job.id }})">Accept!</button>
+            {% if bookable %}
+                <button class="accept-job-button-description" onclick="bookJob({{ job.id }})">Accept!</button>
+            {% else %}
+                <button class="accept-job-button-description" onclick="unbookjob({{ job.id }})">Unbook!</button>
+            {% endif %}
         </div>
 
 
@@ -24,6 +28,16 @@
                     alert('Job booked!');
                 });
                 window.open("{{ url_for('userpage') }}","_self")
+            }
+            function unbookjob(jobid) {
+                $.ajax({
+                    url: '/bookjob/'+jobid,
+                    type: 'DELETE',
+                    success: function(result) {
+                        alert('Job unbooked!');
+                    }
+                });
+                window.open("{{ url_for('userprofile') }}","_self")
             }
         </script>
 

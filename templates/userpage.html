@@ -71,7 +71,7 @@
         <script>
             function bookJob(jobid) {
 
-                $.post( '/job/'+jobid, function( data ) {
+                $.post( '/bookjob/'+jobid, function( data ) {
                     alert('Job booked!');
                 });
                 document.getElementById(jobid).style.display = 'none';
