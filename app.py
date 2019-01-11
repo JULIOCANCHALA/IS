@@ -196,6 +196,7 @@ def signupPerson():
         return redirect(url_for('login'))
     return render_template('signupPerson.html',formpage = form_person, title='SignIn')
 
+
 @app.route('/userpage', methods=['GET', 'POST'])
 @login_required
 def userpage():
@@ -206,9 +207,7 @@ def userpage():
     search_form = location_job()
     if request.method=='POST' and search_form.validate_on_submit():
         location = search_form.location.data
-    person = Person.query.filter_by(email=session['email']).first()
 
-    # person = Person.query.filter_by(email=session['email']).first()
     startDate = date.today()
     offset = timedelta(days=6)
     mon = timedelta(days=startDate.isoweekday() - 1)
@@ -280,15 +279,15 @@ def companypage():
     return render_template('companyPage.html', title='companyPage', jobs=jobs)
 
 
-@app.route('/newjob', methods=['GET', 'POST'])
-
-def newjob():
-    if not session['company']:
-        return redirect(url_for('userpage'))
-
+@app.route('/job', defaults={'job_id': 0}, methods=['GET','POST'])
+@app.route('/job/<job_id>', methods=['GET','POST','PUT','DELETE'])
+@login_required
+def job(job_id=0):
     new_job = insert_job()
-    #if new_job.validate_on_submit():
+    # if new_job.validate_on_submit():
     if request.method == 'POST':
+        if not session['company']:
+            return redirect(url_for('userpage'))
         day = get_day(new_job.datework.data.weekday())
         print(get_day(new_job.datework.data.weekday()))
         job=Job(
@@ -297,27 +296,66 @@ def newjob():
             datework=new_job.datework.data,
             dayOfWeek= day,
             places=new_job.places.data,
-            company_id=session['id'],
+            #company_id=session['id'],
+            company_id=1,
             location=new_job.location.data.upper()
         )
         db.session.add(job)
         db.session.commit()
-        return jsonify(isError= False,
-                    message= "Success",
-                    statusCode= 201), 201
-    else:
-        return redirect(url_for('userpage'))
+        return jsonify(isError=False,
+                       message="Success",
+                       statusCode=201), 201
 
+    if request.method=='GET':
+        if job_id == 0:
+            return jsonify(isError=True,
+                           message="Missing job id",
+                           statusCode=400), 400
+        selected_job = Job.query.filter_by(id=job_id).first()
+        """return jsonify(isError=False,
+                       message="Success",
+                       statusCode=200,
+                       data=str(selected_job)), 200"""
+        return render_template('jobDescription.html', job=selected_job, title='Description')
 
-@app.route('/job/<job_id>', methods=['GET','POST','DELETE'])
-@login_required
-def job(job_id=0):
-    # person = Person.query.filter_by(email=session['email']).first()
-    if job_id==0:
+    if request.method=='PUT':
+        if job_id == 0:
+            return jsonify(isError=True,
+                           message="Missing job id",
+                           statusCode=400), 400
+        return True
+        # TODO insert the modify job here
+
+    if request.method=='DELETE':
+        if job_id == 0:
+            return jsonify(isError=True,
+                           message="Missing job id",
+                           statusCode=400), 400
+        selected_job = JobPerson.query.filter_by(job_id=job_id).first()
+        if selected_job:
+            return jsonify(isError=True,
+                           message="This job is already booked, you can not delete this",
+                           statusCode=304), 304
+        selected_job = Job.query.filter_by(id=job_id).first()
+        if selected_job:
+            db.session.delete(selected_job)
+            db.session.commit()
+            return jsonify(isError=False,
+                           message="Job deleted",
+                           statusCode=204), 204
         return jsonify(isError=True,
-                    message="Missing job id",
-                    statusCode=200), 200
+                       message="No job to delete founded",
+                       statusCode=404), 404
+
+
+@app.route('/bookjob/<job_id>', methods=['GET','POST','DELETE'])
+@login_required
+def bookjob(job_id):
     if request.method=='POST':
+        if session['company']:
+            return jsonify(isError=True,
+                           message="Company can not book a job",
+                           statusCode=401), 401
         print(job_id)
         places_booked = JobPerson.query.filter_by(job_id=job_id).count()
         job = Job.query.filter_by(id=job_id).first()
@@ -331,30 +369,23 @@ def job(job_id=0):
             db.session.commit()
             print('Job booked successfully!')
             return jsonify(isError=False,
-                    message="Job booked",
-                    statusCode=200), 200
+                           message="Job booked",
+                           statusCode=200), 200
         else:
             return jsonify(isError=True,
                            message="Job full booked",
                            statusCode=200), 200
-    if request.method=='GET':
-        selected_job = Job.query.filter_by(id=job_id).first()
-        """return jsonify(isError=False,
-                       message="Success",
-                       statusCode=200,
-                       data=str(selected_job)), 200"""
-        return render_template('jobDescription.html', job=selected_job, title='Description')
-
-
-    if request.method=='DELETE':
+    if request.method == 'DELETE':
         selected_job = JobPerson.query.filter_by(job_id=job_id, person_id=session['id']).first()
         db.session.delete(selected_job)
         db.session.commit()
         return jsonify(isError=False,
                        message="Job unbooked",
-                       statusCode=201), 201
+                       statusCode=204), 204
+    return jsonify(isError=True,
+                   message="No action",
+                   statusCode=404), 404
 
-    return render_template('index.html', title='JON')
 
 # TODO interface for bot assistance (dedicated page or chat facebook-like)
 @app.route('/help')
