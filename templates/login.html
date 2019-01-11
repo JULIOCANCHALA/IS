@@ -50,16 +50,13 @@
                  <div class="form__error-content"></div>
                 {% endif %}
 
+                <a class="forgot-link link-nodecoration" href="{{ url_for('reset_request') }}">Forgot password?</a>
+
                 <div class="login__access">
                     <a class="link-nodecoration" href="/signuptype">
                         <h2 class="login__access-account">Create an account</h2>
                     </a>
                     {{ formpage.submit(class="form__access-button") }}
-                </div>
-                <div>
-                    <a href="{{ url_for('reset_request') }}">
-                        Forgot password?
-                    </a>
                 </div>
             </form>
 

@@ -204,18 +204,18 @@ def userpage():
     person = Person.query.filter_by(email=session['email']).first()
 
     # person = Person.query.filter_by(email=session['email']).first()
-<<<<<<< Updated upstream
+#<<<<<<< Updated upstream
     startDate = date.today()
     offset = timedelta(days=6)
     mon = timedelta(days=startDate.isoweekday() - 1)
     startDate = startDate-mon
     endDate = startDate + offset
-=======
-    #startDate = date.today()
-    startDate = parse_date('2019-01-01')
-    #startDate = startDate.replace(day=startDate.day - startDate.weekday())
-    endDate = startDate.replace(day=startDate.day + 6)
->>>>>>> Stashed changes
+#=======
+#    #startDate = date.today()
+#    startDate = parse_date('2019-01-01')
+#    #startDate = startDate.replace(day=startDate.day - startDate.weekday())
+#    endDate = startDate.replace(day=startDate.day + 6)
+#>>>>>>> Stashed changes
     print('Start date: ' + str(startDate))
     print('End date: ' + str(endDate))
     # Get all jobs from db
@@ -250,19 +250,19 @@ def userpage():
 @login_required
 def userprofile():
 
-<<<<<<< Updated upstream
+#<<<<<<< Updated upstream
     startDate = date.today()
     offset = timedelta(days=6)
     mon = timedelta(days=startDate.isoweekday() - 1)
     startDate = startDate - mon
     startDate = startDate.replace(day=startDate.day - startDate.weekday())
     endDate = startDate+offset
-=======
-    #startDate = date.today()
-    startDate = parse_date('2019-01-01')
-    #startDate = startDate.replace(day=startDate.day - startDate.weekday())
-    endDate = startDate.replace(day=startDate.day + 6)
->>>>>>> Stashed changes
+#=======
+#    #startDate = date.today()
+#    startDate = parse_date('2019-01-01')
+#    #startDate = startDate.replace(day=startDate.day - startDate.weekday())
+#    endDate = startDate.replace(day=startDate.day + 6)
+#>>>>>>> Stashed changes
     # person = Person.query.filter_by(email=session['email']).first()
     jobs = Job.query.join(JobPerson).filter(JobPerson.person_id==session['id']).all()
     tmp = []
