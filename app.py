@@ -277,7 +277,7 @@ def userpage():
     if location == '':
         jobs = Job.query.filter_by(available=True).all()
     else:
-        jobs = Job.query.filter(location=location.upper(), available=True).all()
+        jobs = Job.query.filter(location=location.upper()).filter(available=True).all()
     # Get jobs already booked by logged account
     jobs_booked = Job.query.join(JobPerson).filter_by(person_id=session['id']).all()
     # Remove booked jobs from job list

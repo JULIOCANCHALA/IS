@@ -14,7 +14,7 @@
         <a class="home__user-link" href="/userprofile">
             <img  class="home__user-img" src="{{ url_for('static', filename='img/userimg.jpg') }}" alt="">
         </a>
-        <!--<div style="z-index: 4; height: 30px">
+        <div style="z-index: 4; height: 30px">
             <form class="form" method="POST" action="">
                {{ form.hidden_tag()}}
                 {% for error in form.location.errors %}
@@ -25,7 +25,7 @@
                  <div class="form__error-content"></div>
 
             </form>
-        </div>-->
+        </div>
 
         <div class="jobs-table">
             <div class="jobs-table-row">
