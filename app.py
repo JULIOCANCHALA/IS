@@ -11,6 +11,13 @@ import dialogflow
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_mail import Mail, Message
 
+from werkzeug.utils import secure_filename
+import os
+
+UPLOAD_FOLDER = 'company/contracts'
+ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
+MAX_CONTENT_PATH = '5120'
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -21,6 +28,7 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 mail = Mail(app)
 db = SQLAlchemy(app)
 bcrypt=Bcrypt(app)
@@ -535,15 +543,29 @@ def reset_token(token):
     return render_template('reset_token.html', title="Reset Password", formpage=form)
 
 
-@app.route('/loadsign', methods=['GET', 'POST'])
-def load_sign():
-    if request.method=='GET':
-        return render_template('cropphoto.html', title="Sign")
-    if request.method == 'POST':
-        file = request.files['cropped_image']['tmp_name'][0]
-        print(file.filename)
-        flash('Post complete')
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'GET':
+        return render_template('uploadContract.html', title='Contract Upload')
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('index'))
 
 @app.errorhandler(404)#Error pages
 def page_not_found(e):
