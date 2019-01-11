@@ -65,6 +65,7 @@ class JobPerson(db.Model):
 
 
 class Person(db.Model, UserMixin):
+    table = 'Person'
     id=db.Column(db.Integer,primary_key=True)
     person_no=db.Column(db.String(20),unique=True,nullable=True)
     name = db.Column(db.String(10), nullable=True)
@@ -213,7 +214,7 @@ def signuptype():
     return render_template('signuptype.html', title='SignIn')
 
 
-@app.route('/signupCompany',methods=['POST','GET'])
+@app.route('/signupCompany',methods=['POST','GET', 'PUT'])
 def signupCompany():
     form_company=signIn_form_Company()
     if form_company.validate_on_submit():
@@ -229,10 +230,21 @@ def signupCompany():
         db.session.add(register)
         db.session.commit()
         return redirect(url_for('login'))
+    if request.method == 'PUT':
+        if session['id']:
+            company = Company.query.filter_by(id=session['id']).first()
+            company.name = form_company.name.data
+            company.telephone = form_company.telephone.data
+            company.phone = form_company.phone.data
+            company.email = form_company.email.data
+            db.session.commit()
+            return redirect(url_for('companypage'))
+        else:
+            redirect(url_for('index'))
     return render_template('signupCompany.html',formpage = form_company, title='SignIn')
 
 
-@app.route('/signupPerson',methods=['POST','GET'])
+@app.route('/signupPerson',methods=['POST','GET', 'PUT'])
 def signupPerson():
     form_person=signIn_form_People()
     if form_person.validate_on_submit():
@@ -248,6 +260,17 @@ def signupPerson():
         db.session.add(register)
         db.session.commit()
         return redirect(url_for('login'))
+    if request.method == 'PUT':
+        if session['id']:
+            person = Person.query.filter_by(id=session['id'])
+            person.name = form_person.name.data,
+            person.surname = form_person.surname.data,
+            person.phone = form_person.phone.data,
+            person.email = form_person.email.data
+            return redirect(url_for('userprofile'))
+        else:
+            redirect(url_for('index'))
+
     return render_template('signupPerson.html',formpage = form_person, title='SignIn')
 
 
@@ -260,10 +283,10 @@ def userpage():
     # if a company is logged in, it can't open this page
     if session['company']:
         return redirect(url_for('companypage'))
-    location = ''
+    loc= ''
     search_form = location_job()
     if request.method=='POST' and search_form.validate_on_submit():
-        location = search_form.location.data
+        loc = search_form.location.data.upper()
 
     startDate = date.today()
     offset = timedelta(days=6)
@@ -274,10 +297,10 @@ def userpage():
     print('Start date: ' + str(startDate))
     print('End date: ' + str(endDate))
     # Get all jobs from db
-    if location == '':
+    if loc == '':
         jobs = Job.query.filter_by(available=True).all()
     else:
-        jobs = Job.query.filter(location=location.upper()).filter(available=True).all()
+        jobs = Job.query.filter_by(location=loc).filter_by(available=True).all()
     # Get jobs already booked by logged account
     jobs_booked = Job.query.join(JobPerson).filter_by(person_id=session['id']).all()
     # Remove booked jobs from job list
@@ -542,6 +565,10 @@ def reset_token(token):
         return redirect(url_for('login'))
     return render_template('reset_token.html', title="Reset Password", formpage=form)
 
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html', title='Contact')
 
 def allowed_file(filename):
     return '.' in filename and \
