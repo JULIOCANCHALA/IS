@@ -44,6 +44,7 @@ class Job(db.Model):
     places = db.Column(db.Integer, nullable=True)
     location = db.Column(db.String(20), nullable=True)
     time_slot = db.Column(db.Integer, nullable=True)
+    wage = db.Column(db.Float, nullable=True)
 
 
 class JobPerson(db.Model):
@@ -51,6 +52,7 @@ class JobPerson(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=True)
     person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=True)
+    rating = db.Column(db.Integer, nullable=True)
 
 
 class Person(db.Model, UserMixin):
@@ -197,6 +199,9 @@ def signupPerson():
 @app.route('/userpage', methods=['GET', 'POST'])
 @login_required
 def userpage():
+    # if a company is logged in, it can't open this page
+    if session['company']:
+        return redirect(url_for('companypage'))
     location = ''
     search_form = location_job()
     if request.method=='POST' and search_form.validate_on_submit():
@@ -204,18 +209,12 @@ def userpage():
     person = Person.query.filter_by(email=session['email']).first()
 
     # person = Person.query.filter_by(email=session['email']).first()
-#<<<<<<< Updated upstream
     startDate = date.today()
     offset = timedelta(days=6)
     mon = timedelta(days=startDate.isoweekday() - 1)
     startDate = startDate-mon
     endDate = startDate + offset
-#=======
-#    #startDate = date.today()
-#    startDate = parse_date('2019-01-01')
-#    #startDate = startDate.replace(day=startDate.day - startDate.weekday())
-#    endDate = startDate.replace(day=startDate.day + 6)
-#>>>>>>> Stashed changes
+
     print('Start date: ' + str(startDate))
     print('End date: ' + str(endDate))
     # Get all jobs from db
@@ -249,20 +248,16 @@ def userpage():
 @app.route('/userprofile')
 @login_required
 def userprofile():
-
-#<<<<<<< Updated upstream
+    if session['company']:
+        return redirect(url_for('companypage'))
+    # Get current day
     startDate = date.today()
     offset = timedelta(days=6)
+    # Get day Monday of current week
     mon = timedelta(days=startDate.isoweekday() - 1)
     startDate = startDate - mon
-    startDate = startDate.replace(day=startDate.day - startDate.weekday())
     endDate = startDate+offset
-#=======
-#    #startDate = date.today()
-#    startDate = parse_date('2019-01-01')
-#    #startDate = startDate.replace(day=startDate.day - startDate.weekday())
-#    endDate = startDate.replace(day=startDate.day + 6)
-#>>>>>>> Stashed changes
+
     # person = Person.query.filter_by(email=session['email']).first()
     jobs = Job.query.join(JobPerson).filter(JobPerson.person_id==session['id']).all()
     tmp = []
@@ -277,6 +272,8 @@ def userprofile():
 @app.route('/companypage')
 @login_required
 def companypage():
+    if not session['company']:
+        return redirect(url_for('userpage'))
     # company = Company.query.filter_by(email=session['email']).first()
     jobs = Job.query.join(Company).filter(Company.id == session['id']).all()
 
@@ -286,6 +283,9 @@ def companypage():
 @app.route('/newjob', methods=['GET', 'POST'])
 
 def newjob():
+    if not session['company']:
+        return redirect(url_for('userpage'))
+
     new_job = insert_job()
     #if new_job.validate_on_submit():
     if request.method == 'POST':
@@ -357,9 +357,9 @@ def job(job_id=0):
     return render_template('index.html', title='JON')
 
 # TODO interface for bot assistance (dedicated page or chat facebook-like)
-@app.route('/chat')
-def chat():
-    return render_template('chat.html')
+@app.route('/help')
+def help():
+    return render_template('help.html')
 
 
 def detect_intent_texts(project_id, session_id, text, language_code):
