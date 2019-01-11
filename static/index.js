@@ -106,3 +106,14 @@ $(function(){
     }
   });
 });
+
+//menu animation
+
+$(".button_menu").click(function () {
+    $(".main--profile").toggleClass("main--menuvisible")
+    $(".menu").toggleClass("menu--visible")
+    $(".button_menu-item1").toggleClass("button_menu-item1--view")
+    $(".button_menu-item2").toggleClass("button_menu-item2--view")
+    $(".button_menu-item3").toggleClass("button_menu-item3--view")
+})
+

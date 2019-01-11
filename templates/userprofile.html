@@ -2,7 +2,29 @@
 
 {% block content %}
 
-    <div class="main">
+    <div class="menu">
+        <a class="logo logo--menu link-nodecoration">
+            <h2 class="logo__text">JON</h2>
+        </a>
+        <div class="menu__links">
+            <a class="menu__link-item link-nodecoration" href="/userpage">
+                <h2 class="item__text">Schedule</h2>
+            </a>
+            <hr class="menu__line">
+            <a class="menu__link-item link-nodecoration" href="/logout">
+                <h2 class="item__text">Logout</h2>
+            </a>
+            <hr class="menu__line">
+            <a class="menu__link-item link-nodecoration" href="/chat">
+                <h2 class="item__text">FAQ</h2>
+            </a>
+            <hr class="menu__line">
+        </div>
+
+    </div>
+
+    <div class="main main--profile">
+
         <div class="screen-img screen-img--user"></div>
         <!--<a class="name--user link-nodecoration" href="/user">
             <h2 class="name__text">JON</h2>
@@ -22,7 +44,11 @@
 
         </div>
 
-        <div class="useractions">
+
+    <div class="userinfo">
+
+        <div class="userinfo__view1">
+
             <div class="useractions__notifications">
                 <h2 class="title-notification">Notification 1</h2>
                 <hr class="hr-notification">
@@ -33,7 +59,79 @@
                 <h2 class="title-notification">Notification 4</h2>
             </div>
 
-            <div class="jobs-table jobs-table--profiel">
+        </div>
+
+
+        <div class="userinfo__view2">
+
+            <div class="jobs-table jobs-table--profile">
+                <div class="jobs-table-row">
+                    <div class="jobs-table-cell-title">
+                        <h2 class="jobs-table__titleday" style="visibility: hidden">Time_slot </h2>
+                    </div>
+                    {% for day in  ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+                        <div class="jobs-table-cell-title">
+                            <h2 class="jobs-table__titleday">{{ day }} </h2>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% for a in range(0,24) %}
+                    <div class="jobs-table-row">
+                        <div class="jobs-table-day">
+                            <h2 class="jobs-times">{{ a }}.00 - {% set a = a + 1 %}{{ a }}.00{% set a = a-1 %}</h2>
+                        </div>
+
+
+                        {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+                            <div class="jobs-table-day">
+                                {% for job in jobs[a] %}
+                                    {% if job.dayOfWeek == day %}
+                                        <div class="jobs-table-cell">
+                                            <h2 class="jobs-table__titlejob tooltip" id="{{ job.id }}">{{ job.name }}
+                                                <span class="tooltiptext">
+                                                    <p class="job-description">{{ job.description }}</p>
+                                                    <button class="accept-job-button" onclick="bookJob({{ job.id }})">Accept!</button>
+                                                </span>
+                                            </h2>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+        <script>
+            function unbookjob(jobid) {
+                $.ajax({
+                    url: '/bookjob/'+jobid,
+                    type: 'DELETE',
+                    success: function(result) {
+                        alert('Job unbooked!');
+                        document.getElementById(jobid).style.display = 'none';
+                    }
+                });
+            }
+        </script>
+
+
+
+
+    </div>
+
+{% endblock %}
+
+
+            <!--<div class="jobs-table jobs-table--profiel">
                 {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
                     <div class="jobs-table-column">
                         <h2 class="jobs-table__titleday">{{ day }} </h2>
@@ -57,26 +155,4 @@
 
                 {% endfor %}
 
-            </div>
-
-        </div>
-
-        <script>
-            function unbookjob(jobid) {
-                $.ajax({
-                    url: '/bookjob/'+jobid,
-                    type: 'DELETE',
-                    success: function(result) {
-                        alert('Job unbooked!');
-                        document.getElementById(jobid).style.display = 'none';
-                    }
-                });
-            }
-        </script>
-
-
-
-
-    </div>
-
-{% endblock %}
+            </div>-->

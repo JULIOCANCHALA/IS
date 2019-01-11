@@ -2,6 +2,71 @@
 background-image: url("../img/user.jpg") !important;
 }
 
+.main--profile{
+    transform: translateX(0%);
+    transition-property: transform;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in;
+}
+
+.main--menuvisible{
+    transform: translateX(200px);
+}
+
+.menu{
+    height: 100%;
+    width: 200px;
+    position: absolute;
+    background-color: white;
+    z-index: 3;
+    transform: translateX(-100%);
+    transition-property: transform;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo--menu{
+    margin-top: 20px;
+}
+
+.menu__line{
+    height: 1px;
+    width: 100%;
+    background-color: #a4a4a4;
+    align-self: center;
+}
+
+.menu__links{
+    height: 50%;
+    width: 80%;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu__link-item{
+    height: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item__text{
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 22px;
+    color: black;
+    font-weight: 500;
+    text-align: center;
+}
+
+.menu--visible{
+    transform: translateX(0%);
+}
+
 .name--user{
     height: 85px;
     width: 85px;
@@ -35,18 +100,18 @@ background-image: url("../img/user.jpg") !important;
     z-index: 3;
 }
 
-.button_menu:hover .button_menu-item1{
-    transform: translateY(10px) rotateZ(45grad);
-    box-shadow: 1px 1px 1px 0px rgba(0,0,0,0);
+.button_menu-item1--view{
+    transform: translateY(10px) rotateZ(45grad) !important;
+    box-shadow: 1px 1px 1px 0px rgba(0,0,0,0)!important;
 }
 
-.button_menu:hover .button_menu-item2{
-    visibility: hidden;
+.button_menu-item2--view{
+    visibility: hidden!important;
 }
 
-.button_menu:hover .button_menu-item3{
-    transform: translateY(-10px) rotateZ(-45grad);
-    box-shadow: 1px 1px 1px 0px rgba(0,0,0,0);
+.button_menu-item3--view{
+    transform: translateY(-10px) rotateZ(-45grad)!important;
+    box-shadow: 1px 1px 1px 0px rgba(0,0,0,0)!important;
 }
 
 .button_menu-item {
@@ -55,11 +120,11 @@ background-image: url("../img/user.jpg") !important;
     background-color: rgba(237, 1, 140, 1);
     border-radius: 2px;
     transform: translateY(0px) rotateZ(0grad);
-    transition-property: transform;
+    transition-property: transform,visibility;
     transition-timing-function: ease-in-out;
-    transition-duration: 120ms;
+    transition-duration: 120ms,0s;
+    transition-delay: 300ms,300ms;
     /*box-shadow: 1px 1px 1px 0px rgba(0,0,0,0.75);*/
-
 }
 
 
@@ -79,11 +144,10 @@ background-image: url("../img/user.jpg") !important;
     font-family: 'Ubuntu', sans-serif;
     font-size: 26px;
     height: fit-content;
-    color: rgba(237,1,140,1);
+    color: white;
     line-height: 100px;
     margin-left: 20px;
     font-weight: lighter;
-    text-shadow: 3px 2px 3px rgba(0,0,0,.2);
     transform: translateZ(0);
 }
 
@@ -100,42 +164,57 @@ background-image: url("../img/user.jpg") !important;
 
 }
 
-.useractions{
-    height: fit-content;
+.jobs-table--profile{
+    margin-top: 80px !important;
+    width: 100% !important;
+    position: relative;
+    margin-right: 15px;
+    margin-left: 10px;
+}
+
+
+.userinfo{
+    height: 100%;
     width: 100%;
     position: absolute;
-    align-self: center;
-    z-index: 2;
     display: flex;
     flex-direction: row;
+}
+
+.userinfo__view1{
+    height: 100%;
+    width: 30%;
+    display: flex;
     justify-content: center;
-    margin-top: 60px;
-
+    align-items: center;
 }
-.jobs-table--profiel{
-    position: relative !important;
-    width: 80% !important;
-    margin-top: 0px !important;
-    margin-right: 20px;
 
+.userinfo__view2{
+    height: 100%;
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 
 .useractions__notifications{
-    height: 350px;
-    width: 20%;
+    height: 50%;
+    width: 100%;
     background-color: rgba(255,255,255,0.7);
     box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.4);
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-right: 20px;
-    margin-left: 20px;
-
+    align-self: center;
+    margin-top: 80px;
+    left: 20px;
+    margin-left: 15px;
 }
 
 .title-notification{
     font-family: "Palatino", sans-serif;
-    font-size: 18px;
+    font-size: 15px;
     margin-top: 10px;
     color: rgba(0,0,0,0.9);
     line-height: 200%;

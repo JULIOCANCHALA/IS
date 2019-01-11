@@ -14,6 +14,10 @@
             <a class="header__login link-nodecoration" href="/login">
                 <h2 class="login__text ">Login</h2>
             </a>
+
+            <a class="header__faq link-nodecoration" href="/chat">
+                <img class="header__faq-img"  src="{{ url_for('static', filename='img/question.png') }}">
+            </a>
         </div>
     </div>
 
@@ -50,13 +54,13 @@
 
             <div class="arrow arrowleft bounceleft arrowleft--index ">
               <img class="arrow_img arrow_img--left arrow-shadow--left" width="40" height="40" alt=""src="{{ url_for('static', filename='img/play-arrow.png') }}" />
-              <!--<h2 class="arror__text--left ">People</h2>-->
+              <h2 class="arror__text arror__text--left ">People</h2>
             </div>
 
 
             <div class="arrow arrowright bounceright arrowright--index">
               <img class="arrow_img arrow-shadow--right" width="40" height="40" alt=""src="{{ url_for('static', filename='img/play-arrow.png') }}" />
-              <!--<h2 class="arror__text--right">Companies</h2>-->
+              <h2 class="arror__text arror__text--right">Companies</h2>
             </div>
 
             <div class="viewinfo">

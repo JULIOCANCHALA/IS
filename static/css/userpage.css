@@ -1,8 +1,6 @@
 .screen-img--home{
-background-image: url("../img/welcome2.jpg") !important;
+background-image: url("../img/userpage.jpg") !important;
 }
-
-
 
 .name--home{
     height: 85px;
@@ -25,8 +23,14 @@ background-image: url("../img/welcome2.jpg") !important;
     margin-left: 20px;
 }
 
+.logo--page{
+    position: absolute;
+    left: 15px !important;
+    top: 15px;
+}
+
 .username{
-    margin-top: 115px;
+    margin-top: 100px;
     z-index: 2;
     font-family: 'Ubuntu', sans-serif;
     font-size: 20px;
@@ -47,8 +51,8 @@ background-image: url("../img/welcome2.jpg") !important;
     z-index: 2;
     cursor: pointer;
     right: 0px;
-    margin-top: 20px;
-    margin-right: 20px;
+    margin-top: 15px;
+    margin-right: 15px;
 
 }
 
@@ -78,7 +82,7 @@ background-image: url("../img/welcome2.jpg") !important;
 .jobs-table{
     z-index: 2;
     height: 75%;
-    width: 85%;
+    width: 90%;
     margin-top: 60px;
     display: grid;
     flex-direction: row;
@@ -96,28 +100,42 @@ background-image: url("../img/welcome2.jpg") !important;
     flex-direction: row;
     align-items: normal;
     position: relative;
-    padding: 4px;
 }
 .jobs-table-day{
-    width: calc(100%/8)
+    width: calc(100%/8);
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*border-right: solid 1px;
+    border-top: solid 1px;*/
 }
+
 .jobs-table-cell{
     height: fit-content;
     width: 90%;
     background-color: rgba(197, 255, 68,1);
-    margin-top: 5px;
+    margin-top: 2px;
     border-radius: 2px;
     display: block;
     justify-content: center;
     align-items: center;
     cursor: pointer;
 }
+
+.jobs-times{
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: lighter;
+    font-size: 16px;
+    text-align: center;
+}
+
 .jobs-table-cell-title{
-    height: fit-content;
+    height: 40px;
     width: calc(100%/8);
     justify-content: center;
     align-items: center;
-    display: table;
+    display: flex;
 }
 
 .jobs-table-cell:hover .jobs-table__titlejob{
@@ -127,8 +145,9 @@ background-image: url("../img/welcome2.jpg") !important;
 }
 
 .jobs-table__titleday{
+    width: 100%;
     font-family: 'Ubuntu', sans-serif;
-    font-size: 22px;
+    font-size: 20px;
     color: #ffffff;
     text-align: center;
     line-height: 40px;
@@ -160,7 +179,9 @@ background-image: url("../img/welcome2.jpg") !important;
     transition-property: all;
     transition-timing-function: ease-in-out;
     transition-duration: 80ms;
-
+    height: 100%;
+    width: 100%;
+    text-align: center;
 }
 
 .accept-job-button{
@@ -181,6 +202,10 @@ background-image: url("../img/welcome2.jpg") !important;
     line-height: 25px;
     font-weight: lighter;
     color: white;
+}
+
+.tohome{
+    cursor: pointer !important;
 }
 
 
