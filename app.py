@@ -510,6 +510,20 @@ def send_message():
 
     return jsonify(response_text)
 
+
+@app.route('/send_email', methods=['POST'])
+def send_email():
+    if request.method == 'POST':
+        message = request.form['message']
+        print(message)
+        msg = Message('CONTACT US',
+                      sender='jonpolito2018@gmail.com',
+                      recipients=['jonpolito2018@gmail.com'])
+        msg.body = message
+        mail.send(msg)
+        return redirect(url_for('contact'))
+
+
 def send_reset_email(user):
     token = user.get_reset_token()
 
