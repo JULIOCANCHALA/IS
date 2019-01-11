@@ -30,9 +30,11 @@ class login_form(FlaskForm):
 class insert_job(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     description = TextAreaField('Description',validators=[DataRequired()])
+    location = StringField('Location', validators=[DataRequired()])
     datework = DateField('Date', validators=[DataRequired()])
     places = IntegerField('Places available', validators=[DataRequired()])
-    location = StringField('Location', validators=[DataRequired()])
+    time = StringField('Time', validators=[DataRequired])
+    salary = StringField('Salary', validators=[DataRequired])
     submit = SubmitField('Add')
 
 class location_job(FlaskForm):

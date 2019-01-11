@@ -1,0 +1,129 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="main">
+
+        <div class="screen-img screen-img--newjob"></div>
+
+        <div class="form__screen form__screen--newjob">
+
+            <h2 class="form__screen-title">Crate a new Job</h2>
+
+            <form class="form form--newjob" method="POST" action="">
+               {{ formpage.hidden_tag()}}
+
+
+                {{ formpage.name.label(class="form__input-title") }}
+                {% if formpage.name.errors %}
+                    {{ formpage.name(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="{{ eroor }}") }}
+                    <hr class="input__line input__line-error">
+                    <div class="form__error-content">
+                    {% for error in formpage.name.errors %}
+                        <span class="form__error-text">{{ error }}</span>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    {{ formpage.name(spellcheck="false", class="form__input form__input--signin", placeholder="Enter the name") }}
+                    <hr class="input__line">
+                    <div class="form__error-content"></div>
+                {% endif %}
+
+                {{ formpage.description.label(class="form__input-title") }}
+                {% if formpage.description.errors %}
+                    {{ formpage.description(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="{{ eroor }}") }}
+                    <hr class="input__line input__line-error">
+                    <div class="form__error-content">
+                    {% for error in formpage.description.errors %}
+                        <span class="form__error-text">{{ error }}</span>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    {{ formpage.description(spellcheck="false", class="form__input form__input--signin", placeholder="Enter the description") }}
+                    <hr class="input__line">
+                    <div class="form__error-content"></div>
+                {% endif %}
+
+                {{ formpage.location.label(class="form__input-title") }}
+                {% if formpage.location.errors %}
+                    {{ formpage.location(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="{{ eroor }}") }}
+                    <hr class="input__line input__line-error">
+                    <div class="form__error-content">
+                    {% for error in formpage.location.errors %}
+                        <span class="form__error-text">{{ error }}</span>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    {{ formpage.location(spellcheck="false", class="form__input form__input--signin", placeholder="Enter the location") }}
+                    <hr class="input__line">
+                    <div class="form__error-content"></div>
+                {% endif %}
+
+                {{ formpage.datework.label(class="form__input-title") }}
+                {% if formpage.datework.errors %}
+                    {{ formpage.datework(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="{{ eroor }}") }}
+                    <hr class="input__line input__line-error">
+                    <div class="form__error-content">
+                    {% for error in formpage.datework.errors %}
+                        <span class="form__error-text">{{ error }}</span>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    {{ formpage.datework(spellcheck="false", class="form__input form__input--signin", placeholder="Enter the date (YYYY - MM - DD)") }}
+                    <hr class="input__line">
+                    <div class="form__error-content"></div>
+                {% endif %}
+
+                {{ formpage.places.label(class="form__input-title") }}
+                {% if formpage.places.errors %}
+                    {{ formpage.places(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="{{ eroor }}") }}
+                    <hr class="input__line input__line-error">
+                    <div class="form__error-content">
+                    {% for error in formpage.places.errors %}
+                        <span class="form__error-text">{{ error }}</span>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    {{ formpage.places(spellcheck="false", class="form__input form__input--signin", placeholder="Enter the places") }}
+                    <hr class="input__line">
+                    <div class="form__error-content"></div>
+                {% endif %}
+
+                {{ formpage.time.label(class="form__input-title") }}
+                {% if formpage.time.errors %}
+                    {{ formpage.time(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="{{ eroor }}") }}
+                    <hr class="input__line input__line-error">
+                    <div class="form__error-content">
+                    {% for error in formpage.time.errors %}
+                        <span class="form__error-text">{{ error }}</span>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    {{ formpage.time(spellcheck="false", class="form__input form__input--signin", placeholder="Enter the time") }}
+                    <hr class="input__line">
+                    <div class="form__error-content"></div>
+                {% endif %}
+
+                {{ formpage.salary.label(class="form__input-title") }}
+                {% if formpage.salary.errors %}
+                    {{ formpage.salary(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="{{ eroor }}") }}
+                    <hr class="input__line input__line-error">
+                    <div class="form__error-content">
+                    {% for error in formpage.salary.errors %}
+                        <span class="form__error-text">{{ error }}</span>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    {{ formpage.salary(spellcheck="false", class="form__input form__input--signin", placeholder="Enter the salary") }}
+                    <hr class="input__line">
+                    <div class="form__error-content"></div>
+                {% endif %}
+
+                {{ formpage.submit(class="form__access-button form__access-button--newjob") }}
+            </form>
+
+        </div>
+
+    </div>
+
+{%  endblock %}

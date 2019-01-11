@@ -1,0 +1,20 @@
+.screen-img--newjob{
+background-image: url("../img/newjob.jpg") !important;
+}
+
+.logo--newjob{
+    margin-top: 15px!important;
+}
+
+.form__screen--newjob{
+    height: 96% !important;
+}
+
+.form--newjob{
+    height: 620px;
+}
+
+.form__access-button--newjob{
+    align-self: center;
+}
+

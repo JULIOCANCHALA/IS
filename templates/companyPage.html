@@ -47,29 +47,7 @@
 
         <div class="companyinfo">
 
-        <div class="companyinfo__view1">
-
-            <div class="companyactions">
-                <div class="company__options-wiev">
-                    <img class="company__options newjob" src="{{ url_for('static', filename='img/add2.png') }}">
-                    <h2 class="company__options-text newjob-text" >New Job</h2>
-                </div>
-                <div class="company__options-wiev">
-                     <img class="company__options changejob" src="{{ url_for('static', filename='img/refresh.png') }}">
-                    <h2 class="company__options-text newjob-text" >Change Job</h2>
-                </div>
-                <div class="company__options-wiev">
-                    <img class="company__options deletejob" src="{{ url_for('static', filename='img/cancel.png') }}">
-                    <h2 class="company__options-text newjob-text" >Delete Job</h2>
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="companyinfo__view2">
-
-            <div class="jobs-table jobs-table--profile">
+            <div class="jobs-table jobs-table--profile jobs-table--company">
                 <div class="jobs-table-row">
                     <div class="jobs-table-cell-title">
                         <h2 class="jobs-table__titleday" style="visibility: hidden">Time_slot </h2>
@@ -108,7 +86,13 @@
                 {% endfor %}
 
             </div>
+
+        <div class="companyinfo__button" >
+            <a class="newjob-button link-nodecoration " href="/newjob">New Job</a>
         </div>
+
+
+
 
     </div>
 

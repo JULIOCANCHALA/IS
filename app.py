@@ -152,6 +152,36 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+@app.route('/newjob',methods=['POST','GET'])
+def newjob():
+    form_newjob = insert_job()
+
+    new_job = insert_job()
+    # if new_job.validate_on_submit():
+    if request.method == 'POST':
+        day = get_day(new_job.datework.data.weekday())
+        print(get_day(new_job.datework.data.weekday()))
+        job = Job(
+            name=new_job.name.data,
+            description=new_job.description.data,
+            location=new_job.location.data.upper(),
+            datework=new_job.datework.data,
+            places=new_job.places.data,
+            time=new_job.time.data,
+            salary=new_job.salary.data,
+            dayOfWeek=day,
+            company_id=session['id'],
+
+        )
+        db.session.add(job)
+        db.session.commit()
+        return jsonify(isError=False,
+                       message="Success",
+                       statusCode=201), 201
+
+    return render_template('newjob.html', formpage=form_newjob, title='NewJob')
+
+
 @app.route('/signup')
 def signup():
     return render_template('signuptype.html', title='SignIn')
@@ -292,29 +322,7 @@ def companypage():
 @app.route('/job', defaults={'job_id': 0}, methods=['GET','POST'])
 @app.route('/job/<job_id>', methods=['GET','POST','PUT','DELETE'])
 @login_required
-def job(job_id=0):
-    new_job = insert_job()
-    # if new_job.validate_on_submit():
-    if request.method == 'POST':
-        if not session['company']:
-            return redirect(url_for('userpage'))
-        day = get_day(new_job.datework.data.weekday())
-        print(get_day(new_job.datework.data.weekday()))
-        job=Job(
-            name=new_job.name.data,
-            description=new_job.description.data,
-            datework=new_job.datework.data,
-            dayOfWeek= day,
-            places=new_job.places.data,
-            #company_id=session['id'],
-            company_id=1,
-            location=new_job.location.data.upper()
-        )
-        db.session.add(job)
-        db.session.commit()
-        return jsonify(isError=False,
-                       message="Success",
-                       statusCode=201), 201
+def job(job_id):
 
     if request.method=='GET':
         if job_id == 0:
@@ -330,6 +338,29 @@ def job(job_id=0):
                        statusCode=200,
                        data=str(selected_job)), 200"""
         return render_template('jobDescription.html', job=selected_job, title='Description', bookable=bookable)
+
+        new_job = insert_job()
+        # if new_job.validate_on_submit():
+        if request.method == 'POST':
+            if not session['company']:
+                return redirect(url_for('userpage'))
+            day = get_day(new_job.datework.data.weekday())
+            print(get_day(new_job.datework.data.weekday()))
+            job = Job(
+                name=new_job.name.data,
+                description=new_job.description.data,
+                datework=new_job.datework.data,
+                dayOfWeek=day,
+                places=new_job.places.data,
+                # company_id=session['id'],
+                company_id=1,
+                location=new_job.location.data.upper()
+            )
+            db.session.add(job)
+            db.session.commit()
+            return jsonify(isError=False,
+                           message="Success",
+                           statusCode=201), 201
 
     if request.method=='PUT':
         if job_id == 0:
