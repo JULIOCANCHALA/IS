@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template,url_for,redirect,session, jsonify, flash
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
-from forms import (signIn_form_People, signIn_form_Company,login_form, insert_job,
+from forms import (signIn_form_People, signIn_form_Company,login_form, insert_job, editProfile,
                    location_job, RequestResetForm, ResetPasswordForm)
 from datetime import date, datetime, timedelta
 from flask_login import login_user, current_user, logout_user, login_required, UserMixin, LoginManager
@@ -118,6 +118,20 @@ def index():
     return render_template('index.html', title='JON')
 
 
+@app.route('/editprofile')
+def editprofile():
+    form_company = signIn_form_Company()
+    form_person = signIn_form_People()
+    form_edit = editProfile()
+    a=False
+    st = Person.query.filter_by(id=session['id']).first()
+    if not st:
+        st = Company.query.filter_by(id=session['id']).first()
+        a=True
+    return render_template('editprofile.html', title='Edit', st=st,company=a, form_company=form_company, form_person=form_person, form_edit=form_edit)
+
+
+
 @app.route('/login',methods=['POST','GET'])
 def login():
     if current_user.is_authenticated:
@@ -227,6 +241,9 @@ def signupPerson():
         db.session.commit()
         return redirect(url_for('login'))
     return render_template('signupPerson.html',formpage = form_person, title='SignIn')
+
+
+
 
 
 @app.route('/userpage', methods=['GET', 'POST'])

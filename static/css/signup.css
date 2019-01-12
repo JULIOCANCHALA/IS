@@ -3,6 +3,11 @@
     height: 570px !important;
 }
 
+.form__screen--signupCompany{
+    width: 650px !important;
+    height: 500px !important;
+}
+
 .form__header{
     height: 18%;
     width: 100%;

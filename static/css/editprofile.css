@@ -1,0 +1,11 @@
+.screen-img--editprofile{
+background-image: url("../img/editprofile.jpg") !important;
+}
+
+.form__screen--editprofile{
+    height: 340px !important;
+}
+
+.form_editprofile{
+    height: 280px !important;
+}

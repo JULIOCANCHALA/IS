@@ -6,7 +6,7 @@
 
         <div class="screen-img screen-img--signup"></div>
 
-        <div class="form__screen form__screen--signupPerson">
+        <div class="form__screen form__screen--signupCompany">
 
             <div class="form__header">
                 <div class="form__header-item">
@@ -39,21 +39,6 @@
                         {% endif %}
 
 
-
-                        {{ formpage.telephone.label(class="form__input-title") }}
-                        {% if formpage.telephone.errors %}
-                            {{ formpage.telephone(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="Enter your telephone") }}
-                            <hr class="input__line input__line-error">
-                            <div class="form__error-content">
-                            {% for eroor in formpage.telephone.errors %}
-                                <span class="form__error-text">{{ eroor }}</span>
-                            {% endfor %}
-                            </div>
-                        {% else %}
-                        {{ formpage.telephone(spellcheck="false", class="form__input form__input--signin", placeholder="Enter your telephone") }}
-                         <hr class="input__line">
-                         <div class="form__error-content"></div>
-                        {% endif %}
 
                         {{ formpage.phone.label(class="form__input-title") }}
                         {% if formpage.phone.errors %}

@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="main">
+
+        <div class="screen-img screen-img--editprofile"></div>
+
+        <div class="form__screen form__screen--editprofile">
+
+            <h2 class="form__screen-title">Edit Profile</h2>
+
+                {% if company %}
+
+                    <form class="form form_editprofile" action="/signupCompany" method="PUT">
+                        {{ form_edit.hidden_tag()}}
+
+                        {{ form_edit.name.label(class="form__input-title") }}
+                        <input class="form__input form__input--signin" type="text" name="FirstName" value="{{ st.name }}">
+                        <hr class="input__line">
+                        <div class="form__error-content"></div>
+
+                        {{ form_edit.phone.label(class="form__input-title") }}
+                        <input class="form__input form__input--signin" type="text" name="FirstName" value="{{ st.phone }}">
+                        <hr class="input__line">
+                        <div class="form__error-content"></div>
+
+                        {{ form_edit.email.label(class="form__input-title") }}
+                        <input class="form__input form__input--signin" type="text" name="FirstName" value="{{ st.email }}">
+                        <hr class="input__line">
+                        <div class="form__error-content"></div>
+
+
+
+                    </form>
+
+                {% else %}
+
+                    <form class="form form_editprofile" action="/signupPerson" method="PUT">
+                        {{ form_person.hidden_tag()}}
+
+                        {{ form_edit.name.label(class="form__input-title") }}
+                        <input class="form__input form__input--signin" type="text" name="FirstName" value="{{ st.name }}">
+                        <hr class="input__line">
+                        <div class="form__error-content"></div>
+
+                        {{ form_edit.phone.label(class="form__input-title") }}
+                        <input class="form__input form__input--signin" type="text" name="FirstName" value="{{ st.phone }}">
+                        <hr class="input__line">
+                        <div class="form__error-content"></div>
+
+                        {{ form_edit.email.label(class="form__input-title") }}
+                        <input class="form__input form__input--signin" type="text" name="FirstName" value="{{ st.email }}">
+                        <hr class="input__line">
+                        <div class="form__error-content"></div>
+
+                        {{ form_edit.submit(class="form__access-button form__access-button--signin") }}
+                    </form>
+                {% endif %}
+
+            </form>
+
+        </div>
+
+    </div>
+
+{%  endblock %}
