@@ -132,12 +132,12 @@ def editprofile():
     form_company = signIn_form_Company()
     form_person = signIn_form_People()
     form_edit = editProfile()
-    a=False
-    st = Person.query.filter_by(id=session['id']).first()
-    if not st:
-        st = Company.query.filter_by(id=session['id']).first()
-        a=True
-    return render_template('editprofile.html', title='Edit', st=st,company=a, form_company=form_company, form_person=form_person, form_edit=form_edit)
+    if session['company']:
+        st = Company.query.filter_by(email=session['email']).first()
+    else:
+        st = Person.query.filter_by(email=session['email']).first()
+
+    return render_template('editprofile.html', title='Edit', st=st,company=session['company'], form_company=form_company, form_person=form_person, form_edit=form_edit)
 
 
 
@@ -216,7 +216,7 @@ def signuptype():
     return render_template('signuptype.html', title='SignIn')
 
 
-@app.route('/signupCompany',methods=['POST','GET', 'PUT'])
+@app.route('/signupCompany',methods=['POST', 'GET', 'PUT'])
 def signupCompany():
     form_company=signIn_form_Company()
     if form_company.validate_on_submit():
@@ -224,7 +224,6 @@ def signupCompany():
         # noinspection PyArgumentList
         register=Company(
                         name=form_company.name.data,
-                        telephone=form_company.telephone.data,
                         phone=form_company.phone.data,
                         email=form_company.email.data,
                         password=password
@@ -236,13 +235,12 @@ def signupCompany():
         if session['id']:
             company = Company.query.filter_by(id=session['id']).first()
             company.name = form_company.name.data
-            company.telephone = form_company.telephone.data
             company.phone = form_company.phone.data
             company.email = form_company.email.data
             db.session.commit()
             return redirect(url_for('companypage'))
         else:
-            redirect(url_for('index'))
+            return redirect(url_for('index'))
     return render_template('signupCompany.html',formpage = form_company, title='SignIn')
 
 
@@ -280,7 +278,6 @@ def signupPerson():
 
 
 @app.route('/userpage', methods=['GET', 'POST'])
-@login_required
 def userpage():
     # if a company is logged in, it can't open this page
     if session['company']:
@@ -359,7 +356,6 @@ def userprofile():
 
 
 @app.route('/companypage')
-@login_required
 def companypage():
     if not session['company']:
         return redirect(url_for('userpage'))
