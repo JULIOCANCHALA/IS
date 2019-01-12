@@ -74,6 +74,7 @@
                                             <h2 class="jobs-table__titlejob tooltip" id="{{ job.id }}">{{ job.name }}
                                                 <span class="tooltiptext">
                                                     <p class="job-description">{{ job.description }}</p>
+                                                    <a href="job/{{ job.id }}">Show more...</a>
                                                     <button class="accept-job-button" onclick="bookJob({{ job.id }})">Accept!</button>
                                                 </span>
                                             </h2>

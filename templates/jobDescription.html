@@ -13,11 +13,20 @@
 
         </div>
         <div class="bottom-job-window">
+        {% if company %}
+            {% if rating %}
+                <div>RATE</div>
+            {% else %}
+                <div>CAN NOT RATE</div>
+            {% endif %}
+        {% else %}
             {% if bookable %}
                 <button class="accept-job-button-description" onclick="bookJob({{ job.id }})">Accept!</button>
             {% else %}
                 <button class="accept-job-button-description" onclick="unbookjob({{ job.id }})">Unbook!</button>
             {% endif %}
+        {% endif %}
+
         </div>
 
 

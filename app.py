@@ -365,8 +365,15 @@ def companypage():
         return redirect(url_for('userpage'))
     # company = Company.query.filter_by(email=session['email']).first()
     jobs = Job.query.join(Company).filter(Company.id == session['id']).all()
+    joblist = []
+    for i in range(0, 24):
+        tmp = []
+        for job in jobs:
+            if job.time_slot == i:
+                tmp.append(job)
+        joblist.append(tmp)
 
-    return render_template('companyPage.html', title='companyPage', jobs=jobs)
+    return render_template('companyPage.html', title='companyPage', jobs=joblist)
 
 
 @app.route('/job', defaults={'job_id': 0}, methods=['GET','POST'])
@@ -380,14 +387,16 @@ def job(job_id):
                            message="Missing job id",
                            statusCode=400), 400
         selected_job = Job.query.filter_by(id=job_id).first()
-        bookable=True
-        if JobPerson.query.filter_by(job_id=job_id, person_id=session['id']).first():
-            bookable=False
-        """return jsonify(isError=False,
-                       message="Success",
-                       statusCode=200,
-                       data=str(selected_job)), 200"""
-        return render_template('jobDescription.html', job=selected_job, title='Description', bookable=bookable)
+        rating = False
+        bookable = True
+        if session['company']:
+            if parse_date(selected_job.datework).date() < date.today():
+                rating = True
+        else:
+            if JobPerson.query.filter_by(job_id=job_id, person_id=session['id']).first():
+                bookable=False
+
+        return render_template('jobDescription.html', job=selected_job, title='Description', bookable=bookable, company=session['company'], rating=rating)
 
         new_job = insert_job()
         # if new_job.validate_on_submit():
