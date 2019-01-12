@@ -5,7 +5,6 @@ from forms import (signIn_form_People, signIn_form_Company,login_form, insert_jo
                    location_job, RequestResetForm, ResetPasswordForm)
 from datetime import date, datetime, timedelta
 from flask_login import login_user, current_user, logout_user, login_required, UserMixin, LoginManager
-import os
 from dotenv import load_dotenv
 import dialogflow
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -24,6 +23,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
@@ -41,6 +41,8 @@ login_manager.login_message_category = 'info'
 
 @login_manager.user_loader
 def load_user(user_id):
+    if session['company']:
+        return Company.query.get(int(user_id))
     return Person.query.get(int(user_id))
 
 class Job(db.Model):
@@ -130,6 +132,7 @@ def index():
 
 
 @app.route('/editprofile', methods=['GET', 'POST'])
+@login_required
 def editprofile():
 
     form_edit = editProfile()
@@ -182,7 +185,7 @@ def login():
             session['email'] = form_login.email.data
             session['id'] = st.id
             session['company'] = company
-            login_user(st,False)
+            login_user(st)
             next_page = request.args.get('next')
             if next_page:
                 return redirect(next_page)
@@ -195,12 +198,16 @@ def login():
     return render_template('login.html',formpage = form_login, title='SignIn')
 
 @app.route("/logout")
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
 @app.route('/newjob',methods=['POST','GET'])
+@login_required
 def newjob():
+    if not session['company']:
+        return redirect(url_for('index'))
     form_newjob = insert_job()
 
     new_job = insert_job()
@@ -214,20 +221,40 @@ def newjob():
             location=new_job.location.data.upper(),
             datework=new_job.datework.data,
             places=new_job.places.data,
-            time=new_job.time.data,
-            salary=new_job.salary.data,
+            time_slot=new_job.time.data,
+            wage=new_job.salary.data,
             dayOfWeek=day,
-            company_id=session['id'],
+            company_id=session['id']
 
         )
         db.session.add(job)
         db.session.commit()
-        return jsonify(isError=False,
-                       message="Success",
-                       statusCode=201), 201
+        return redirect(url_for('companypage'))
 
     return render_template('newjob.html', formpage=form_newjob, title='NewJob')
 
+
+@app.route('/editjob/<job_id>', methods=['GET', 'POST'])
+@login_required
+def editjob(job_id):
+    if not session['company']:
+        pass
+    job = Job.query.get(job_id)
+    form = insert_job()
+    
+    if request.method=='POST':
+        job.name=form.name.data
+        job.description=form.description.data
+        job.location=form.location.data.upper()
+        job.datework=form.datework.data
+        job.places=form.places.data
+        job.time_slot=form.time.data
+        job.wage=form.salary.data
+        job.company_id=session['id']
+        db.session.commit()
+        return redirect((url_for('job', job_id=str(job.id))))
+    return render_template('editjob.html', title="Edit Job", formpage=form, job=job)
+    
 
 @app.route('/signup')
 def signup():
@@ -560,6 +587,8 @@ def reset_request():
         user = Person.query.filter_by(email=form.email.data).first()
         if user is None:
             user = Company.query.filter_by(email=form.email.data).first()
+            if user is None:
+                return redirect(url_for('signuptype'))
 
         send_reset_email(user)
         flash('An email has been sent with instruction to reset your password', 'info')

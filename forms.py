@@ -26,6 +26,7 @@ class editProfile(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Edit')
 
+
 class login_form(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
@@ -34,7 +35,7 @@ class login_form(FlaskForm):
 
 class insert_job(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    description = TextAreaField('Description',validators=[DataRequired()])
+    description = StringField('Description',validators=[DataRequired()])
     location = StringField('Location', validators=[DataRequired()])
     datework = DateField('Date', validators=[DataRequired()])
     places = IntegerField('Places available', validators=[DataRequired()])
