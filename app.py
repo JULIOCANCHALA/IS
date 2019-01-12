@@ -416,7 +416,7 @@ def job(job_id):
                            message="Missing job id",
                            statusCode=400), 400
         selected_job = Job.query.filter_by(id=job_id).first()
-        company_name = Company.query.get(job.company_id)
+        company_name = Company.query.get(selected_job.company_id)
         rating = False
         bookable = True
         if session['company']:
