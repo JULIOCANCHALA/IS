@@ -37,9 +37,18 @@
                         {% for eroor in form_edit.email.errors %}
                             <span class="form__error-text">{{ eroor }}</span>
                         {% endfor %}
+                        
+                        {{ form_edit.bankaccount.label(class="form__input-title") }}
+                        <input class="form__input form__input--signin" type="text" name="bankaccount" value="{{ st.bankaccount }}">
+                        <hr class="input__line">
+                        <div class="form__error-content"></div>
+                        {% for eroor in form_edit.bankaccount.errors %}
+                            <span class="form__error-text">{{ eroor }}</span>
+                        {% endfor %}
 
                         {{ form_edit.submit(class="form__access-button form__access-button--signin") }}
 
+                        
                     </form>
 
                 {% else %}

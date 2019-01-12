@@ -86,6 +86,21 @@
                          <hr class="input__line">
                          <div class="form__error-content"></div>
                         {% endif %}
+                    
+                        {{ formpage.bankaccount.label(class="form__input-title") }}
+                        {% if formpage.bankaccount.errors %}
+                            {{ formpage.bankaccount(spellcheck="false", class="form__input form__input--signin input_invalid", placeholder="Enter the IBAN of your bank account") }}
+                            <hr class="input__line input__line-error">
+                            <div class="form__error-content">
+                            {% for error in formpage.bankaccount.errors %}
+                                <span class="form__error-text">{{ error }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                        {{ formpage.bankaccount(spellcheck="false", class="form__input form__input--signin", placeholder="Enter the IBAN of your bank account") }}
+                         <hr class="input__line">
+                         <div class="form__error-content"></div>
+                        {% endif %}
 
                         {{ formpage.password.label(class="form__input-title") }}
                         {% if formpage.password.errors %}

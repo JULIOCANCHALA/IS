@@ -46,13 +46,13 @@ def load_user(user_id):
     return Person.query.get(int(user_id))
 
 class Job(db.Model):
-    table = "Job"
+    __tablename__ = "Job"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=True)
     description = db.Column(db.Text(100), nullable=True)
     datework = db.Column(db.String(26), nullable=True)
     dayOfWeek = db.Column(db.String(10), nullable=True)
-    company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=True)
+    company_id = db.Column(db.Integer, db.ForeignKey('Company.id'), nullable=True)
     places = db.Column(db.Integer, nullable=True)
     location = db.Column(db.String(20), nullable=True)
     time_slot = db.Column(db.Integer, nullable=True)
@@ -61,15 +61,15 @@ class Job(db.Model):
 
 
 class JobPerson(db.Model):
-    table = "JobPerson"
+    __tablename__ = "JobPerson"
     id = db.Column(db.Integer, primary_key=True)
-    job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=True)
-    person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=True)
+    job_id = db.Column(db.Integer, db.ForeignKey('Job.id'), nullable=True)
+    person_id = db.Column(db.Integer, db.ForeignKey('Person.id'), nullable=True)
     rating = db.Column(db.Integer, nullable=True)
 
 
 class Person(db.Model, UserMixin):
-    table = 'Person'
+    __tablename__ = 'Person'
     id=db.Column(db.Integer,primary_key=True)
     person_no=db.Column(db.String(20),unique=True,nullable=True)
     name = db.Column(db.String(10), nullable=True)
@@ -77,6 +77,7 @@ class Person(db.Model, UserMixin):
     phone = db.Column(db.Integer, nullable=True)
     email=db.Column(db.String(20),unique=True,nullable=True)
     password=db.Column(db.String(30),nullable=True)
+    IBAN=db.Column(db.String(31), nullable=True)
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(app.config['SECRET_KEY'], expires_sec)
@@ -96,6 +97,7 @@ class Person(db.Model, UserMixin):
         return "<Person %r>" % self.name
 
 class Company(db.Model, UserMixin):
+    __tablename__ = 'Company'
     id=db.Column(db.Integer,primary_key=True)
     company_no=db.Column(db.String(20),unique=True,nullable=True)
     name = db.Column(db.String(10), nullable=True)
@@ -157,6 +159,7 @@ def editprofile():
             person.name = request.form['name']
             person.phone = request.form['phone']
             person.email = request.form['email']
+            person.IBAN = request.form['bankaccount']
             db.session.commit()
             return redirect(url_for('userprofile'))
         else:
@@ -295,7 +298,8 @@ def signupPerson():
                         surname=form_person.surname.data,
                         phone=form_person.phone.data,
                         email=form_person.email.data,
-                        password=password
+                        password=password,
+                        IBAN=form_person.bankaccount.data
         )
         db.session.add(register)
         db.session.commit()

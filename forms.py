@@ -7,6 +7,7 @@ class signIn_form_People(FlaskForm):
     surname = StringField('Surname', validators=[DataRequired(), Length(min=2, max=20)])
     phone= StringField('Phone', validators=[DataRequired(), Length(min=2, max=10)])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    bankaccount = StringField('Bank Account Number', validators=[Length(min=15, max=31)])
     password = PasswordField('Password', validators=[DataRequired(),Length(min=8)])
     password_con = PasswordField('Confirm password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('SigIn')
