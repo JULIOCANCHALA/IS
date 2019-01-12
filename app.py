@@ -148,16 +148,18 @@ def login():
             return redirect(url_for('companypage'))
         else:
             return redirect(url_for('userpage'))
+
     form_login=login_form()
     if form_login.validate_on_submit():
         st = Person.query.filter_by(email=form_login.email.data).first()
-        session['company'] = False
-        if not st:
+        company = False
+        if st is None:
             st = Company.query.filter_by(email=form_login.email.data).first()
-            session['company'] = True
+            company = True
         if st and bcrypt.check_password_hash(st.password, form_login.password.data):
             session['email'] = form_login.email.data
             session['id'] = st.id
+            session['company'] = company
             login_user(st,False)
             next_page = request.args.get('next')
             if next_page:
