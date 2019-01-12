@@ -122,6 +122,11 @@
                 {{ formpage.submit(class="form__access-button form__access-button--newjob") }}
             </form>
 
+            <form action ="{{ url_for('upload_file') }}" method = "POST" enctype = "multipart/form-data">
+                <input type =file name =contract />
+                <input type = "submit"/>
+            </form>
+
         </div>
 
     </div>

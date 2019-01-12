@@ -12,49 +12,61 @@
 
                 {% if company %}
 
-                    <form class="form form_editprofile" action="/signupCompany" method="PUT">
+                    <form class="form form_editprofile" action="{{ url_for('editprofile') }}" method = "POST">
                         {{ form_edit.hidden_tag()}}
 
                         {{ form_edit.name.label(class="form__input-title") }}
-                        <input class="form__input form__input--signin" type="text" name="FirstName" value="{{ st.name }}">
+                        <input class="form__input form__input--signin" type="text" name="name" value="{{ st.name }}">
                         <hr class="input__line">
-                        <div class="form__error-content"></div>
+                        {% for eroor in form_edit.name.errors %}
+                            <span class="form__error-text">{{ eroor }}</span>
+                        {% endfor %}
 
                         {{ form_edit.phone.label(class="form__input-title") }}
-                        <input class="form__input form__input--signin" type="text" name="FirstName" value="{{ st.phone }}">
+                        <input class="form__input form__input--signin" type="text" name="phone" value="{{ st.phone }}">
                         <hr class="input__line">
                         <div class="form__error-content"></div>
+                        {% for eroor in form_edit.phone.errors %}
+                            <span class="form__error-text">{{ eroor }}</span>
+                        {% endfor %}
 
                         {{ form_edit.email.label(class="form__input-title") }}
-                        <input class="form__input form__input--signin" type="text" name="FirstName" value="{{ st.email }}">
+                        <input class="form__input form__input--signin" type="text" name="email" value="{{ st.email }}">
                         <hr class="input__line">
                         <div class="form__error-content"></div>
+                        {% for eroor in form_edit.email.errors %}
+                            <span class="form__error-text">{{ eroor }}</span>
+                        {% endfor %}
 
-
+                        {{ form_edit.submit(class="form__access-button form__access-button--signin") }}
 
                     </form>
 
                 {% else %}
 
-                    <form class="form form_editprofile" action="/signupPerson" method="PUT">
+                    <form class="form form_editprofile" action="" method="POST">
                         {{ form_person.hidden_tag()}}
 
                         {{ form_edit.name.label(class="form__input-title") }}
-                        <input class="form__input form__input--signin" type="text" name="FirstName" value="{{ st.name }}">
+                        <input class="form__input form__input--signin" type="text" name="name" value="{{ st.name }}">
                         <hr class="input__line">
                         <div class="form__error-content"></div>
 
                         {{ form_edit.phone.label(class="form__input-title") }}
-                        <input class="form__input form__input--signin" type="text" name="FirstName" value="{{ st.phone }}">
+                        <input class="form__input form__input--signin" type="text" name="phone" value="{{ st.phone }}">
                         <hr class="input__line">
                         <div class="form__error-content"></div>
 
                         {{ form_edit.email.label(class="form__input-title") }}
-                        <input class="form__input form__input--signin" type="text" name="FirstName" value="{{ st.email }}">
+                        <input class="form__input form__input--signin" type="text" name="email" value="{{ st.email }}">
                         <hr class="input__line">
                         <div class="form__error-content"></div>
 
                         {{ form_edit.submit(class="form__access-button form__access-button--signin") }}
+                    </form>
+                    <form action ="{{ url_for('upload_file') }}" method = "POST" enctype = "multipart/form-data">
+                        <input type =file name =sign />
+                        <input type = "submit"/>
                     </form>
                 {% endif %}
 

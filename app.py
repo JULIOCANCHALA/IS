@@ -14,7 +14,8 @@ from flask_mail import Mail, Message
 from werkzeug.utils import secure_filename
 import os
 
-UPLOAD_FOLDER = 'company/contracts'
+UPLOAD_FOLDER_CONTRACT = 'company/contracts'
+UPLOAD_FOLDER_SIGN = 'user/signs'
 ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
 MAX_CONTENT_PATH = '5120'
 
@@ -28,7 +29,8 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER_CONTRACT'] = UPLOAD_FOLDER_CONTRACT
+app.config['UPLOAD_FOLDER_SIGN'] = UPLOAD_FOLDER_SIGN
 mail = Mail(app)
 db = SQLAlchemy(app)
 bcrypt=Bcrypt(app)
@@ -127,17 +129,37 @@ def index():
     return render_template('index.html', title='JON')
 
 
-@app.route('/editprofile')
+@app.route('/editprofile', methods=['GET', 'POST'])
 def editprofile():
-    form_company = signIn_form_Company()
-    form_person = signIn_form_People()
+
     form_edit = editProfile()
     if session['company']:
         st = Company.query.filter_by(email=session['email']).first()
     else:
         st = Person.query.filter_by(email=session['email']).first()
 
-    return render_template('editprofile.html', title='Edit', st=st,company=session['company'], form_company=form_company, form_person=form_person, form_edit=form_edit)
+    if request.method == 'POST' and session['company']:
+        if session['id']:
+            company = Company.query.get(session['id'])
+            company.name = request.form['name']
+            company.phone = request.form['phone']
+            company.email = request.form['email']
+            db.session.commit()
+            return redirect(url_for('companypage'))
+        else:
+            return redirect(url_for('index'))
+    if request.method == 'POST' and session['company']==False:
+        if session['id']:
+            person = Person.query.get(session['id'])
+            person.name = request.form['name']
+            person.phone = request.form['phone']
+            person.email = request.form['email']
+            db.session.commit()
+            return redirect(url_for('userprofile'))
+        else:
+            redirect(url_for('index'))
+
+    return render_template('editprofile.html', title='Edit', st=st,company=session['company'], form_edit=form_edit)
 
 
 
@@ -231,16 +253,7 @@ def signupCompany():
         db.session.add(register)
         db.session.commit()
         return redirect(url_for('login'))
-    if request.method == 'PUT':
-        if session['id']:
-            company = Company.query.filter_by(id=session['id']).first()
-            company.name = form_company.name.data
-            company.phone = form_company.phone.data
-            company.email = form_company.email.data
-            db.session.commit()
-            return redirect(url_for('companypage'))
-        else:
-            return redirect(url_for('index'))
+
     return render_template('signupCompany.html',formpage = form_company, title='SignIn')
 
 
@@ -260,16 +273,7 @@ def signupPerson():
         db.session.add(register)
         db.session.commit()
         return redirect(url_for('login'))
-    if request.method == 'PUT':
-        if session['id']:
-            person = Person.query.filter_by(id=session['id'])
-            person.name = form_person.name.data,
-            person.surname = form_person.surname.data,
-            person.phone = form_person.phone.data,
-            person.email = form_person.email.data
-            return redirect(url_for('userprofile'))
-        else:
-            redirect(url_for('index'))
+
 
     return render_template('signupPerson.html',formpage = form_person, title='SignIn')
 
@@ -601,19 +605,32 @@ def upload_file():
         return render_template('uploadContract.html', title='Contract Upload')
     if request.method == 'POST':
         # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
+        if 'contract' in request.files:
+            file = request.files['contract']
+            contract = True
+
+        if 'sign' in request.files:
+            file = request.files['sign']
+            contract = False
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
             flash('No selected file')
-            return redirect(request.url)
+            return jsonify(isError=True,
+                           message="Not Uploaded",
+                           statusCode=500), 500
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('index'))
+            ext = file.filename.rsplit('.', 1)[1].lower()
+            name = str(session['id']) + '.'+ext
+            filename = secure_filename(name)
+            if contract:
+
+                file.save(os.path.join(app.config['UPLOAD_FOLDER_CONTRACT'], filename))
+            else:
+                file.save(os.path.join(app.config['UPLOAD_FOLDER_SIGN'], filename))
+            return jsonify(isError=False,
+                       message="Uploaded",
+                       statusCode=204), 204
 
 @app.errorhandler(404)#Error pages
 def page_not_found(e):
