@@ -90,7 +90,7 @@ background-image: url("../img/userpage.jpg") !important;
     align-self: center;
     background-color: rgba(0,0,0,0.5);
     border-radius: 4px;
-    overflow: auto
+    overflow-x: hidden;
 }
 
 .jobs-table-row{
@@ -100,7 +100,7 @@ background-image: url("../img/userpage.jpg") !important;
     flex-direction: row;
     align-items: normal;
     position: relative;
-    border: 1px solid rgba(180, 255, 43, 0.2);
+    border-top: 1px solid rgba(180, 255, 43, 0.2);
     background-color: rgba(0,0,0,0);
 }
 
@@ -194,12 +194,12 @@ background-image: url("../img/userpage.jpg") !important;
 }
 
 .accept-job-button{
-    height: 26px;
-    width: 72px;
+    height: 32px;
+    width: 75px;
     border-radius: 2px;
     background: rgba(73, 168, 46, 0.9);
     font-family: "Palatino", sans-serif;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: lighter;
     color: white;
     cursor: pointer;

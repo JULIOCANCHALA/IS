@@ -2,39 +2,65 @@
 
 {% block content %}
     <div class="main">
-        <div class="screen-img screen-img--home"></div>
+        <div class="screen-img screen-img--jobdescription"></div>
         <a class="name--home link-nodecoration" href="/userpage">
             <h2 class="name__text">JON</h2>
         </a>
 
-        <div class="job-window">
 
-            {{ job.description }}
 
-        </div>
-        <div class="bottom-job-window">
-        {% if company %}
-            <div>
-                <button class="accept-job-button-description" onclick="editjob({{ job.id }})">Edit!</button>
+    <!-- -->
+
+        <div class="form__screen form__screen--description">
+
+            <h2 class="form__screen-title form__screen-title--description">{{ job.name }}</h2>
+
+            <div class="form__content">
+
+                <div class="form form--jobdescription">
+
+                    <h2 class="form__input-title">Salary</h2>
+                    <h2 class="viewjob--info">{{ job.wage }}</h2>
+                    <hr class="input__line input__line--description">
+
+                    <h2 class="form__input-title">Places</h2>
+                    <h2 class="viewjob--info">{{ job.places }}</h2>
+                    <hr class="input__line input__line--description">
+
+                    <h2 class="form__input-title">Description</h2>
+                    <h2 class="viewjob--info viewjob--info-des">{{ job.description }}</h2>
+                    <hr class="input__line input__line--description">
+
+
+
+
+                {% if company %}
+                    <div>
+                        <button class="accept-job-button-description" onclick="editjob({{ job.id }})">Edit!</button>
+                    </div>
+                    {% if rating %}
+                        <div>RATE</div>
+                    {% else %}
+                        <div>CAN NOT RATE</div>
+                    {% endif %}
+
+                {% else %}
+                    {% if bookable %}
+                        <button class="accept-job-button-description" onclick="bookJob({{ job.id }})">Accept!</button>
+                    {% else %}
+                        <button class="accept-job-button-description" onclick="unbookjob({{ job.id }})">Unbook!</button>
+                    {% endif %}
+                {% endif %}
+
+
+
             </div>
-            {% if rating %}
-                <div>RATE</div>
-            {% else %}
-                <div>CAN NOT RATE</div>
-            {% endif %}
-            <form action ="{{ url_for('upload_file') }}" method = "POST" enctype = "multipart/form-data">
-                <input type =file name =contract />
-                <input type = "submit"/>
-            </form>
-        {% else %}
-            {% if bookable %}
-                <button class="accept-job-button-description" onclick="bookJob({{ job.id }})">Accept!</button>
-            {% else %}
-                <button class="accept-job-button-description" onclick="unbookjob({{ job.id }})">Unbook!</button>
-            {% endif %}
-        {% endif %}
-
+            <div class="form__img-content">
+                <img class="form__img" src="{{ url_for('static', filename='img/test.png') }}">
+            </div>
         </div>
+
+    <!-- -->
 
 
         <script>

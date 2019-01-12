@@ -1,33 +1,81 @@
+.screen-img--jobdescription {
+background-image: url("../img/jobdescription.jpg") !important;
+}
+
 .job-window{
     z-index: 3;
     height: 75%;
-    width: 85%;
-    margin-top: 60px;
+    width: 60%;
     display: flex;
     position: absolute;
     align-self: center;
-    background-color: rgba(237,1,140,0.5);
-    border-radius: 4px;
-    overflow: auto;
-    padding: 10px;
+    background-color: rgba(255,255,255,0.8);
+    box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.4);
+    border-radius: 2px;
+    flex-direction: column;
+}
+
+.form--jobdescription {
+    height: 100% !important;
+    width: 75% !important;
+}
+
+.form__screen-title--description{
+ color:  rgba(237,0,140,1);
+    font-size: 35px !important;
+}
+
+.viewjob--info{
+    box-sizing: border-box;
+    width: 90%;
+    align-self: center;
+    line-height: 180%;
+    background: rgba(0,0,0,0);
+    font-size: 14px;
+    font-family: "Palatino", sans-serif;
+    color: black;
+    margin-top: 1px;
+    font-weight: lighter;
+}
+
+.viewjob--info-des{
+    height: 120px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 2px;
+    margin-top: 5px;
+    overflow-y: scroll;
+}
+
+.input__line--description{
+    margin-bottom: 20px;
+}
+
+.form__screen--description{
+    height: 450px !important;
+    width: 670px !important;
 }
 
 .bottom-job-window{
     z-index: 3;
     display: flex;
-    position: relative;
     align-self: flex-end;
-    margin-bottom: 5%;
 }
 
 .accept-job-button-description{
-    height: 30px;
-    width: fit-content;
-    border-radius: 3px;
-    background: rgba(197, 255, 68,1);
-    font-family: "Palatino", sans-serif;
+    height: 32px;
+    width: 120px;
     font-size: 18px;
-    font-weight: bold;
+    font-family: 'Ubuntu', sans-serif;
+    background-color: #feff00;
     color: black;
+    box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.5);
+    border-radius: 2px;
+    font-weight: bold;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(1.1);
+    align-self: center;
+    margin-top: 10px;
 }

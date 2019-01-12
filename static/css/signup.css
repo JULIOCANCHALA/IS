@@ -78,7 +78,7 @@
     height: 1px;
     width: 90%;
     z-index: 2;
-    background-color: #656565;
+    background-color: rgba(101, 101, 101, 0.51);
     align-self: center;
 }
 
