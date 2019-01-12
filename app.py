@@ -13,9 +13,9 @@ from flask_mail import Mail, Message
 from werkzeug.utils import secure_filename
 import os
 
-UPLOAD_FOLDER_CONTRACT = 'company/contracts'
-UPLOAD_FOLDER_SIGN = 'user/signs'
-ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
+UPLOAD_FOLDER_CONTRACT = 'static/company/contracts'
+UPLOAD_FOLDER_SIGN = 'static/user/signs'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 MAX_CONTENT_PATH = '5120'
 
 load_dotenv()
@@ -45,6 +45,7 @@ def load_user(user_id):
         return Company.query.get(int(user_id))
     return Person.query.get(int(user_id))
 
+
 class Job(db.Model):
     __tablename__ = "Job"
     id = db.Column(db.Integer, primary_key=True)
@@ -58,6 +59,7 @@ class Job(db.Model):
     time_slot = db.Column(db.Integer, nullable=True)
     wage = db.Column(db.Float, nullable=True)
     available = db.Column(db.Boolean, nullable=True, default=True)
+    contract = db.Column(db.String(30), nullable=True, default='example.jpg')
 
 
 class JobPerson(db.Model):
@@ -96,6 +98,7 @@ class Person(db.Model, UserMixin):
     def __repr__(self):
         return "<Person %r>" % self.name
 
+
 class Company(db.Model, UserMixin):
     __tablename__ = 'Company'
     id=db.Column(db.Integer,primary_key=True)
@@ -121,7 +124,6 @@ class Company(db.Model, UserMixin):
 
     def __repr__(self):
         return "<Company %r>" % self.name
-
 
 
 @app.before_first_request
@@ -166,7 +168,6 @@ def editprofile():
             redirect(url_for('index'))
 
     return render_template('editprofile.html', title='Edit', st=st,company=session['company'], form_edit=form_edit)
-
 
 
 @app.route('/login',methods=['POST','GET'])
@@ -309,9 +310,6 @@ def signupPerson():
     return render_template('signupPerson.html',formpage = form_person, title='SignIn')
 
 
-
-
-
 @app.route('/userpage', methods=['GET', 'POST'])
 def userpage():
     # if a company is logged in, it can't open this page
@@ -418,6 +416,7 @@ def job(job_id):
                            message="Missing job id",
                            statusCode=400), 400
         selected_job = Job.query.filter_by(id=job_id).first()
+        company_name = Company.query.get(job.company_id)
         rating = False
         bookable = True
         if session['company']:
@@ -427,7 +426,7 @@ def job(job_id):
             if JobPerson.query.filter_by(job_id=job_id, person_id=session['id']).first():
                 bookable=False
 
-        return render_template('jobDescription.html', job=selected_job, title='Description', bookable=bookable, company=session['company'], rating=rating)
+        return render_template('jobDescription.html', job=selected_job, title='Description', bookable=bookable, company=session['company'], rating=rating, companyname=company_name)
 
         new_job = insert_job()
         # if new_job.validate_on_submit():
@@ -442,8 +441,7 @@ def job(job_id):
                 datework=new_job.datework.data,
                 dayOfWeek=day,
                 places=new_job.places.data,
-                # company_id=session['id'],
-                company_id=1,
+                company_id=session['id'],
                 location=new_job.location.data.upper()
             )
             db.session.add(job)
@@ -513,6 +511,8 @@ def bookjob(job_id):
                            statusCode=200), 200
     if request.method == 'DELETE':
         selected_job = JobPerson.query.filter_by(job_id=job_id, person_id=session['id']).first()
+        job = Job.query.get(job_id)
+        job.available = True
         db.session.delete(selected_job)
         db.session.commit()
         return jsonify(isError=False,
@@ -657,7 +657,10 @@ def upload_file():
             name = str(session['id']) + '.'+ext
             filename = secure_filename(name)
             if contract:
-
+                jobid = request.form['job']
+                job = Job.query.get(jobid)
+                job.contract = filename
+                db.session.commit()
                 file.save(os.path.join(app.config['UPLOAD_FOLDER_CONTRACT'], filename))
             else:
                 file.save(os.path.join(app.config['UPLOAD_FOLDER_SIGN'], filename))
