@@ -164,39 +164,9 @@ background-image: url("../img/user.jpg") !important;
 
 }
 
-.jobs-table--profile{
-    margin-top: 80px !important;
-    width: 100% !important;
-    position: relative;
-    margin-right: 15px;
-    margin-left: 10px;
+.userpage__joboffers{
+
 }
-
-
-.userinfo{
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    display: flex;
-    flex-direction: row;
-}
-
-.userinfo__view1{
-    height: 100%;
-    width: 30%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.userinfo__view2{
-    height: 100%;
-    width: 70%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 
 .useractions__notifications{
     height: 50%;

@@ -11,25 +11,33 @@
             </a>
 
             <h2 class="namecompany tracking-in-expand"><span class="spanname">J</span>ob <span class="spanname">O</span>pportunity <span class="spanname">N</span>etwork</h2>
-            <a class="header__login link-nodecoration" href="/login">
-                <h2 class="login__text ">Login</h2>
-            </a>
 
-            <a class="header__faq link-nodecoration" href="/help">
-                <img class="header__faq-img"  src="{{ url_for('static', filename='img/question.png') }}">
-            </a>
+
         </div>
     </div>
 
-    <div>
-        <h2> CONTACT US </h2></br>
-        <h1> jonpolito2018@gmail.com </h1></br>
-        <form action="/send_email" method="POST">
-            <input type="text" name="message">
-            <button type="submit">Send</button>
-        </form>
-    </div>
+    <div class="nav-index">
 
+        <div class="nav--home navitem"> <!--+++++++++++-->
+            <div class="screen-img screen-img--contact"></div>
+
+            <div class="form__screen form__screen--contact">
+                <h2 class="form__screen-title"> CONTACT US </h2></br>
+                <div class="contact_to">
+                    <h2 class="form__screen-title--sub contact_to-text">To:</h2>
+                    <h2 class="form__screen-title--sub contact_email"> jonpolito2018@gmail.com </h2></br>
+                </div>
+
+                <form  class="form form--contact" action="/send_email" method="POST">
+                    <textarea class="contact_msg" type="text" name="message" rows="10"></textarea>
+                    <button class="form__access-button" type="submit">Send</button>
+                </form>
+            </div>
+
+        </div>
+
+
+    </div>
 
     <div class="footer-index">
 
@@ -50,3 +58,5 @@
 
 
 {% endblock %}
+
+

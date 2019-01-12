@@ -100,13 +100,21 @@ background-image: url("../img/userpage.jpg") !important;
     flex-direction: row;
     align-items: normal;
     position: relative;
+    border: 1px solid rgba(180, 255, 43, 0.2);
+    background-color: rgba(0,0,0,0);
 }
+
+.jobs-table-row:hover{
+    background-color: rgba(226, 86, 54, 0.4);
+}
+
 .jobs-table-day{
     width: calc(100%/8);
-    height: fit-content;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     /*border-right: solid 1px;
     border-top: solid 1px;*/
 }
@@ -141,7 +149,7 @@ background-image: url("../img/userpage.jpg") !important;
 
 .jobs-table-cell:hover .jobs-table__titlejob{
     color: #fd343e;
-    font-size: 22px;
+    font-size: 19px;
 
 }
 
@@ -186,28 +194,85 @@ background-image: url("../img/userpage.jpg") !important;
 }
 
 .accept-job-button{
-    height: 30px;
-    width: 80%;
-    border-radius: 3px;
-    background: rgba(237,1,140,0.9);
+    height: 26px;
+    width: 72px;
+    border-radius: 2px;
+    background: rgba(73, 168, 46, 0.9);
     font-family: "Palatino", sans-serif;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: lighter;
     color: white;
     cursor: pointer;
+    margin-bottom: 5px;
 }
 
 .job-description{
     font-family: "Palatino", sans-serif;
-    font-size: 14px;
+    font-size: 17px;
     line-height: 25px;
     font-weight: lighter;
-    color: white;
+    color: #000000;
+    text-overflow: ellipsis;
+    width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-top: 5px;
 }
 
 .tohome{
     cursor: pointer !important;
 }
+
+.form_location{
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.view_location{
+    width: 300px;
+    height: 40px;
+    z-index: 3;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+    background-color: rgba(0,0,0,0.5);
+    right: 120px;
+    top: 85px;
+}
+
+.form__input-title--location{
+    font-family: "Palatino", sans-serif;
+    font-size: 18px;
+    font-weight: lighter;
+    color:  #feff00;
+    height: 100%;
+    width: 30%;
+    line-height: 200%;
+    text-align: center;
+}
+
+.placeholder_location::placeholder{
+    color: white;
+    text-align: center;
+}
+
+.userpage__joboffers{
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 42px;
+    color: rgb(237,1,140);
+    position: absolute;
+    align-self: center;
+    top: 40px;
+    z-index: 3;
+    text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgb(125, 125, 125);
+}
+
+
 
 
 

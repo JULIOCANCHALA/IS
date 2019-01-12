@@ -11,7 +11,7 @@
                 <h2 class="item__text">Job Offers</h2>
             </a>
             <hr class="menu__line">
-            <a class="menu__link-item link-nodecoration" href="/config">
+            <a class="menu__link-item link-nodecoration" href="/editprofile">
                 <h2 class="item__text">Configuration</h2>
             </a>
             <hr class="menu__line">
@@ -49,25 +49,6 @@
         </div>
 
 
-    <div class="userinfo">
-
-        <div class="userinfo__view1">
-
-            <div class="useractions__notifications">
-                <h2 class="title-notification">Notification 1</h2>
-                <hr class="hr-notification">
-                <h2 class="title-notification">Notification 2</h2>
-                <hr class="hr-notification">
-                <h2 class="title-notification">Notification 3</h2>
-                <hr class="hr-notification">
-                <h2 class="title-notification">Notification 4</h2>
-            </div>
-
-        </div>
-
-
-        <div class="userinfo__view2">
-
             <div class="jobs-table jobs-table--profile">
                 <div class="jobs-table-row">
                     <div class="jobs-table-cell-title">
@@ -95,8 +76,9 @@
                                             <h2 class="jobs-table__titlejob tooltip" id="{{ job.id }}">{{ job.name }}
                                                 <span class="tooltiptext">
                                                     <p class="job-description">{{ job.description }}</p>
-                                                    <a href="job/{{ job.id }}">Show more...</a>
+                                                    <a  class="showmore link-nodecoration" href="job/{{ job.id }}">Show more...</a>
                                                     <button class="accept-job-button" onclick="unbookjob({{ job.id }})">Unbook!</button>
+                                                    <div class="hover__permanent"></div>
                                                 </span>
                                             </h2>
                                         </div>
@@ -108,9 +90,9 @@
                 {% endfor %}
 
             </div>
-        </div>
 
-    </div>
+
+
 
 
 

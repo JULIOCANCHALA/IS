@@ -11,21 +11,26 @@
 
         <h2 class="username">{{ email }}</h2>
 
+        <h2 class="userpage__joboffers">Job Offers</h2>
+
         <a class="home__user-link" href="/userprofile">
             <img  class="home__user-img" src="{{ url_for('static', filename='img/userimg.jpg') }}" alt="">
         </a>
-        <div style="z-index: 4; height: 30px">
-            <form class="form" method="POST" action="">
+
+        <div class="view_location">
+            {{ form.location.label(class="form__input-title--location") }}
+            <form class="form_location" class="form" method="POST" action="">
                {{ form.hidden_tag()}}
+
                 {% for error in form.location.errors %}
                     <span class="form__error-text">{{ error }}</span>
                 {% endfor %}
-                {{ form.location(spellcheck="false", class="form__input form__input--signin", placeholder="Enter your location") }}
+                {{ form.location(spellcheck="false", class="form__input form__input--signin placeholder_location", placeholder="Enter your location") }}
                  <hr class="input__line">
-                 <div class="form__error-content"></div>
-
+                 <!--<div class="form__error-content"></div>-->
             </form>
         </div>
+
 
         <div class="jobs-table">
             <div class="jobs-table-row">
@@ -54,8 +59,9 @@
                                         <h2 class="jobs-table__titlejob tooltip" id="{{ job.id }}">{{ job.name }}
                                             <span class="tooltiptext">
                                                 <p class="job-description">{{ job.description }}</p>
-                                                <a href="job/{{ job.id }}">Show more...</a>
+                                                <a class="showmore link-nodecoration" href="job/{{ job.id }}">Show more...</a>
                                                 <button class="accept-job-button" onclick="bookJob({{ job.id }})">Accept!</button>
+                                                <div class="hover__permanent"></div>
                                             </span>
                                         </h2>
                                     </div>
