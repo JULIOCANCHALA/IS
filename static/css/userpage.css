@@ -257,7 +257,7 @@ background-image: url("../img/userpage.jpg") !important;
 }
 
 .placeholder_location::placeholder{
-    color: white;
+    color: rgba(255, 255, 255, 0.64);
     text-align: center;
 }
 

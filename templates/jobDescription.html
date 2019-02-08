@@ -53,8 +53,10 @@
                 {% endif %}
 
 
+            </div>
+            <div class="form__img-content">
                 <!-- Trigger the Modal -->
-                <img id="myImg" src="/static/company/contracts/{{ job.contract }}" alt="Job Contract" style="width:100%;max-width:300px; height:100%; max-height:200px;z-index:3">
+                <img id="myImg" src="/static/company/contracts/{{ job.contract }}" alt="Job Contract" style="width:85%;max-width:300px; height:100%; max-height:260px;z-index:3">
 
                 <!-- The Modal -->
                 <div id="myModal" class="modal">
@@ -68,12 +70,6 @@
                     <!-- Modal Caption (Image Text) -->
                     <div id="caption"></div>
                 </div>
-
-
-
-            </div>
-            <div class="form__img-content">
-                <img class="form__img" src="{{ url_for('static', filename='img/test.png') }}">
             </div>
         </div>
 

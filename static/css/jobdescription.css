@@ -80,14 +80,18 @@ background-image: url("../img/jobdescription.jpg") !important;
     margin-top: 10px;
 }
 
-/* Style the Image Used to Trigger the Modal */
-#myImg {
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
+.img__contract{
+    width:85%;
+    max-width:300px;
+    height:100%;
+    max-height:260px;
+    z-index:3;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-#myImg:hover {opacity: 0.7;}
+.img__contract:hover {opacity: 0.7;}
 
 /* The Modal (background) */
 .modal {

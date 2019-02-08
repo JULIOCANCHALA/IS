@@ -18,6 +18,7 @@
                         {{ form_edit.name.label(class="form__input-title") }}
                         <input class="form__input form__input--signin" type="text" name="name" value="{{ st.name }}">
                         <hr class="input__line">
+                        <div class="form__error-content"></div>
                         {% for eroor in form_edit.name.errors %}
                             <span class="form__error-text">{{ eroor }}</span>
                         {% endfor %}
@@ -37,14 +38,6 @@
                         {% for eroor in form_edit.email.errors %}
                             <span class="form__error-text">{{ eroor }}</span>
                         {% endfor %}
-                        
-                        {{ form_edit.bankaccount.label(class="form__input-title") }}
-                        <input class="form__input form__input--signin" type="text" name="bankaccount" value="{{ st.bankaccount }}">
-                        <hr class="input__line">
-                        <div class="form__error-content"></div>
-                        {% for eroor in form_edit.bankaccount.errors %}
-                            <span class="form__error-text">{{ eroor }}</span>
-                        {% endfor %}
 
                         {{ form_edit.submit(class="form__access-button form__access-button--signin") }}
 
@@ -54,22 +47,39 @@
                 {% else %}
 
                     <form class="form form_editprofile" action="" method="POST">
-                        {{ form_person.hidden_tag()}}
+                        {{ form_edit.hidden_tag()}}
 
                         {{ form_edit.name.label(class="form__input-title") }}
                         <input class="form__input form__input--signin" type="text" name="name" value="{{ st.name }}">
                         <hr class="input__line">
                         <div class="form__error-content"></div>
+                        {% for eroor in form_edit.name.errors %}
+                            <span class="form__error-text">{{ eroor }}</span>
+                        {% endfor %}
 
                         {{ form_edit.phone.label(class="form__input-title") }}
                         <input class="form__input form__input--signin" type="text" name="phone" value="{{ st.phone }}">
                         <hr class="input__line">
                         <div class="form__error-content"></div>
+                        {% for eroor in form_edit.phone.errors %}
+                            <span class="form__error-text">{{ eroor }}</span>
+                        {% endfor %}
 
                         {{ form_edit.email.label(class="form__input-title") }}
                         <input class="form__input form__input--signin" type="text" name="email" value="{{ st.email }}">
                         <hr class="input__line">
                         <div class="form__error-content"></div>
+                        {% for eroor in form_edit.email.errors %}
+                            <span class="form__error-text">{{ eroor }}</span>
+                        {% endfor %}
+
+                        {{ form_edit.bankaccount.label(class="form__input-title") }}
+                        <input class="form__input form__input--signin" type="text" name="bankaccount" value="{{ st.IBAN }}">
+                        <hr class="input__line">
+                        <div class="form__error-content"></div>
+                        {% for eroor in form_edit.bankaccount.errors %}
+                            <span class="form__error-text">{{ eroor }}</span>
+                        {% endfor %}
 
                         {{ form_edit.submit(class="form__access-button form__access-button--signin") }}
                     </form>

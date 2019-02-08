@@ -64,6 +64,11 @@
     margin-top: 1px;
 }
 
+.location__input{
+    color: white;
+    text-align: center;
+}
+
 .form__input-title{
     font-family: "Palatino", sans-serif;
     font-size: 18px;

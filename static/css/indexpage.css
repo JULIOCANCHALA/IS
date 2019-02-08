@@ -70,7 +70,7 @@
 
 .header__login{
     height: 40px;
-    width: 150px;
+    width: 152px;
     position: absolute;
     right: 120px;
     display: flex;
@@ -116,7 +116,7 @@
 .login__text{
     width: 100%;
     font-family: "Palatino", sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     color: white;
     border-radius: 3px;
     line-height: 200%;

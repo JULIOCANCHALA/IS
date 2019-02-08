@@ -25,6 +25,7 @@ class editProfile(FlaskForm):
     name = StringField('Name', validators=[DataRequired(), Length(min=2, max=20)])
     phone = StringField('Phone', validators=[DataRequired(), Length(min=2, max=10)])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    bankaccount = StringField('Bank Account Number', validators=[Length(min=15, max=31)])
     submit = SubmitField('Edit')
 
 
