@@ -12,6 +12,7 @@ from flask_mail import Mail, Message
 from PIL import Image
 
 from werkzeug.utils import secure_filename
+from os import remove, path
 import os
 
 UPLOAD_FOLDER_CONTRACT = 'static/company/contracts'
@@ -453,16 +454,15 @@ def job(job_id):
         else:
             if JobPerson.query.filter_by(job_id=job_id, person_id=session['id']).first():
                 bookable=False
-                try:
+
+                if os.path.isfile("myfile.jpg"):
                     remove('myfile.jpg')
-                except IOError:
-                    print(str(IOError))
 
                 contract = Image.open("static/company/contracts/" + selected_job.contract)
                 # im = Image.new("RGB", (500, 500), "white")
                 # sign = Image.new("RGB", (300, 200), "black")
                 # sign = Image.open("static/worker/signs/"+session['id'])
-                sign = Image.open("static/worker/signs/"+session['id']+".png")
+                sign = Image.open("static/worker/signs/"+str(session['id'])+".png")
                 size = (200, 100)
                 sign.thumbnail(size, Image.ANTIALIAS)
                 # get the correct size
