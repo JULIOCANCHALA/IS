@@ -1,6 +1,6 @@
 .form__screen--signupPerson{
     width: 650px !important;
-    height: 570px !important;
+    height: 592px !important;
 }
 
 .form__screen--signupCompany{
@@ -9,7 +9,7 @@
 }
 
 .form__header{
-    height: 18%;
+    height: 14%;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -39,7 +39,7 @@
 }
 
 .form__content{
-    height: 88%;
+    height: 86%;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -103,12 +103,12 @@
 
 .form--signin{
     height: 100% !important;
-    justify-content: flex-start !important;
+    /*justify-content: flex-start !important;*/
 }
 
 .form__access-button--signin{
     align-self: center;
-    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .screen-info-target--signup{

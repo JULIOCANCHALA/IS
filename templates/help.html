@@ -1,32 +1,95 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
       <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+     <link rel="shortcut icon" href="{{ url_for('static', filename='img/j.png') }}">
+
+     <link href="https://fonts.googleapis.com/css?family=Poiret+One|Ubuntu|Montserrat|Raleway" rel="stylesheet">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
-    <title>Assistance Bot</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+
+    <title>Help</title>
   </head>
-  <body>
-      <div class="container h-100">
-        <div class="row align-items-center h-100">
-            <div class="col-md-8 col-sm-12 mx-auto">
-                <div class="h-100 justify-content-center">
-                    <div class="chat-container" style="overflow: auto; max-height: 80vh">
-                        <!-- chat messages -->
+
+  <body class="body">
+
+    <div class="header-index">
+        <div class="header__network"></div>
+        <div class="header__facts">
+
+            <a class="logo logo--index link-nodecoration slide-in-bck-center" href="/">
+                <h2 class="logo__text">JON</h2>
+            </a>
+
+            <h2 class="namecompany tracking-in-expand"><span class="spanname">J</span>ob <span class="spanname">O</span>pportunity <span class="spanname">N</span>etwork</h2>
+            <a class="header__login link-nodecoration" href="/login">
+                <h2 class="login__text ">Login</h2>
+            </a>
+
+            <a class="header__help link-nodecoration" href="/help">
+                <img class="header__help-img"  src="{{ url_for('static', filename='img/help.png') }}">
+            </a>
+
+            <a class="header__contact link-nodecoration" href="/contact">
+                <img class="header__contact-img"  src="{{ url_for('static', filename='img/contact.png') }}">
+            </a>
+
+        </div>
+    </div>
+
+
+
+
+    <div class="nav-index">
+        <div class="screen-img screen-img--help"></div>
+
+          <div class="container h-100">
+            <div class="row align-items-center h-100">
+                <div class="col-md-8 col-sm-12 mx-auto">
+                    <div class="h-100 justify-content-center">
+                        <div class="chat-container" style="overflow: auto; max-height: 50vh">
+                            <!-- chat messages -->
+                        </div>
+                        <form id="target">
+                           <input class="input" type="text" value="" placeholder="Enter message..." id="input_message"/>
+                           <input type="submit" hidden>
+                        </form>
                     </div>
-                    <form id="target">
-                       <input class="input" type="text" value="" placeholder="Enter message..." id="input_message"/>
-                       <input type="submit" hidden>
-                    </form>
                 </div>
             </div>
         </div>
+
     </div>
+
+    <div class="footer-index">
+
+        <div class="share">
+            <img class="share-img scale-in-center" src="{{ url_for('static', filename='img/add.png') }}">
+        </div>
+        <a class="one" href="https://www.facebook.com/politecnicotorino/" target="_blank">
+            <img class="share-img" src="{{ url_for('static', filename='img/facebook.png') }}">
+        </a>
+        <a class="two" href="https://twitter.com/politonews" target="_blank">
+            <img class="share-img" src="{{ url_for('static', filename='img/twitter.png') }}">
+        </a>
+        <a class="three" href="https://www.instagram.com/politecnicoditorino" target="_blank">
+            <img class="share-img" src="{{ url_for('static', filename='img/instagram.png') }}">
+        </a>
+
+    </div>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script src="{{ url_for('static', filename='chat.js')}}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+
   </body>
 </html>

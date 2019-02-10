@@ -6,6 +6,11 @@
 
         <div class="screen-img screen-img--editprofile"></div>
 
+        <a class="back__button link-nodecoration" href="/userprofile">
+            <img class="img__button" src="{{ url_for('static', filename='img/back.png') }}">
+            Back
+        </a>
+
         <div class="form__screen form__screen--editprofile">
 
             <h2 class="form__screen-title">Edit Profile</h2>
@@ -81,12 +86,14 @@
                             <span class="form__error-text">{{ eroor }}</span>
                         {% endfor %}
 
+
+                    </form>
+                    <form class="form__input-file" action ="{{ url_for('upload_file') }}" method = "POST" enctype = "multipart/form-data">
+                        <input class="editprofile__upload" type =file name =sign />
+                        <input class="editprofile__upload--button" type = "submit"/>
+                    </form>
+
                         {{ form_edit.submit(class="form__access-button form__access-button--signin") }}
-                    </form>
-                    <form action ="{{ url_for('upload_file') }}" method = "POST" enctype = "multipart/form-data">
-                        <input type =file name =sign />
-                        <input type = "submit"/>
-                    </form>
                 {% endif %}
 
             </form>
