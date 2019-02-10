@@ -50,7 +50,6 @@
                         <h2 class="jobs-times">{{ a }}.00 - {% set a = a + 1 %}{{ a }}.00{% set a = a-1 %}</h2>
                     </div>
 
-
                     {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
                         <div class="jobs-table-day">
                             {% for job in jobs[a] %}
@@ -60,7 +59,9 @@
                                             <span class="tooltiptext">
                                                 <p class="job-description">{{ job.description }}</p>
                                                 <a class="showmore link-nodecoration" href="job/{{ job.id }}">Show more...</a>
-                                                <button class="accept-job-button" onclick="bookJob({{ job.id }})">Accept!</button>
+                                                {% if not company %}
+                                                    <button class="accept-job-button" onclick="bookJob({{ job.id }})">Accept!</button>
+                                                {% endif %}
                                                 <div class="hover__permanent"></div>
                                             </span>
                                         </h2>

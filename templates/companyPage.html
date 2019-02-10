@@ -80,7 +80,7 @@
                                                 <span class="tooltiptext">
                                                     <p class="job-description">{{ job.description }}</p>
                                                     <a  class="showmore link-nodecoration" href="job/{{ job.id }}">Show more...</a>
-                                                    <button class="accept-job-button" onclick="bookJob({{ job.id }})">Accept!</button>
+                                                    <button class="accept-job-button" onclick="editjob({{ job.id }})">Edit</button>
                                                     <div class="hover__permanent"></div>
                                                 </span>
                                             </h2>
@@ -100,6 +100,12 @@
         </div>
         </div>
     </div>
+
+    <script>
+        function editjob(jobid) {
+            window.open("/editjob/"+jobid,"_self")
+        }
+    </script>
 
 
 {% endblock %}
