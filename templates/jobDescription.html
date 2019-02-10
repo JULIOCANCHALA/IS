@@ -75,7 +75,7 @@
                 <!-- Trigger the Modal -->
 
                 {% if not bookable and not company %}
-                    <img id="myImg" src="../myfile.jpg" alt="Job Contract" style="width:85%;max-width:300px; height:100%; max-height:260px;z-index:3">
+                    <img id="myImg" src="{{ url_for('static', filename='myfile.jpg') }}" alt="Job Contract" style="width:85%;max-width:300px; height:100%; max-height:260px;z-index:3">
                 {% else %}
                     <img id="myImg" src="/static/company/contracts/{{ job.contract }}" alt="Job Contract" style="width:85%;max-width:300px; height:100%; max-height:260px;z-index:3">
                 {% endif %}

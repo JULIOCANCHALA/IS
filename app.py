@@ -471,7 +471,7 @@ def job(job_id):
                 print(xc, yc)
 
                 contract.paste(sign, (xc - x, yc - y, xc, yc))
-                contract.save("myfile.jpg", "JPEG")
+                contract.save("static/myfile.jpg", "JPEG")
             elif parse_date(selected_job.datework).date()<date.today():
                 rating = True
         return render_template('jobDescription.html', job=selected_job, title='Description', bookable=bookable, company=session['company'], rating=rating, companyname=company_name,form=form, workers=workers)
