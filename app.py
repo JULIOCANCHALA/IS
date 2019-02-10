@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 import dialogflow
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_mail import Mail, Message
+from PIL import Image
 
 from werkzeug.utils import secure_filename
 import os
@@ -452,6 +453,25 @@ def job(job_id):
         else:
             if JobPerson.query.filter_by(job_id=job_id, person_id=session['id']).first():
                 bookable=False
+                try:
+                    remove('myfile.jpg')
+                except IOError:
+                    print(str(IOError))
+
+                contract = Image.open("static/company/contracts/" + selected_job.contract)
+                # im = Image.new("RGB", (500, 500), "white")
+                # sign = Image.new("RGB", (300, 200), "black")
+                # sign = Image.open("static/worker/signs/"+session['id'])
+                sign = Image.open("static/worker/signs/"+session['id']+".png")
+                size = (200, 100)
+                sign.thumbnail(size, Image.ANTIALIAS)
+                # get the correct size
+                x, y = sign.size
+                xc, yc = contract.size
+                print(xc, yc)
+
+                contract.paste(sign, (xc - x, yc - y, xc, yc))
+                contract.save("myfile.jpg", "JPEG")
             elif parse_date(selected_job.datework).date()<date.today():
                 rating = True
         return render_template('jobDescription.html', job=selected_job, title='Description', bookable=bookable, company=session['company'], rating=rating, companyname=company_name,form=form, workers=workers)
