@@ -2,19 +2,21 @@ from flask import Flask, request, render_template,url_for,redirect,session, json
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from forms import (signIn_form_People, signIn_form_Company,login_form, insert_job, editProfile,
-                   location_job, RequestResetForm, ResetPasswordForm)
+                   location_job, RequestResetForm, ResetPasswordForm, RateWorkers)
 from datetime import date, datetime, timedelta
 from flask_login import login_user, current_user, logout_user, login_required, UserMixin, LoginManager
 from dotenv import load_dotenv
 import dialogflow
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_mail import Mail, Message
+from PIL import Image
 
 from werkzeug.utils import secure_filename
+from os import remove, path
 import os
 
 UPLOAD_FOLDER_CONTRACT = 'static/company/contracts'
-UPLOAD_FOLDER_SIGN = 'static/user/signs'
+UPLOAD_FOLDER_SIGN = 'static/worker/signs'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 MAX_CONTENT_PATH = '5120'
 
@@ -273,16 +275,19 @@ def signuptype():
 def signupCompany():
     form_company=signIn_form_Company()
     if form_company.validate_on_submit():
-        password=bcrypt.generate_password_hash(form_company.password.data).decode('utf-8')
-        # noinspection PyArgumentList
-        register=Company(
-                        name=form_company.name.data,
-                        phone=form_company.phone.data,
-                        email=form_company.email.data,
-                        password=password
-        )
-        db.session.add(register)
-        db.session.commit()
+        if not Company.query.filter_by(email=form_company.email.data):
+            password=bcrypt.generate_password_hash(form_company.password.data).decode('utf-8')
+            # noinspection PyArgumentList
+            register=Company(
+                            name=form_company.name.data,
+                            phone=form_company.phone.data,
+                            email=form_company.email.data,
+                            password=password
+            )
+            db.session.add(register)
+            db.session.commit()
+        else:
+            return flash('Email already registered')
         return redirect(url_for('login'))
 
     return render_template('signupCompany.html',formpage = form_company, title='SignIn')
@@ -292,19 +297,24 @@ def signupCompany():
 def signupPerson():
     form_person=signIn_form_People()
     if form_person.validate_on_submit():
-        password=bcrypt.generate_password_hash(form_person.password.data).decode('utf-8')
-        # noinspection PyArgumentList
-        register=Person(
-                        name=form_person.name.data,
-                        surname=form_person.surname.data,
-                        phone=form_person.phone.data,
-                        email=form_person.email.data,
-                        password=password,
-                        IBAN=form_person.bankaccount.data
-        )
-        db.session.add(register)
-        db.session.commit()
+        if not Person.query.filter_by(email=form_person.email.data):
+            password=bcrypt.generate_password_hash(form_person.password.data).decode('utf-8')
+            # noinspection PyArgumentList
+            register=Person(
+                            name=form_person.name.data,
+                            surname=form_person.surname.data,
+                            phone=form_person.phone.data,
+                            email=form_person.email.data,
+                            password=password,
+                            IBAN=form_person.bankaccount.data
+            )
+            db.session.add(register)
+            db.session.commit()
+        else:
+            return flash('Email already registered')
         return redirect(url_for('login'))
+    else:
+        return flash('Fill empty fields')
 
 
     return render_template('signupPerson.html',formpage = form_person, title='SignIn')
@@ -352,7 +362,6 @@ def userpage():
             if job.time_slot == i:
                 tmp.append(job)
         joblist.append(tmp)
-
     return render_template('userpage.html',  email=session.get('email',False) , title='userPage', jobs=joblist, form=search_form)
 
 
@@ -392,8 +401,24 @@ def userprofile():
 def companypage():
     if not session['company']:
         return redirect(url_for('userpage'))
+
+    # Get current day
+    startDate = date.today()
+    offset = timedelta(days=6)
+    # Get day Monday of current week
+    mon = timedelta(days=startDate.isoweekday() - 1)
+    startDate = startDate - mon
+    endDate = startDate + offset
+
     # company = Company.query.filter_by(email=session['email']).first()
     jobs = Job.query.join(Company).filter(Company.id == session['id']).all()
+
+    tmp = []
+    for job in jobs:
+        if parse_date(job.datework).date() < startDate or parse_date(job.datework).date() > endDate:
+            tmp.append(job)
+    jobs = [x for x in jobs if x not in tmp]
+
     joblist = []
     for i in range(0, 24):
         tmp = []
@@ -419,14 +444,37 @@ def job(job_id):
         company_name = Company.query.get(selected_job.company_id)
         rating = False
         bookable = True
+        workers = []
+        form = None
         if session['company']:
             if parse_date(selected_job.datework).date() < date.today():
                 rating = True
+                form = RateWorkers()
+                workers = Person.query.join(JobPerson).filter_by(job_id=job_id).all()
         else:
             if JobPerson.query.filter_by(job_id=job_id, person_id=session['id']).first():
                 bookable=False
 
-        return render_template('jobDescription.html', job=selected_job, title='Description', bookable=bookable, company=session['company'], rating=rating, companyname=company_name)
+                if os.path.isfile("myfile.jpg"):
+                    remove('myfile.jpg')
+
+                contract = Image.open("static/company/contracts/" + selected_job.contract)
+                # im = Image.new("RGB", (500, 500), "white")
+                # sign = Image.new("RGB", (300, 200), "black")
+                # sign = Image.open("static/worker/signs/"+session['id'])
+                sign = Image.open("static/worker/signs/"+str(session['id'])+".png")
+                size = (200, 100)
+                sign.thumbnail(size, Image.ANTIALIAS)
+                # get the correct size
+                x, y = sign.size
+                xc, yc = contract.size
+                print(xc, yc)
+
+                contract.paste(sign, (xc - x, yc - y, xc, yc))
+                contract.save("static/myfile.jpg", "JPEG")
+            elif parse_date(selected_job.datework).date()<date.today():
+                rating = True
+        return render_template('jobDescription.html', job=selected_job, title='Description', bookable=bookable, company=session['company'], rating=rating, companyname=company_name,form=form, workers=workers)
 
         new_job = insert_job()
         # if new_job.validate_on_submit():
@@ -456,7 +504,6 @@ def job(job_id):
                            message="Missing job id",
                            statusCode=400), 400
         return True
-        # TODO insert the modify job here
 
     if request.method=='DELETE':
         if job_id == 0:
@@ -522,6 +569,24 @@ def bookjob(job_id):
                    message="No action",
                    statusCode=404), 404
 
+@app.route('/rateworker/<jobid>', methods=['POST'])
+def rateworker(jobid):
+    form = RateWorkers()
+    if request.method == 'POST':
+        rate2 = request.json['rate']
+        person2 = request.json['person']
+        rate = form.rate.data
+        person = form.person_id.data
+        print(form.person_id)
+        match = JobPerson.query.filter_by(job_id=jobid, person_id=person2).first()
+        match.rating = rate2
+        db.session.commit()
+        return jsonify(isError=False,
+                       message="Workers rated",
+                       statusCode=200), 200
+
+    '''if request.method=='GET':
+        return redirect(url_for('job', job_id=jobid))'''
 
 # TODO interface for bot assistance (dedicated page or chat facebook-like)
 @app.route('/help')

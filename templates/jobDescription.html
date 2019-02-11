@@ -3,7 +3,11 @@
 {% block content %}
     <div class="main">
         <div class="screen-img screen-img--jobdescription"></div>
-        <a class="name--home link-nodecoration" href="/userpage">
+        {% if company %}
+            <a class="name--home link-nodecoration" href="/companypage">
+        {% else %}
+            <a class="name--home link-nodecoration" href="/userpage">
+        {% endif %}
             <h2 class="name__text">JON</h2>
         </a>
 
@@ -35,15 +39,30 @@
 
 
                 {% if company %}
+                    <div>
                         <button class="accept-job-button-description" onclick="editjob({{ job.id }})">Edit!</button>
+                    </div>
                     {% if rating %}
-                        <!--<div>RATE</div>-->
+                        <div>
+                            {% for worker in workers %}
+                                <form name="rate" onsubmit="validateForm({{ job.id }})" >
+                                    {{ worker.name }} <input type="number" name="rate">
+                                    <input type="hidden" name="person_id" value="{{ worker.id }}">
+                                    <button onclick="validateForm({{ job.id }})" value="Rate">Rate</button>
+                                </form>
+
+                            {%  endfor %}
+
+                        </div>
+
                     {% else %}
                         <div>CAN NOT RATE</div>
                     {% endif %}
 
                 {% else %}
-                    {% if bookable %}
+                    {% if rating %}
+
+                    {% elif bookable %}
                         <button class="accept-job-button-description" onclick="bookJob({{ job.id }})">Accept!</button>
                     {% else %}
                         <button class="accept-job-button-description" onclick="unbookjob({{ job.id }})">Unbook!</button>
@@ -54,7 +73,12 @@
             </div>
             <div class="form__img-content">
                 <!-- Trigger the Modal -->
-                <img id="myImg" src="/static/company/contracts/{{ job.contract }}" alt="Job Contract" style="width:85%;max-width:300px; height:100%; max-height:260px;z-index:3">
+
+                {% if not bookable and not company %}
+                    <img id="myImg" src="{{ url_for('static', filename='myfile.jpg') }}" alt="Job Contract" style="width:85%;max-width:300px; height:100%; max-height:260px;z-index:3">
+                {% else %}
+                    <img id="myImg" src="/static/company/contracts/{{ job.contract }}" alt="Job Contract" style="width:85%;max-width:300px; height:100%; max-height:260px;z-index:3">
+                {% endif %}
 
                 <!-- The Modal -->
                 <div id="myModal" class="modal">
@@ -71,10 +95,23 @@
             </div>
         </div>
 
-    <!-- -->
-
 
         <script>
+
+            function validateForm(jobid) {
+
+                person = x['person_id'];
+                rate = x['rate'];
+                $.ajax({
+                  type : 'POST',
+                  url : "{{url_for('rateworker', jobid=jobid) }}",
+                  contentType: 'application/json;charset=UTF-8',
+                  data : {'person': person,
+                        'rate': rate}
+                });
+
+            };
+
             function bookJob(jobid) {
 
                 $.post( '/job/'+jobid, function( data ) {
@@ -115,7 +152,8 @@
             // When the user clicks on <span> (x), close the modal
             span.onclick = function() {
               modal.style.display = "none";
-            }
+            };
+
         </script>
 
     </div>
