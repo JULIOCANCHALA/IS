@@ -10,6 +10,11 @@ background-image: url("../img/newjob.jpg") !important;
     height: 600px !important;
 }
 
+.form__screen--editjob{
+    height: 670px !important;
+}
+
+
 .form--newjob{
     height: 620px;
 }

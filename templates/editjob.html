@@ -5,7 +5,7 @@
 
         <div class="screen-img screen-img--newjob"></div>
 
-        <div class="form__screen form__screen--newjob">
+        <div class="form__screen form__screen--editjob">
 
             <h2 class="form__screen-title">Edit Job</h2>
 
@@ -127,10 +127,10 @@
             </form>
 
             <!-- Upload contract image -->
-            <form action ="{{ url_for('upload_file') }}" method = "POST" enctype = "multipart/form-data">
-                <input type =file name =contract />
+            <form class="form__input-file form__input-file--job" action ="{{ url_for('upload_file') }}" method = "POST" enctype = "multipart/form-data">
+                <input class="editprofile__upload" type =file name =contract />
                 <input type=hidden name=job value="{{ job.id }}"/>
-                <input type = "submit"/>
+                <input class="editprofile__upload--button" type = "submit"/>
             </form>
 
         </div>
