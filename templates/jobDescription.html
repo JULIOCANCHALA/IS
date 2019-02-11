@@ -35,11 +35,9 @@
 
 
                 {% if company %}
-                    <div>
                         <button class="accept-job-button-description" onclick="editjob({{ job.id }})">Edit!</button>
-                    </div>
                     {% if rating %}
-                        <div>RATE</div>
+                        <!--<div>RATE</div>-->
                     {% else %}
                         <div>CAN NOT RATE</div>
                     {% endif %}

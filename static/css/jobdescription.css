@@ -164,3 +164,14 @@ background-image: url("../img/jobdescription.jpg") !important;
   }
 }
 
+.editjob__buttons{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.form__access-button--cancel{
+    text-align: center;
+    line-height: 200%;
+}

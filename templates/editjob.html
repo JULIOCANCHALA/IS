@@ -118,8 +118,12 @@
                     <div class="form__error-content"></div>
                 {% endif %}
 
-                {{ formpage.submit(class="form__access-button form__access-button--newjob", value="SAVE") }}
-                <a class="form__access-button form__access-button--newjob" href="/job/{{ job.id }}" >CANCEL</a>
+                <div class="editjob__buttons">
+
+                    {{ formpage.submit(class="form__access-button form__access-button--newjob", value="SAVE") }}
+                    <a class="form__access-button form__access-button--cancel link-nodecoration cancel--button" href="/job/{{ job.id }}" >CANCEL</a>
+
+                </div>
             </form>
 
             <!-- Upload contract image -->
