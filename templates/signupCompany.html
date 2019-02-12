@@ -6,6 +6,11 @@
 
         <div class="screen-img screen-img--signup"></div>
 
+        <a class="back__button link-nodecoration" href="/signuptype">
+            <img class="img__button" src="{{ url_for('static', filename='img/back.png') }}">
+            Back
+        </a>
+
         <div class="form__screen form__screen--signupCompany">
 
             <div class="form__header">
@@ -20,6 +25,15 @@
 
             <div class="form__content">
                 <div class="form__inputs">
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                        <ul class=flashes>
+                        {% for message in messages %}
+                          <li>{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                      {% endif %}
+                    {% endwith %}
                     <form method="POST" class="form form--signin" action="">
                         {{  formpage.hidden_tag()}}
                         {{ formpage.name.label(class="form__input-title") }}

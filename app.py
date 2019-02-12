@@ -273,9 +273,15 @@ def signuptype():
 
 @app.route('/signupCompany',methods=['POST', 'GET', 'PUT'])
 def signupCompany():
+    if current_user.is_authenticated:
+        if session['company']:
+            return redirect(url_for('companypage'))
+        else:
+            return redirect(url_for('userpage'))
     form_company=signIn_form_Company()
+
     if form_company.validate_on_submit():
-        if not Company.query.filter_by(email=form_company.email.data):
+        if not Company.query.filter_by(email=form_company.email.data).all():
             password=bcrypt.generate_password_hash(form_company.password.data).decode('utf-8')
             # noinspection PyArgumentList
             register=Company(
@@ -286,18 +292,24 @@ def signupCompany():
             )
             db.session.add(register)
             db.session.commit()
+            return redirect(url_for('login'))
         else:
-            return flash('Email already registered')
-        return redirect(url_for('login'))
+            flash('Email already registered')
+            return render_template('signupCompany.html',formpage = form_company, title='SignIn')
 
     return render_template('signupCompany.html',formpage = form_company, title='SignIn')
 
 
 @app.route('/signupPerson',methods=['POST','GET', 'PUT'])
 def signupPerson():
+    if current_user.is_authenticated:
+        if session['company']:
+            return redirect(url_for('companypage'))
+        else:
+            return redirect(url_for('userpage'))
     form_person=signIn_form_People()
     if form_person.validate_on_submit():
-        if not Person.query.filter_by(email=form_person.email.data):
+        if not Person.query.filter_by(email=form_person.email.data).all():
             password=bcrypt.generate_password_hash(form_person.password.data).decode('utf-8')
             # noinspection PyArgumentList
             register=Person(
@@ -310,17 +322,16 @@ def signupPerson():
             )
             db.session.add(register)
             db.session.commit()
+            return redirect(url_for('login'))
         else:
-            return flash('Email already registered')
-        return redirect(url_for('login'))
-    else:
-        return flash('Fill empty fields')
-
+            flash('Email already registered')
+            return render_template('signupPerson.html', formpage=form_person, title='SignIn')
 
     return render_template('signupPerson.html',formpage = form_person, title='SignIn')
 
 
 @app.route('/userpage', methods=['GET', 'POST'])
+@login_required
 def userpage():
     # if a company is logged in, it can't open this page
     if session['company']:
@@ -398,6 +409,7 @@ def userprofile():
 
 
 @app.route('/companypage')
+@login_required
 def companypage():
     if not session['company']:
         return redirect(url_for('userpage'))
@@ -462,7 +474,10 @@ def job(job_id):
                 # im = Image.new("RGB", (500, 500), "white")
                 # sign = Image.new("RGB", (300, 200), "black")
                 # sign = Image.open("static/worker/signs/"+session['id'])
-                sign = Image.open("static/worker/signs/"+str(session['id'])+".png")
+                if os.path.isfile("static/worker/signs/"+str(session['id'])+".png"):
+                    sign = Image.open("static/worker/signs/"+str(session['id'])+".png")
+                else:
+                    sign = Image.open("static/worker/signs/sign.png")
                 size = (200, 100)
                 sign.thumbnail(size, Image.ANTIALIAS)
                 # get the correct size

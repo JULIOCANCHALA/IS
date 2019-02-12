@@ -10,7 +10,7 @@ class signIn_form_People(FlaskForm):
     bankaccount = StringField('Bank Account Number', validators=[Length(min=15, max=31)])
     password = PasswordField('Password', validators=[DataRequired(),Length(min=8)])
     password_con = PasswordField('Confirm password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('SigIn')
+    submit = SubmitField('Sign In')
 
 class signIn_form_Company(FlaskForm):
     name = StringField('Name', validators=[DataRequired(), Length(min=2, max=20)])
@@ -18,7 +18,7 @@ class signIn_form_Company(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(),Length(min=8)])
     password_con = PasswordField('Confirm password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('SigIn')
+    submit = SubmitField('Sign In')
 
 
 class editProfile(FlaskForm):

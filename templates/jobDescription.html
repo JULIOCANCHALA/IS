@@ -39,25 +39,27 @@
 
 
                 {% if company %}
-
+                    <div>
                         <button class="accept-job-button-description" onclick="editjob({{ job.id }})">Edit!</button>
-
-                    {% if rating %}
+                    </div>
+                    <!--
+                    {#% if rating %#}
                         <div>
-                            {% for worker in workers %}
-                                <form name="rate" onsubmit="validateForm({{ job.id }})" >
-                                    {{ worker.name }} <input type="number" name="rate">
-                                    <input type="hidden" name="person_id" value="{{ worker.id }}">
-                                    <button onclick="validateForm({{ job.id }})" value="Rate">Rate</button>
+                            {#% for worker in workers %#}
+                                <form name="rate" onsubmit="validateForm({#  #}{ job.id }})" >
+                                    {#  #}{ worker.name }} <input type="number" name="rate">
+                                    <input type="hidden" name="person_id" value="{#  #}{ worker.id }}">
+                                    <button onclick="validateForm({#  #}{ job.id }})" value="Rate">Rate</button>
                                 </form>
 
-                            {%  endfor %}
+                            {#%  endfor %#}
 
                         </div>
 
-                    {% else %}
+                    {#% else %#}
                         <div>CAN NOT RATE</div>
-                    {% endif %}
+                    {#% endif %#}
+                    -->
 
                 {% else %}
                     {% if rating %}
@@ -97,21 +99,6 @@
 
 
         <script>
-
-            function validateForm(jobid) {
-
-                person = x['person_id'];
-                rate = x['rate'];
-                $.ajax({
-                  type : 'POST',
-                  url : "{{url_for('rateworker', jobid=jobid) }}",
-                  contentType: 'application/json;charset=UTF-8',
-                  data : {'person': person,
-                        'rate': rate}
-                });
-
-            };
-
             function bookJob(jobid) {
 
                 $.post( '/job/'+jobid, function( data ) {
@@ -152,6 +139,20 @@
             // When the user clicks on <span> (x), close the modal
             span.onclick = function() {
               modal.style.display = "none";
+            };
+
+            function validateForm(jobid) {
+
+                person = x['person_id'];
+                rate = x['rate'];
+                $.ajax({
+                  type : 'POST',
+                  url : "{{url_for('rateworker', jobid=jobid) }}",
+                  contentType: 'application/json;charset=UTF-8',
+                  data : {'person': person,
+                        'rate': rate}
+                });
+
             };
 
         </script>
