@@ -467,8 +467,8 @@ def job(job_id):
             if JobPerson.query.filter_by(job_id=job_id, person_id=session['id']).first():
                 bookable=False
 
-                if os.path.isfile("myfile.jpg"):
-                    remove('myfile.jpg')
+                if os.path.isfile("static/myfile.jpg"):
+                    remove('static/myfile.jpg')
 
                 contract = Image.open("static/company/contracts/" + selected_job.contract)
                 # im = Image.new("RGB", (500, 500), "white")
@@ -483,7 +483,6 @@ def job(job_id):
                 # get the correct size
                 x, y = sign.size
                 xc, yc = contract.size
-                print(xc, yc)
 
                 contract.paste(sign, (xc - x, yc - y, xc, yc))
                 contract.save("static/myfile.jpg", "JPEG")
